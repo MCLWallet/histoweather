@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rechteck_13" data-name="Rechteck 13" width="1024" height="1024" rx="227" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <g id="HistoWeather_Icon_App_Store" data-name="HistoWeather Icon App Store" clip-path="url(#clip-path)">
+    <g id="Gruppe_2" data-name="Gruppe 2" transform="translate(0 0)">
+      <rect id="Rechteck_3" data-name="Rechteck 3" width="1023.498" height="102.35" transform="translate(1023.498 0) rotate(90)" fill="#6d272a"/>
+      <rect id="Rechteck_4" data-name="Rechteck 4" width="1023.498" height="102.35" transform="translate(921.148 0) rotate(90)" fill="#9f2d2e"/>
+      <rect id="Rechteck_5" data-name="Rechteck 5" width="1023.498" height="102.35" transform="translate(818.799 0) rotate(90)" fill="#cd6140"/>
+      <rect id="Rechteck_6" data-name="Rechteck 6" width="1023.498" height="102.35" transform="translate(716.449 0) rotate(90)" fill="#f5c463"/>
+      <rect id="Rechteck_7" data-name="Rechteck 7" width="1023.498" height="102.35" transform="translate(614.099) rotate(90)" fill="#fcebae"/>
+      <rect id="Rechteck_8" data-name="Rechteck 8" width="1023.498" height="102.35" transform="translate(511.749 0) rotate(90)" fill="#aed8da"/>
+      <rect id="Rechteck_9" data-name="Rechteck 9" width="1023.498" height="102.35" transform="translate(409.399 0) rotate(90)" fill="#71c3d5"/>
+      <rect id="Rechteck_10" data-name="Rechteck 10" width="1023.498" height="102.35" transform="translate(307.049 0) rotate(90)" fill="#538eb4"/>
+      <rect id="Rechteck_11" data-name="Rechteck 11" width="1023.498" height="102.35" transform="translate(204.7 0) rotate(90)" fill="#3372a1"/>
+      <rect id="Rechteck_12" data-name="Rechteck 12" width="1023.498" height="102.35" transform="translate(102.35 0) rotate(90)" fill="#21527a"/>
+    </g>
+  </g>
+</svg>
