@@ -1,0 +1,30 @@
+Title,Description,Issue ID,URL,State,Author,Author Username,Assignee,Assignee Username,Confidential,Locked,Due Date,Created At (UTC),Updated At (UTC),Closed At (UTC),Milestone,Weight,Labels,Time Estimate,Time Spent
+Add location to overview,"## User Story
+> As an app user, I want to search for a city/town and save it to an overview where I can see quick facts about their weather data.
+
+## Description
+After opening the app, the user is presented with ListView, a list of added locations with their current temperature. By clicking on the plus button, one is presented with a search bar which offers suggestions when searching, after choosing a new location, the location will be saved in the list.",1,https://student.inso.tuwien.ac.at/mobile-app-software-engineering/ws22/track-a-team-10-ios/-/issues/1,Open,Milos Stojiljkovic,11824483,"","",No,No,,2022-11-15 21:18:26,2022-11-16 12:15:31,,Abgabe 2,,User Story,0,0
+Current weather forecast for one location,"## User Story
+> As an app user I want to tap on a city in the list overview and look at the current weather forecast (like Temperature, Humidity, Wind, UV-Index, Rain).
+## Description
+After clicking on a location from the list, one is presented with a view of current weather data (LocationView). After scrolling down, one will be presented with the weather forecast for the next 7 days ([User Story 3](#3)) .",2,https://student.inso.tuwien.ac.at/mobile-app-software-engineering/ws22/track-a-team-10-ios/-/issues/2,Open,Milos Stojiljkovic,11824483,"","",No,No,,2022-11-15 21:20:55,2022-11-16 12:17:25,,Abgabe 2,,User Story,0,0
+Show weather forecast for the next 7 days,"## User Story
+> As an app user, I'd like to select a saved location and see the weather forecast for the next 7 days.
+## Description
+After scrolling down in the LocationView one is presented with weather forecast for the next 7 days. There might be an option for clicking on a day and being presented with a LocationView for that day.",3,https://student.inso.tuwien.ac.at/mobile-app-software-engineering/ws22/track-a-team-10-ios/-/issues/3,Open,Milos Stojiljkovic,11824483,"","",No,No,,2022-11-15 21:20:57,2022-11-16 12:17:13,,Abgabe 2,,User Story,0,0
+Show weather forecast for one location by date,"## User Story
+> As an app user, I'd like to select a saved location in the overview and see how the weather conditions were on a specific date.
+## Description
+In LocationView one can change data for that location and recall any day from over 60 years back in time and view its weather data in LocationView.",4,https://student.inso.tuwien.ac.at/mobile-app-software-engineering/ws22/track-a-team-10-ios/-/issues/4,Open,Milos Stojiljkovic,11824483,"","",No,No,,2022-11-15 21:20:59,2022-11-16 10:48:44,,Abgabe 3,,User Story,0,0
+Comparing the weather data of two dates,"## User Story
+> As an app user, I'd like to see/compare a monthly heatmap for different weather data (weather forecast or from history).
+## Description
+By tapping on chart button in LocationView, the user will be presented with a ChartView, where weather data of 2 days can be compared on the chart.",5,https://student.inso.tuwien.ac.at/mobile-app-software-engineering/ws22/track-a-team-10-ios/-/issues/5,Open,Milos Stojiljkovic,11824483,"","",No,No,,2022-11-15 21:21:00,2022-11-16 12:19:08,,Abgabe 3,,User Story,0,0
+Showing climate/temperature changes between two dates with ambient color changes,"## User Story
+> As an app user, I'd like to see the weather changes for a saved location and a specific day in the year trough history visualized with changes of the background colour of the app.
+## Description
+By tapping the slide button in LocationView, the user will be presented with the DayHistoryView, where one specific day in the year can be chosen, for example 15. November. By using a slider, the user can see changes in temperature for 15. November for all years in history. Temperature will be reflected in background colour and as a text output.",6,https://student.inso.tuwien.ac.at/mobile-app-software-engineering/ws22/track-a-team-10-ios/-/issues/6,Open,Milos Stojiljkovic,11824483,"","",No,No,,2022-11-15 21:21:04,2022-11-16 12:19:59,,Abgabe 3,,User Story,0,0
+Setting C°/F°,"## User Story
+> As an app user, I'd like to be able to switch between Celsius and Fahrenheit units.
+## Description
+By tapping on the wheel button in ListView, the user can choose metric or imperial units for represented data.",7,https://student.inso.tuwien.ac.at/mobile-app-software-engineering/ws22/track-a-team-10-ios/-/issues/7,Open,Milos Stojiljkovic,11824483,"","",No,No,,2022-11-15 21:21:09,2022-11-16 10:58:07,,Abgabe 3,,User Story,0,0
