@@ -13,7 +13,7 @@ struct HistoWeatherApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SliderView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
