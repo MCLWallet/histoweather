@@ -15,6 +15,7 @@
 		6063138E292F9BCD00949DF2 /* HistoWeatherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6063138D292F9BCD00949DF2 /* HistoWeatherTests.swift */; };
 		60631398292F9BCD00949DF2 /* HistoWeatherUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60631397292F9BCD00949DF2 /* HistoWeatherUITests.swift */; };
 		6063139A292F9BCD00949DF2 /* HistoWeatherUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60631399292F9BCD00949DF2 /* HistoWeatherUITestsLaunchTests.swift */; };
+		60994B032930F4CB0008D8A4 /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60994B022930F4CB0008D8A4 /* LocationView.swift */; };
 		60C1E2592930115D003E23CE /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1E2582930115D003E23CE /* SliderView.swift */; };
 		60C1E25D293014B5003E23CE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 60C1E25F293014B5003E23CE /* Localizable.strings */; };
 		60C1E26329301D59003E23CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1E26229301D59003E23CE /* ContentView.swift */; };
@@ -49,6 +50,7 @@
 		60631393292F9BCD00949DF2 /* HistoWeatherUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HistoWeatherUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		60631397292F9BCD00949DF2 /* HistoWeatherUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoWeatherUITests.swift; sourceTree = "<group>"; };
 		60631399292F9BCD00949DF2 /* HistoWeatherUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoWeatherUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		60994B022930F4CB0008D8A4 /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		60C1E2582930115D003E23CE /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
 		60C1E25E293014B5003E23CE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		60C1E260293014B8003E23CE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 			children = (
 				60C1E26229301D59003E23CE /* ContentView.swift */,
 				60C1E2582930115D003E23CE /* SliderView.swift */,
+				60994B022930F4CB0008D8A4 /* LocationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				60631384292F9BCD00949DF2 /* HistoWeather.xcdatamodeld in Sources */,
+				60994B032930F4CB0008D8A4 /* LocationView.swift in Sources */,
 				60C1E26329301D59003E23CE /* ContentView.swift in Sources */,
 				60631381292F9BCD00949DF2 /* Persistence.swift in Sources */,
 				60631378292F9BCB00949DF2 /* HistoWeatherApp.swift in Sources */,

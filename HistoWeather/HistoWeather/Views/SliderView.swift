@@ -10,9 +10,15 @@ import SwiftUI
 struct SliderView: View {
     @Environment(\.managedObjectContext) private var viewContext
     var body: some View {
-        Text("hello")
-            .font(.largeTitle)
-            .multilineTextAlignment(.leading)
+        VStack(alignment: .trailing) {
+            Text("hello")
+                .font(.title)
+                .foregroundColor(Color("BordeauxRed"))
+                .multilineTextAlignment(.leading)
+            Text("world")
+                .font(.subheadline)
+                .multilineTextAlignment(.leading)
+        }
     }
 }
 

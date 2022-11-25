@@ -6,4 +6,23 @@
   
 */
 
+// Test strings
 "hello" = "Hello";
+"world" = "World";
+
+// Location View
+"high" = "High";
+"low" = "Low";
+"humidity" = "Humidity";
+"windSpeed" = "Wind Speed";
+"uvIndex" = "UV-Index";
+"rain" = "Rain";
+
+// Fake Data
+"vienna" = "Vienna";
+"fakeDate" = "15. November 2022";
+"fakeCurrentTemperature" = "13°C";
+"fakeHumidity" = "77%";
+"fakeWindSpeed" = "7 km/h S";
+"fakeUvIndex" = "1";
+"fakeRain" = "2mm";
