@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		60145B0F2938D74C00DFC75B /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 60145B0E2938D74C00DFC75B /* .swiftlint.yml */; };
 		60631378292F9BCB00949DF2 /* HistoWeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60631377292F9BCB00949DF2 /* HistoWeatherApp.swift */; };
 		6063137C292F9BCD00949DF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6063137B292F9BCD00949DF2 /* Assets.xcassets */; };
 		6063137F292F9BCD00949DF2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6063137E292F9BCD00949DF2 /* Preview Assets.xcassets */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		60145B0E2938D74C00DFC75B /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		60631374292F9BCB00949DF2 /* HistoWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HistoWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60631377292F9BCB00949DF2 /* HistoWeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoWeatherApp.swift; sourceTree = "<group>"; };
 		6063137B292F9BCD00949DF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		6063136B292F9BCB00949DF2 = {
 			isa = PBXGroup;
 			children = (
+				60145B0E2938D74C00DFC75B /* .swiftlint.yml */,
 				60631376292F9BCB00949DF2 /* HistoWeather */,
 				6063138C292F9BCD00949DF2 /* HistoWeatherTests */,
 				60631396292F9BCD00949DF2 /* HistoWeatherUITests */,
@@ -158,6 +161,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6063139D292F9BCD00949DF2 /* Build configuration list for PBXNativeTarget "HistoWeather" */;
 			buildPhases = (
+				60145B0D2938D2E800DFC75B /* SwiftLint */,
 				60631370292F9BCB00949DF2 /* Sources */,
 				60631371292F9BCB00949DF2 /* Frameworks */,
 				60631372292F9BCB00949DF2 /* Resources */,
@@ -215,7 +219,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1410;
 				TargetAttributes = {
 					60631373292F9BCB00949DF2 = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -256,6 +260,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60145B0F2938D74C00DFC75B /* .swiftlint.yml in Resources */,
 				6063137F292F9BCD00949DF2 /* Preview Assets.xcassets in Resources */,
 				60C1E25D293014B5003E23CE /* Localizable.strings in Resources */,
 				6063137C292F9BCD00949DF2 /* Assets.xcassets in Resources */,
@@ -277,6 +282,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		60145B0D2938D2E800DFC75B /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwfitLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		60631370292F9BCB00949DF2 /* Sources */ = {
@@ -341,6 +368,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -402,6 +430,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -477,6 +506,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = tuwien.student.histoweather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -507,6 +539,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = tuwien.student.histoweather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -9,14 +9,10 @@ import SwiftUI
 
 struct LocationView: View {
     var body: some View {
-        
         VStack {
-            
 			// Top Container
-            HStack{
-                
+            HStack {
                 Spacer()
-                
 				// Date & Location View
                 VStack(alignment: .trailing) {
                     Text("vienna")
@@ -25,11 +21,9 @@ struct LocationView: View {
                         .font(.title3)
                 }.padding()
             }
-            
             Spacer()
-            
 			// Current Weather View
-			VStack() {
+			VStack {
                 Image(systemName: "cloud")
                     .resizable()
                     .frame(width: 150, height: 120)
@@ -38,11 +32,8 @@ struct LocationView: View {
                     .fontWeight(.light)
                     .multilineTextAlignment(.center)
                     .dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
-				
             }
-			
             Spacer()
-			
 			// Humidity & Windspeed
             HStack {
                 VStack(alignment: .leading) {
@@ -57,7 +48,6 @@ struct LocationView: View {
                         .fontWeight(.bold)
                 }.padding(.all)
             }
-			
 			// UV-Index & Rain
             HStack {
                 VStack(alignment: .leading) {
@@ -73,8 +63,6 @@ struct LocationView: View {
                 }.padding(.all)
             }
         }
-        
-        
     }
 }
 
