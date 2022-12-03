@@ -9,33 +9,28 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-//     Fetch automatically data from the database
-    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchFriends(),
-                  animation: .default)
-    private var dayWeather: FetchedResults<DayWeather>
 
-    @State private var model = ContentViewModel()
     var body: some View {
 
 
-        TabView {
-            CurrentView()
-                .tabItem {
-                    Label("fdsaf", systemImage: "cloud.sun.fill")
-                }
-                .tag(1)
-            ForecastView()
-                .tabItem {
-                    Label("Forecast", systemImage: "forward.fill")
-                }
-                .tag(2)
-            SliderView()
-                .tabItem {
-                    Label("History", systemImage: "clock.arrow.circlepath")
-                }
-                .tag(3)
-        }
-        .accentColor(/*@START_MENU_TOKEN@*/Color("DarkBlue")/*@END_MENU_TOKEN@*/)
+		TabView {
+			CurrentView()
+				.tabItem {
+					Label("Weather", systemImage: "cloud. sun.fill")
+				}
+				.tag(1)
+			ForecastView()
+				.tabItem {
+					Label("Forecast", systemImage: "forward.fill")
+				}
+				.tag(2)
+			SliderView()
+				.tabItem {
+					Label("History", systemImage: "clock.arrow.circlepath")
+				}
+				.tag(3)
+		}
+		.accentColor(Color("DarkBlue"))
         //        .refreshable { // Add a pull-to-refresh to the list
         //            await refreshWeather()
         //             func refreshWeather() async {

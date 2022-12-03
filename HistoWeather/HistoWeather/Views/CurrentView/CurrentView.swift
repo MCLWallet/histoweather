@@ -150,11 +150,10 @@ struct CurrentView: View {
         .refreshable {
             await model.fetchapi()
         }
-        .onAppear {
-            let t = Task{
-                await model.fetchapi()
-            }
-        }
+//        .onAppear {
+//            let task = Task
+//                await model.fetchapi()
+//		}
 	}
 }
 
