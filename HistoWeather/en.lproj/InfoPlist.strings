@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  HistoWeather
+
+  Created by Marcell Lanczos on 03.12.22.
+  
+*/
+
+"NSLocationWhenInUseUsageDescription" = "We use your location to show you correspondent current and historic weather data.";

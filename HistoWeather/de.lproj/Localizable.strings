@@ -26,3 +26,9 @@
 "fakeWindSpeed" = "7 km/h S";
 "fakeUvIndex" = "1";
 "fakeRain" = "2mm";
+
+// Location Request View
+"locationRequestTitle1" = "Möchtest du aktuelle und historische Wetterdaten aus deiner Umgebung entdecken?";
+"locationRequestTitle2" = "Teile deinen Standort mit uns. Du kannst jederzeit diese Erlaubnis in deinen Datenschutz Einstellungen deines iPhones ändern.";
+"allowLocationButtonText" = "Standort teilen";
+"maybeLaterButtonText" = "Vielleicht später";
