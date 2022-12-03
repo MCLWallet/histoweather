@@ -53,7 +53,16 @@ private var forecastFakeData = [
 ]
 
 struct ForecastView: View {
+    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchFriends(),
+                  animation: .default)
+    private var dayWeather: FetchedResults<DayWeather>
+
+    @State private var model = ForecastViewModel()
     var body: some View {
+        
+//        ForEach(dayWeather) { friend in
+//            Text("\(friend.longitude) fjdaslfjslfads")
+//        }
 		VStack {
 			// Top Container
 			HStack {
@@ -76,7 +85,10 @@ struct ForecastView: View {
 					Image(systemName: index.sfImageID)
 				}
 			}
-		}
+        }
+        .refreshable {
+            await model.fetchapi()
+        }
     }
 }
 

@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct CurrentView: View {
+    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchFriends(),
+                  animation: .default)
+    private var dayWeather: FetchedResults<DayWeather>
+
+    @State private var model = ForecastViewModel()
 	var body: some View {
-		VStack {
+		ScrollView {
 			// Top Container
 			HStack {
 				Spacer()
@@ -34,6 +39,9 @@ struct CurrentView: View {
 					.multilineTextAlignment(.center)
 					.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
 			}
+            .refreshable {
+                await model.fetchapi()
+            }
 			Spacer()
 			// Humidity & Windspeed
 			HStack {
@@ -45,7 +53,8 @@ struct CurrentView: View {
 				Spacer()
 				VStack(alignment: .trailing) {
 					Text("windSpeed")
-					Text("fakeWindSpeed")
+                    Text("\(dayWeather.randomElement()?.longitude ?? 5.6)")
+//                    Text("\(dayWeather.?? 5.6)")
 						.fontWeight(.bold)
 				}.padding(.all)
 			}
@@ -64,7 +73,14 @@ struct CurrentView: View {
 				}.padding(.all)
 			}
 		}
-		
+        .refreshable {
+            await model.fetchapi()
+        }
+        .onAppear {
+            let t = Task{
+                await model.fetchapi()
+            }
+        }
 	}
 }
 
