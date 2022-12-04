@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct WeatcherIcon: Identifiable {
 	let id = UUID()
@@ -73,10 +74,15 @@ struct CurrentView: View {
     @FetchRequest(fetchRequest: DayWeatherPersistence.fetchFriends(),
                   animation: .default)
     private var dayWeather: FetchedResults<DayWeather>
-
+	
+	@ObservedObject var locationManager = LocationManager.shared
+	
     @State private var model = ForecastViewModel()
 	var body: some View {
-		ScrollView {
+		let coordinate = self.locationManager.userlocation != nil
+		? self.locationManager.userlocation!.coordinate : CLLocationCoordinate2D()
+
+		return ScrollView {
 			// Top Container
 			HStack {
 				Spacer()
@@ -110,7 +116,8 @@ struct CurrentView: View {
 						.bold()
 				}
 				.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
-				// TODO: print user location
+				// Debug Log Coordinates
+				Text("\(coordinate.latitude), \(coordinate.longitude)")
 			}
             .refreshable {
                 await model.fetchapi()
