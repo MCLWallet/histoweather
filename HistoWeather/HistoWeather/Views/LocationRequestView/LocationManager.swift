@@ -10,6 +10,7 @@ import CoreLocation
 class LocationManager: NSObject, ObservableObject {
 	private let manager = CLLocationManager()
 	@Published var userlocation: CLLocation?
+	@Published var authStatus: String?
 	static let shared = LocationManager()
 	
 	override init() {
@@ -27,19 +28,23 @@ class LocationManager: NSObject, ObservableObject {
 extension LocationManager: CLLocationManagerDelegate {
 	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
 		switch manager.authorizationStatus {
-			// TODO: What happens on each case?
 		case .notDetermined:
 			print("DEBUG: Not determined")
+			authStatus = "notDetermined"
 		case .restricted:
-			print("DEBUG: Resticted")
+			print("DEBUG: Restricted")
+			authStatus = "restricted"
 		case .denied:
 			print("DEBUG: Denied")
+			authStatus = "denied"
 		case .authorizedAlways:
 			print("DEBUG: Auth always")
+			authStatus = "authorizedAlways"
 		case .authorizedWhenInUse:
 			print("DEBUG: Auth when in use")
+			authStatus = "authorizedWhenInUse"
 		@unknown default:
-			break
+			authStatus = "notDetermined"
 		}
 	}
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

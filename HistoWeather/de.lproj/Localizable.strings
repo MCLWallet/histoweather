@@ -32,3 +32,6 @@
 "locationRequestTitle2" = "Teile deinen Standort mit uns. Du kannst jederzeit diese Erlaubnis in deinen Datenschutz Einstellungen deines iPhones ändern.";
 "allowLocationButtonText" = "Standort teilen";
 "maybeLaterButtonText" = "Vielleicht später";
+
+// Search View
+"typeInLocation" = "Gib einen Ort ein";

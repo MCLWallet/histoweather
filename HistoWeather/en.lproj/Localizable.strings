@@ -32,3 +32,6 @@
 "locationRequestTitle2" = "Start sharing your location with us. You can disable this permission any time in your iPhone's privacy settings.";
 "allowLocationButtonText" = "Allow location";
 "maybeLaterButtonText" = "Maybe later";
+
+// Search View
+"typeInLocation" = "Type in a location";

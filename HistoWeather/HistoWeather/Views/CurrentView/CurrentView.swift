@@ -110,8 +110,7 @@ struct CurrentView: View {
 						.bold()
 				}
 				.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
-				
-				
+				// TODO: print user location
 			}
             .refreshable {
                 await model.fetchapi()

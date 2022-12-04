@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LocationRequestView: View {
+	@ObservedObject var locationManager = LocationManager.shared
     var body: some View {
 		ZStack {
 			Color("HWBackgroundColor")
@@ -46,8 +47,7 @@ struct LocationRequestView: View {
 				.background(Color("DarkBlue"))
 				.clipShape(Capsule())
 				Button {
-					print("Change view here")
-					// TODO: Change to SearchView
+					locationManager.authStatus = "maybeLater"
 				} label: {
 					Text("maybeLaterButtonText")
 						.padding()

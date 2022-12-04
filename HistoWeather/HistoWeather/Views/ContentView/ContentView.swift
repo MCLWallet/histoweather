@@ -12,13 +12,16 @@ struct ContentView: View {
 	@ObservedObject var locationManager = LocationManager.shared
     var body: some View {
 		Group {
-			if locationManager.userlocation == nil {
+			switch locationManager.authStatus {
+			case "notDetermined", "restricted":
 				LocationRequestView()
-			} else {
+			case "denied", "maybeLater":
+				SearchView()
+			case "authorizedAlways", "authorizedWhenInUse":
 				TabView {
 					CurrentView()
 						.tabItem {
-							Label("Weather", systemImage: "cloud. sun.fill")
+							Label("Weather", systemImage: "cloud.sun.fill")
 						}
 						.tag(1)
 					ForecastView()
@@ -52,11 +55,10 @@ struct ContentView: View {
 		//                }
 		//            }
 		//        }
+			default:
+				LocationRequestView()
 			}
 		}
-
-		
-        
     }
 }
 

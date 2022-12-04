@@ -25,6 +25,7 @@
 		6063139A292F9BCD00949DF2 /* HistoWeatherUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60631399292F9BCD00949DF2 /* HistoWeatherUITestsLaunchTests.swift */; };
 		608C5DC6293B97EF000F51A8 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608C5DC5293B97EF000F51A8 /* LocationManager.swift */; };
 		608C5DC9293BB563000F51A8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 608C5DCB293BB563000F51A8 /* InfoPlist.strings */; };
+		608C5DCF293BCC7A000F51A8 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608C5DCE293BCC7A000F51A8 /* SearchView.swift */; };
 		60C1E2592930115D003E23CE /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1E2582930115D003E23CE /* SliderView.swift */; };
 		60C1E25D293014B5003E23CE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 60C1E25F293014B5003E23CE /* Localizable.strings */; };
 		60C1E26329301D59003E23CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1E26229301D59003E23CE /* ContentView.swift */; };
@@ -70,6 +71,7 @@
 		608C5DC5293B97EF000F51A8 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		608C5DCA293BB563000F51A8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		608C5DCC293BB566000F51A8 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		608C5DCE293BCC7A000F51A8 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		60C1E2582930115D003E23CE /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
 		60C1E25E293014B5003E23CE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		60C1E260293014B8003E23CE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 		606313A8292FA33600949DF2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				608C5DCD293BCC6B000F51A8 /* SearchView */,
 				608C5DC4293B97A2000F51A8 /* LocationRequestView */,
 				0762590F293A48C30003056A /* ContentView */,
 				076F7CE8293AC1670054847F /* SliderView */,
@@ -233,6 +236,14 @@
 				608C5DC5293B97EF000F51A8 /* LocationManager.swift */,
 			);
 			path = LocationRequestView;
+			sourceTree = "<group>";
+		};
+		608C5DCD293BCC6B000F51A8 /* SearchView */ = {
+			isa = PBXGroup;
+			children = (
+				608C5DCE293BCC7A000F51A8 /* SearchView.swift */,
+			);
+			path = SearchView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -402,6 +413,7 @@
 				07625915293A4BFB0003056A /* DayWeatherRepository.swift in Sources */,
 				076F7CE4293A97B70054847F /* ForecastViewModel.swift in Sources */,
 				60C1E2592930115D003E23CE /* SliderView.swift in Sources */,
+				608C5DCF293BCC7A000F51A8 /* SearchView.swift in Sources */,
 				60145B112939271900DFC75B /* CurrentView.swift in Sources */,
 				07625917293A4C430003056A /* DayWeatherPresistance.swift in Sources */,
 				608C5DC6293B97EF000F51A8 /* LocationManager.swift in Sources */,
