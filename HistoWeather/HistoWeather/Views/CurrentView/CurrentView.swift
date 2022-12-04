@@ -14,65 +14,15 @@ struct WeatcherIcon: Identifiable {
 	let sfImageID: String
 }
 
-private var weatherIconList = [
-	WeatcherIcon(
-		weatherCode: [0],
-		description: "Clear sky",
-		sfImageID: "sun.max"),
-	WeatcherIcon(
-		weatherCode: [1, 2, 3],
-		description: "Mainly clear, partly cloudy, and overcast",
-		sfImageID: "cloud.sun"),
-	WeatcherIcon(
-		weatherCode: [45, 48],
-		description: "Fog and depositing rime fog",
-		sfImageID: "cloud.fog"),
-	WeatcherIcon(
-		weatherCode: [51, 53, 55],
-		description: "Drizzle: Light, moderate, and dense intensity",
-		sfImageID: "cloud.drizzle"),
-	WeatcherIcon(
-		weatherCode: [56, 57],
-		description: "Freezing Drizzle: Light and dense intensity",
-		sfImageID: "cloud.drizzle"),
-	WeatcherIcon(
-		weatherCode: [61, 63, 65],
-		description: "Rain: Slight, moderate and heavy intensity",
-		sfImageID: "cloud.rain"),
-	WeatcherIcon(
-		weatherCode: [66, 67],
-		description: "Freezing Rain: Light and heavy intensity",
-		sfImageID: "cloud.sleet"),
-	WeatcherIcon(
-		weatherCode: [71, 73, 75],
-		description: "Snow fall: Slight, moderate, and heavy intensity",
-		sfImageID: "snowflake"),
-	WeatcherIcon(
-		weatherCode: [77],
-		description: "Snow grains",
-		sfImageID: "cloud.snow"),
-	WeatcherIcon(
-		weatherCode: [80, 81, 82],
-		description: "Rain showers: Slight, moderate, and violent",
-		sfImageID: "cloud.heavyrain"),
-	WeatcherIcon(
-		weatherCode: [85, 86],
-		description: "Snow showers slight and heavy",
-		sfImageID: "cloud.snow"),
-	WeatcherIcon(
-		weatherCode: [95],
-		description: "Thunderstorm: Slight or moderate",
-		sfImageID: "cloud.bolt"),
-	WeatcherIcon(
-		weatherCode: [96, 99],
-		description: "Thunderstorm with slight and heavy hail",
-		sfImageID: "cloud.bolt.rain")
-]
-
 struct CurrentView: View {
-    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchFriends(),
+    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDayWeather(latitude: 0, longitude:0),
                   animation: .default)
     private var dayWeather: FetchedResults<DayWeather>
+    
+    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(latitude: 0, longitude: 0),
+                  animation: .default)
+    private var day: FetchedResults<Day>
+    
 
     @State private var model = ForecastViewModel()
 	var body: some View {
@@ -92,10 +42,10 @@ struct CurrentView: View {
 			// Middle Container
 			VStack {
 				// Current Weather View
-				Image(systemName: "cloud")
+                Image(systemName:dayWeather.last?.weathericoncode ?? "wrench.fill")
 					.resizable()
 					.frame(width: 150, height: 120)
-				Text("fakeCurrentTemperature")
+				Text("\(dayWeather.last?.temperature ?? 0.0)°C")
 					.font(.largeTitle)
 					.fontWeight(.light)
 					.multilineTextAlignment(.center)
@@ -103,57 +53,79 @@ struct CurrentView: View {
 					.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
 				HStack {
 					Text("high")
-					Text("12°C")
+					Text("\(day.first?.temperature_2m_max ?? 0)")
 						.bold()
 					Text("low")
-					Text("8°C")
+					Text("\(day.first?.temperature_2m_min ?? 0)")
 						.bold()
 				}
 				.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
-				
-				
 			}
             .refreshable {
-                await model.fetchapi()
+                do{
+                    try await model.fetchapi()
+                } catch let error{
+                    print("Error while refreshing friends: \(error)")
+                }
             }
 			Spacer()
 			// Humidity & Windspeed
 			HStack {
 				VStack(alignment: .leading) {
-					Text("humidity")
-					Text("fakeHumidity")
+					Text("elevation")
+					Text("\(dayWeather.last?.elevation ?? 0.0)")
 						.fontWeight(.bold)
 				}.padding(.all)
 				Spacer()
-				VStack(alignment: .trailing) {
-					Text("windSpeed")
-                    Text("\(dayWeather.randomElement()?.longitude ?? 5.6)")
-//                    Text("\(dayWeather.?? 5.6)")
-						.fontWeight(.bold)
-				}.padding(.all)
+                VStack(alignment: .trailing) {
+                    Text("precipitation")
+                    Text("\(day.first?.precipitation_sum ?? 0)")
+                        .fontWeight(.bold)
+                }.padding(.all)
 			}
-			// UV-Index & Rain
-			HStack {
-				VStack(alignment: .leading) {
-					Text("uvIndex")
-					Text("fakeUvIndex")
-						.fontWeight(.bold)
-				}.padding(.all)
-				Spacer()
-				VStack(alignment: .trailing) {
-					Text("rain")
-					Text("fakeRain")
-						.fontWeight(.bold)
-				}.padding(.all)
-			}
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("winddirection")
+                    Text("\(dayWeather.last?.winddirection ?? 0.0)")
+                        .fontWeight(.bold)
+                }.padding(.all)
+                Spacer()
+                VStack(alignment: .trailing) {
+                    Text("windSpeed")
+                    Text("\(dayWeather.last?.windspeed ?? 0.0)")
+                        .fontWeight(.bold)
+                }.padding(.all)
+            }
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("sunrise")
+                    Text("\(day.first?.sunrise ?? Date())")
+                        .fontWeight(.bold)
+                }.padding(.all)
+                Spacer()
+                VStack(alignment: .trailing) {
+                    Text("sunset")
+                    Text("\(day.first?.sunset ?? Date())")
+                        .fontWeight(.bold)
+                }.padding(.all)
+            }
 		}
         .refreshable {
-            await model.fetchapi()
+            do{
+                try await model.fetchapi()
+            } catch let error{
+                print("Error while refreshing friends: \(error)")
+            }
         }
-//        .onAppear {
-//            let task = Task
-//                await model.fetchapi()
-//		}
+        .onAppear {
+            Task{
+                do{
+                    try await model.fetchapi()
+                } catch let error{
+                    print("Error while refreshing friends: \(error)")
+                }
+            }
+		}
 	}
 }
 

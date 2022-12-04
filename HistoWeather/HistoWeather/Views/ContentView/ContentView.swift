@@ -16,7 +16,7 @@ struct ContentView: View {
 		TabView {
 			CurrentView()
 				.tabItem {
-					Label("Weather", systemImage: "cloud. sun.fill")
+					Label("Weather", systemImage: "cloud.sun.fill")
 				}
 				.tag(1)
 			ForecastView()
@@ -31,26 +31,6 @@ struct ContentView: View {
 				.tag(3)
 		}
 		.accentColor(Color("DarkBlue"))
-        //        .refreshable { // Add a pull-to-refresh to the list
-        //            await refreshWeather()
-        //             func refreshWeather() async {
-        //                do {
-        //                    try await model.refreshDayWeather()
-        //                } catch let error {
-        //                    print("Error while refreshing friends: \(error)")
-        //                }
-        //            }
-        //        }
-//        Button("fdsfa"){
-//            func refreshWeather() async {
-//                do {
-//                    try await model.fetchapi()
-//                } catch let error {
-//                    print("Error while refreshing friends: \(error)")
-//                }
-//            }
-//        }
-        
     }
 }
 
