@@ -26,3 +26,13 @@
 "fakeWindSpeed" = "7 km/h S";
 "fakeUvIndex" = "1";
 "fakeRain" = "2mm";
+
+// Location Request
+"locationRequestTitle1" = "Would you like to explore current and historic weather data from your location?";
+"locationRequestTitle2" = "Start sharing your location with us. You can disable this permission any time in your iPhone's privacy settings.";
+"allowLocationButtonText" = "Allow location";
+"maybeLaterButtonText" = "Maybe later";
+
+// Search View
+"typeInLocation" = "Type in a location";
+"checkInternet" = "Please check your internet connection";
