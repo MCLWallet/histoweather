@@ -19,19 +19,14 @@ struct CurrentView: View {
     @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDayWeather(latitude: 0, longitude:0),
                   animation: .default)
     private var dayWeather: FetchedResults<DayWeather>
-	// TODO: message to Milos: I left this merge conflict intentionally because not sure if we are using dayWeather or day? Line 115 & 121 still use day variable
-<<<<<<< HEAD
+
     
     @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(latitude: 0, longitude: 0),
                   animation: .default)
     private var day: FetchedResults<Day>
     
-
-=======
-	
 	@ObservedObject var locationManager = LocationManager.shared
 	
->>>>>>> location_feature
     @State private var model = ForecastViewModel()
 	var body: some View {
 		let coordinate = self.locationManager.userlocation != nil
