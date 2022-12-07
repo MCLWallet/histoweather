@@ -12,12 +12,9 @@ struct DayWeatherPersistence {
     private let context = PersistenceController.shared.backgroundContext
     
     static func fetchDayWeather() -> NSFetchRequest<DayWeather> {
-        print("fetching")
         let request = DayWeather.fetchRequest()
-//        print("Lat:\(Coordinates.coordinate.latitude)   Long:\(Coordinates.coordinate.longitude)")
-//        request.predicate = NSPredicate(format:"latitude == %@ AND longitude == %@", Coordinates.latitude as NSNumber, Coordinates.longitude as NSNumber)
-
-        
+        //        print("Lat:\(Coordinates.coordinate.latitude)   Long:\(Coordinates.coordinate.longitude)")
+        //        request.predicate = NSPredicate(format:"latitude == %d AND longitude == %d", Coordinates.latitude, Coordinates.longitude)
         request.sortDescriptors = []
         return request
     }
@@ -30,7 +27,7 @@ struct DayWeatherPersistence {
     
     static func fetchDay() -> NSFetchRequest<Day> {
         let request = Day.fetchRequest()
-//        request.predicate = NSPredicate(format: "dayweather.latitude == %d AND dayweather.longitude == %d", Coordinates.coordinate.latitude, Coordinates.coordinate.longitude)
+        //        request.predicate = NSPredicate(format: "dayweather.latitude == %d AND dayweather.longitude == %d", Coordinates.coordinate.latitude, Coordinates.coordinate.longitude)
         request.sortDescriptors = [NSSortDescriptor(key: "time", ascending: true)]
         return request
     }
@@ -99,13 +96,13 @@ extension DayWeather {
         
         self.longitude = weather.longitude
         self.latitude = weather.latitude
-        self.time = weather.current_weather.time 
+        self.time = weather.current_weather.time
         self.elevation = (weather.elevation) as NSNumber
         self.temperature = (weather.current_weather.temperature) as NSNumber
         self.weathericoncode = weatherCodeToIcon(weatherCode: weather.current_weather.weathercode)
         self.windspeed = (weather.current_weather.windspeed) as NSNumber
         self.winddirection = (weather.current_weather.winddirection) as NSNumber
-            
+        
         for i in 0...(weather.daily.temperature_2m_max.count - 1) {
             addToDay(Day(d: d(time: converteDate(date: weather.daily.time[i]),
                               weathericoncode: weatherCodeToIcon(weatherCode: weather.daily.weathercode[i]),

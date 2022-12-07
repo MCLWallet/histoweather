@@ -18,6 +18,7 @@ struct LocationResponse: Decodable {
 struct Location: Decodable {
 	let id: Int
 	let name: String
+    let country: String
 	let latitude: Double
 	let longitude: Double
 }

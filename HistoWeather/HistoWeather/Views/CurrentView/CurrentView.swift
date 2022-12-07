@@ -28,18 +28,17 @@ struct CurrentView: View {
 	@ObservedObject var locationManager = LocationManager.shared
 	
 	var body: some View {
-		let coordinate = self.locationManager.userlocation != nil
-		? self.locationManager.userlocation!.coordinate : CLLocationCoordinate2D()
 
-		return NavigationStack {
+
+		NavigationStack {
 
 			// Top Container
 			HStack {
 				// Date & Location View
 				VStack(alignment: .leading) {
-					Text("vienna")
+                    Text(Coordinates.locationName)
 						.font(.largeTitle)
-					Text("fakeDate")
+                    Text("\((dayWeather.last?.time ?? Date()).formatted(date: .abbreviated, time: .shortened))")
 						.font(.title3)
 				}.padding()
 				Spacer()
@@ -59,16 +58,16 @@ struct CurrentView: View {
 					.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
 				HStack {
 					Text("high")
-					Text("\(day.first?.temperature_2m_max ?? 0)")
+                    Text(String(format:"%.1f",day.first?.temperature_2m_max ?? 0))
 						.bold()
 					Text("low")
-					Text("\(day.first?.temperature_2m_min ?? 0)")
+                    Text(String(format:"%.1f",day.first?.temperature_2m_min ?? 0))
 						.bold()
 				}
 				.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
 				// Debug Log Coordinates
-                Text("\(dayWeather.last?.latitude ?? 0), \(dayWeather.last?.longitude ?? 0)")
-                Text("\(Coordinates.latitude), \(Coordinates.longitude)")
+//                Text("\(dayWeather.last?.latitude ?? 0), \(dayWeather.last?.longitude ?? 0)")
+//                Text("\(Coordinates.latitude), \(Coordinates.longitude)")
 			}
 			// Humidity & Windspeed
 			HStack {
@@ -80,7 +79,7 @@ struct CurrentView: View {
 				Spacer()
                 VStack(alignment: .trailing) {
 					Label("precipitation", systemImage: "cloud.rain.fill")
-                    Text("\(day.first?.precipitation_sum ?? 0)")
+                    Text(String(format:"%.1f",day.first?.precipitation_sum ?? 0))
                         .fontWeight(.bold)
                 }.padding(.all)
 			}
@@ -131,8 +130,8 @@ struct CurrentView: View {
 	}
 }
 
-//struct CurrentView_Previews: PreviewProvider {
-//    static var previews: some View {
-////        CurrentView()
-//    }
-//}
+struct CurrentView_Previews: PreviewProvider {
+    static var previews: some View {
+        CurrentView()
+    }
+}

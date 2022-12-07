@@ -18,9 +18,10 @@ struct SearchView: View {
             ZStack {
                 
                 List(locationListVM.locations, id: \.id) { location in
-                    Button("\(location.name): \(location.longitude), \(location.latitude)"){
+                    Button("\(location.name), \(location.country)"){
                         Coordinates.coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
                         tab = 1
+                        Coordinates.locationName = location.name
                         searchText = ""
                     }
                 }

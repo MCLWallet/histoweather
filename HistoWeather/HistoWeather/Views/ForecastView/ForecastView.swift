@@ -10,7 +10,7 @@ import SwiftUI
 struct ForecastView: View {
     
     @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(),
-                  animation: .default)
+                  animation: .none)
     private var day: FetchedResults<Day>
     
     @State private var model = ForecastViewModel()
@@ -22,7 +22,7 @@ struct ForecastView: View {
                 VStack(alignment: .leading) {
                     Text("vienna")
                         .font(.largeTitle)
-                    Text("fakeDate")
+                    Text("\((day.first?.time ?? Date()).formatted(date: .abbreviated, time: .omitted))")
                         .font(.title3)
                 }.padding()
 				Spacer()
@@ -33,14 +33,14 @@ struct ForecastView: View {
                 Spacer()
                 ForEach(day) { index in
                     HStack {
-                        Text("\(index.time?.ISO8601Format() ?? Date().ISO8601Format())")
+                        Text("\((index.time ?? Date()).formatted(date: .abbreviated, time: .omitted))")
                         Spacer()
                         VStack(alignment: .trailing){
                             Text(String(format: "min: %.1f",index.temperature_2m_min))
                                 .fontWeight(.bold)
                                 .fontWeight(.bold)
                             Text(String(format: "max: %.1f",index.temperature_2m_max))
-                                .fontWeight(.bold)
+                                .fontWeight(.bold) 
                                 .fontWeight(.bold)
                             
                         }

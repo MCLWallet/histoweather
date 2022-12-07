@@ -37,7 +37,9 @@ struct LocationViewModel {
 	var longitude: Double {
 		location.longitude
 	}
-	
+    var country: String {
+        location.country
+    }
 	var latitude: Double {
 		location.latitude
 	}

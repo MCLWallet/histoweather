@@ -17,6 +17,7 @@
 "search" = "Suche";
 
 // Current View
+"gpsLocation" = "Current Location";
 "high" = "Hoch";
 "low" = "Niedrig";
 "humidity" = "Feuchtigkeit";
