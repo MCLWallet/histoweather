@@ -9,7 +9,6 @@ import Foundation
 
 struct LocationResponse: Decodable {
 	let locations: [Location]
-	
 	private enum CodingKeys: String, CodingKey {
 		case locations = "results"
 	}

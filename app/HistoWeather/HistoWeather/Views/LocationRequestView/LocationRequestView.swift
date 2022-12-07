@@ -24,7 +24,6 @@ struct LocationRequestView: View {
 					.fontWeight(.bold)
 					.multilineTextAlignment(.center)
 					.padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-				
 				Text("locationRequestTitle2")
 					.font(.caption)
 					.multilineTextAlignment(.center)

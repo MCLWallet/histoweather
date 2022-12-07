@@ -13,7 +13,6 @@ enum NetworkError: Error {
 }
 
 class LocationSearchWebservice {
-	
 	func getLocations(searchTerm: String) async throws -> [Location] {
 		var components = URLComponents()
 		components.scheme = "https"
@@ -22,17 +21,13 @@ class LocationSearchWebservice {
 		components.queryItems = [
 			URLQueryItem(name: "name", value: searchTerm)
 		]
-		
 		guard let url = components.url else {
 			throw NetworkError.badURL
 		}
-		
 		let (data, response) = try await URLSession.shared.data(from: url)
-		
 		guard (response as? HTTPURLResponse)?.statusCode == 200 else {
 			throw NetworkError.badID
 		}
-		
 		let locationResponse = try? JSONDecoder().decode(LocationResponse.self, from: data)
 		return locationResponse?.locations ?? []
 	}

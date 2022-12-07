@@ -8,39 +8,34 @@
 import CoreData
 
 struct DayWeatherPersistence {
-    
     private let context = PersistenceController.shared.backgroundContext
-    
     static func fetchDayWeather() -> NSFetchRequest<DayWeather> {
         let request = DayWeather.fetchRequest()
-        //        print("Lat:\(Coordinates.coordinate.latitude)   Long:\(Coordinates.coordinate.longitude)")
-        //        request.predicate = NSPredicate(format:"latitude == %d AND longitude == %d", Coordinates.latitude, Coordinates.longitude)
+// print("Lat:\(Coordinates.coordinate.latitude)   Long:\(Coordinates.coordinate.longitude)")
+// request.predicate = NSPredicate(format:"latitude == %d AND longitude == %d",
+//        Coordinates.latitude, Coordinates.longitude)
         request.sortDescriptors = []
         return request
     }
-    
     static func fetchAllDayWeather() -> NSFetchRequest<DayWeather> {
         let request = DayWeather.fetchRequest()
         request.sortDescriptors = []
         return request
     }
-    
     static func fetchDay() -> NSFetchRequest<Day> {
         let request = Day.fetchRequest()
-        //        request.predicate = NSPredicate(format: "dayweather.latitude == %d AND dayweather.longitude == %d", Coordinates.coordinate.latitude, Coordinates.coordinate.longitude)
+//       request.predicate = NSPredicate(format: "dayweather.latitude == %d AND dayweather.longitude == %d",
+//        Coordinates.coordinate.latitude, Coordinates.coordinate.longitude)
         request.sortDescriptors = [NSSortDescriptor(key: "time", ascending: true)]
         return request
     }
-    
     func addDayWeather(from weather: Weather) async {
         await context.perform {
             _ = DayWeather(weather: weather, context: context) }
         context.saveContext()
     }
-    
     func removeAllFriends() async throws {
         try await context.perform {
-            
             try context.fetch(DayWeatherPersistence.fetchAllDayWeather()).forEach {
                 context.delete($0)
             }
@@ -48,7 +43,6 @@ struct DayWeatherPersistence {
         }
     }
 }
-
 
 func weatherCodeToIcon(weatherCode: Int16) -> String {
     if weatherCode == 0 {
@@ -89,11 +83,9 @@ func converteDate(date: String) -> Date {
 }
 
 extension DayWeather {
-    
     convenience init(weather: Weather,
                      context: NSManagedObjectContext) {
         self.init(context: context)
-        
         self.longitude = weather.longitude
         self.latitude = weather.latitude
         self.time = weather.current_weather.time
@@ -102,9 +94,8 @@ extension DayWeather {
         self.weathericoncode = weatherCodeToIcon(weatherCode: weather.current_weather.weathercode)
         self.windspeed = (weather.current_weather.windspeed) as NSNumber
         self.winddirection = (weather.current_weather.winddirection) as NSNumber
-        
         for i in 0...(weather.daily.temperature_2m_max.count - 1) {
-            addToDay(Day(d: d(time: converteDate(date: weather.daily.time[i]),
+            addToDay(Day(day: DayEntry(time: converteDate(date: weather.daily.time[i]),
                               weathericoncode: weatherCodeToIcon(weatherCode: weather.daily.weathercode[i]),
                               temperature_2m_max: weather.daily.temperature_2m_max[i],
                               temperature_2m_min: weather.daily.temperature_2m_min[i],
@@ -119,23 +110,21 @@ extension DayWeather {
 }
 
 extension Day {
-    
-    convenience init(d: d,
+    convenience init(day: DayEntry,
                      context: NSManagedObjectContext) {
-        
         self.init(context: context)
-        self.time = d.time
-        self.weathericoncode = d.weathericoncode
-        self.temperature_2m_max = d.temperature_2m_max
-        self.temperature_2m_min = d.temperature_2m_min
-        self.sunrise = d.sunrise
-        self.sunset = d.sunset
-        self.precipitation_sum = d.precipitation_sum
-        self.windspeed_10m_max = d.windspeed_10m_max
+        self.time = day.time
+        self.weathericoncode = day.weathericoncode
+        self.temperature_2m_max = day.temperature_2m_max
+        self.temperature_2m_min = day.temperature_2m_min
+        self.sunrise = day.sunrise
+        self.sunset = day.sunset
+        self.precipitation_sum = day.precipitation_sum
+        self.windspeed_10m_max = day.windspeed_10m_max
     }
 }
 
-struct d {
+struct DayEntry {
     let time: Date
     let weathericoncode: String
     let temperature_2m_max: Double

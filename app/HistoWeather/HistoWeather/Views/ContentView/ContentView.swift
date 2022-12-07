@@ -10,14 +10,10 @@ import CoreData
 import MapKit
 
 struct ContentView: View {
-    
     @ObservedObject var locationManager: LocationManager = LocationManager.shared
-    
     @State var coordinates: Coordinates = Coordinates()
     @State var tab: Int
-    
     var body: some View {
-        
         Group {
             TabView(selection: $tab) {
                 CurrentView()
@@ -44,28 +40,15 @@ struct ContentView: View {
             .accentColor(Color("DarkBlue"))
             .background(.white)
         }
-        .onAppear {
-                        // correct the transparency bug for Tab bars
-                        let tabBarAppearance = UITabBarAppearance()
-                        tabBarAppearance.configureWithOpaqueBackground()
-                        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-                        // correct the transparency bug for Navigation bars
-                        let navigationBarAppearance = UINavigationBarAppearance()
-                        navigationBarAppearance.configureWithOpaqueBackground()
-                        UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
-                    }
     }
-    
 }
 
-struct Coordinates{
+struct Coordinates {
     static var coordinate: CLLocationCoordinate2D = LocationManager.shared.userlocation != nil
     ? LocationManager.shared.userlocation!.coordinate : CLLocationCoordinate2D(latitude: 48.20849, longitude: 16.37208)
-    
     static var locationName: String = (LocationManager.shared.userlocation == nil) ? "Vienna" :  "gpsLocation"
-    static var longitude:Double = coordinate.longitude
-    static var latitude:Double = coordinate.latitude
-    
+    static var longitude: Double = coordinate.longitude
+    static var latitude: Double = coordinate.latitude
 }
 
 struct ContentView_Previews: PreviewProvider {

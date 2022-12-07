@@ -9,9 +9,7 @@ import Foundation
 
 @MainActor
 class LocationListViewModel: ObservableObject {
-	
 	@Published var locations: [LocationViewModel] = []
-	
 	func search(name: String) async {
 		do {
 			let locations = try await LocationSearchWebservice().getLocations(searchTerm: name)
@@ -23,17 +21,13 @@ class LocationListViewModel: ObservableObject {
 }
 
 struct LocationViewModel {
-	
 	let location: Location
-	
 	var id: Int {
 		location.id
 	}
-	
 	var name: String {
 		location.name
 	}
-	
 	var longitude: Double {
 		location.longitude
 	}

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SliderView: View {
-    
     var body: some View {
         VStack(alignment: .trailing) {
             Text("hello")

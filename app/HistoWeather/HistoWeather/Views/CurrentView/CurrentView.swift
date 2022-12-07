@@ -23,14 +23,10 @@ struct CurrentView: View {
     @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(),
                   animation: .default)
     private var day: FetchedResults<Day>
-                  
     @State private var model = ForecastViewModel()
 	@ObservedObject var locationManager = LocationManager.shared
-	
 	var body: some View {
-
-        
-		NavigationStack {
+        NavigationStack {
 
 			// Top Container
 			HStack {
@@ -58,10 +54,10 @@ struct CurrentView: View {
 					.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
 				HStack {
 					Text("high")
-                    Text(String(format:"%.1f",day.first?.temperature_2m_max ?? 0))
+                    Text(String(format: "%.1f", day.first?.temperature_2m_max ?? 0))
 						.bold()
 					Text("low")
-                    Text(String(format:"%.1f",day.first?.temperature_2m_min ?? 0))
+                    Text(String(format: "%.1f", day.first?.temperature_2m_min ?? 0))
 						.bold()
 				}
 				.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
@@ -79,7 +75,7 @@ struct CurrentView: View {
 				Spacer()
                 VStack(alignment: .trailing) {
 					Label("precipitation", systemImage: "cloud.rain.fill")
-                    Text(String(format:"%.1f",day.first?.precipitation_sum ?? 0))
+                    Text(String(format: "%.1f", day.first?.precipitation_sum ?? 0))
                         .fontWeight(.bold)
                 }.padding(.all)
 			}
@@ -110,7 +106,7 @@ struct CurrentView: View {
                 }.padding(.all)
             }
 		}
-        .refreshable{
+        .refreshable {
             do {
                 try await model.fetchapi()
             } catch let error {

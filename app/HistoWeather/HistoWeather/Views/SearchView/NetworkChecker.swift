@@ -12,7 +12,6 @@ class NetworkChecker: ObservableObject {
 	let monitor = NWPathMonitor()
 	let queue = DispatchQueue(label: "Monitor")
 	@Published var connected: Bool = false
-	
 	init() {
 		monitor.pathUpdateHandler = { path in
 			DispatchQueue.main.async {

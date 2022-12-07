@@ -16,10 +16,10 @@ struct SearchView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                
                 List(locationListVM.locations, id: \.id) { location in
-                    Button("\(location.name), \(location.country)"){
-                        Coordinates.coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+                    Button("\(location.name), \(location.country)") {
+                        Coordinates.coordinate = CLLocationCoordinate2D(latitude: location.latitude,
+                                                                        longitude: location.longitude)
                         tab = 1
                         Coordinates.locationName = location.name
                         searchText = ""
@@ -46,7 +46,6 @@ struct SearchView: View {
             runSearch(searchString: searchText)
         }
     }
-    
     func runSearch(searchString: String) {
         Task.init(operation: {
             if !searchString.isEmpty {
@@ -58,9 +57,10 @@ struct SearchView: View {
     }
 }
 
-
-//struct SearchView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SearchView()
-//    }
-//}
+/*
+struct SearchView_Previews: PreviewProvider {
+    static var previews: some View {
+        SearchView()
+    }
+}
+*/

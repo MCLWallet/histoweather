@@ -8,13 +8,10 @@
 import SwiftUI
 
 struct ForecastView: View {
-    
     @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(),
                   animation: .none)
     private var day: FetchedResults<Day>
-    
     @State private var model = ForecastViewModel()
-    
     var body: some View {
         VStack {
             HStack {
@@ -27,20 +24,18 @@ struct ForecastView: View {
                 }.padding()
 				Spacer()
             }
-            
             ScrollView {
                 // Top Container
                 Spacer()
                 ForEach(day) { index in
                     HStack(alignment: .center) {
-                        HStack{
+                        HStack {
                             Text("\((index.time ?? Date()).formatted(date: .complete, time: .omitted))")
                                 .font(.title3)
                                 .fontWeight(.medium)
                             Spacer()
-                            VStack(alignment: .trailing){
-                                Text(String(format: "%.1f / %.1f",index.temperature_2m_min,index.temperature_2m_max))
-                                //                                .fontWeight(.bold)
+                            VStack(alignment: .trailing) {
+                                Text(String(format: "%.1f / %.1f", index.temperature_2m_min, index.temperature_2m_max))
                                     .font(.title2)
                             }
                             .padding(.trailing)
@@ -56,10 +51,10 @@ struct ForecastView: View {
                 }
             }
             .onAppear {
-                Task{
-                    do{
+                Task {
+                    do {
                         try await model.fetchapi()
-                    } catch let error{
+                    } catch let error {
                         print("Error while refreshing friends: \(error)")
                     }
                 }
