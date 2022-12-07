@@ -1,8 +1,63 @@
-# Track A Team 10 iOS
+# HistoWeather (Track A Team 10 iOS)
+
+## Description
+
+Histoweather is an app that has the mission to let you intuitively explore the history of our earth's weather development of the last 60 years. With an interactive slider that changes the app's gradient background color we would like to propose a fun-to-use approach of navigating through this data. The app also provides a more "classic" way of exploring the data by creating line graphs.
+
+HistoWeather makes use of the Weather Forecast API and Historical Weather API by open-meteo.com.
+
+## Installation
+
+To install this app clone this repository and open it with XCode. You can then run it on a simulator or a real device.
+
+This project uses SwiftLint.
+
+## Support
+For any questions about this project contact us via E-Mail:
+
+Marcell Lanczos: e1209638@student.tuwien.ac.at
+
+Milos Stojiljkovic: e11824483@student.tuwien.ac.at
+
+## Roadmap
+
+### First Milestone
+
+- Implementing location finding with Geocoding API
+- Implementing request to Weather Forecast API for current weather
+- Parsing data obtained form requests
+- Implementing UI for all views
+- Stitching everything together
+
+### Second Milestone
+- Implementing requests for Historical Weather API
+- Parsing data
+- Implementing UI for all views
+- Implementing change for measuring units for Historical Weather API and Weather Forecast API for current weather
+
+## Contributing
+
+Because this is an ongoing student project for TU Vienna's MSE class, this codebase is not open for contributing yet. But we would be open for it in the future and let us now any feedback and ideas for this app.
+
+Authors and acknowledgment
+
+## APIs
+
+1. [Weather Forecast](https://open-meteo.com/en/docs)
+Weather Forecast API offers hourly forecast for the next 7 days. Great variety of Weather variables can be specified such as max, min temperature, wind speed, participation sum… The location is specified by altitude and longitude (geocode) which we obtain by using geocoding API.
+
+2. [Historical Weather](https://open-meteo.com/en/docs/historical-weather-api)
+Historical Weather API offers historical weather data dating back to 1959. Offer by the same service as Weather Forecast API it allows for specification of same weather variables. Resolution of data can be Hourly or Daily. Time interval for requested data can be specified, which can reduce number of calls need for our usage.
+
+3. [Geocoding](https://open-meteo.com/en/docs/geocoding-api)
+Geolocation API returns geocode for a specific location specified by name. It also supports fuzzy searching by specifying name query parameters with 3 or more characters. Geocode is required for use of Weather Forecast and Historical Weather APIs.
+## Project status
+
+This project is currently under development and very much in its beginning steps.
 
 
 
-## Getting started
+<!-- ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
@@ -89,4 +144,4 @@ Show your appreciation to those who have contributed to the project.
 For open source projects, say how it is licensed.
 
 ## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers. -->
