@@ -29,7 +29,7 @@ struct CurrentView: View {
 	
 	var body: some View {
 
-
+        
 		NavigationStack {
 
 			// Top Container
@@ -42,7 +42,7 @@ struct CurrentView: View {
 						.font(.title3)
 				}.padding()
 				Spacer()
-			}
+            }
 			// Middle Container
 			VStack {
 				// Current Weather View
@@ -110,11 +110,11 @@ struct CurrentView: View {
                 }.padding(.all)
             }
 		}
-        .refreshable {
+        .refreshable{
             do {
                 try await model.fetchapi()
             } catch let error {
-				print("Error while refreshing friends: \(error)")
+                print("Error while refreshing friends: \(error)")
             }
         }
         .onAppear {

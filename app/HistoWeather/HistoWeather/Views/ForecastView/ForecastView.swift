@@ -22,7 +22,7 @@ struct ForecastView: View {
                 VStack(alignment: .leading) {
                     Text("vienna")
                         .font(.largeTitle)
-                    Text("\((day.first?.time ?? Date()).formatted(date: .abbreviated, time: .omitted))")
+                    Text("\((day.first?.time ?? Date()).formatted(date: .complete, time: .omitted))")
                         .font(.title3)
                 }.padding()
 				Spacer()
@@ -32,20 +32,27 @@ struct ForecastView: View {
                 // Top Container
                 Spacer()
                 ForEach(day) { index in
-                    HStack {
-                        Text("\((index.time ?? Date()).formatted(date: .abbreviated, time: .omitted))")
-                        Spacer()
-                        VStack(alignment: .trailing){
-                            Text(String(format: "min: %.1f",index.temperature_2m_min))
-                                .fontWeight(.bold)
-                                .fontWeight(.bold)
-                            Text(String(format: "max: %.1f",index.temperature_2m_max))
-                                .fontWeight(.bold) 
-                                .fontWeight(.bold)
-                            
+                    HStack(alignment: .center) {
+                        HStack{
+                            Text("\((index.time ?? Date()).formatted(date: .complete, time: .omitted))")
+                                .font(.title3)
+                                .fontWeight(.medium)
+                            Spacer()
+                            VStack(alignment: .trailing){
+                                Text(String(format: "%.1f / %.1f",index.temperature_2m_min,index.temperature_2m_max))
+                                //                                .fontWeight(.bold)
+                                    .font(.title2)
+                            }
+                            .padding(.trailing)
+                            Image(systemName: index.weathericoncode ?? "wrench.fill")
+                                .font(.title)
                         }
-                        Image(systemName: index.weathericoncode ?? "wrench.fill")
+                        .padding(.all)
                     }
+                    .background(.red)
+                    .cornerRadius(20)
+                    .padding(10)
+
                 }
             }
             .onAppear {
