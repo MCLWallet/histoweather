@@ -23,16 +23,16 @@ struct ForecastView: View {
     
     @State private var model = ForecastViewModel()
     var body: some View {
-        VStack{
+        VStack {
             HStack {
-                Spacer()
                 // Date & Location View
-                VStack(alignment: .trailing) {
+                VStack(alignment: .leading) {
                     Text("vienna")
                         .font(.largeTitle)
                     Text("fakeDate")
                         .font(.title3)
                 }.padding()
+				Spacer()
             }
             ScrollView {
                 // Top Container
@@ -50,9 +50,9 @@ struct ForecastView: View {
                 }
             }
             .refreshable {
-                do{
+                do {
                     try await model.fetchapi()
-                } catch let error{
+                } catch let error {
                     print("Error while refreshing friends: \(error)")
                 }
             }

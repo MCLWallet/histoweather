@@ -26,7 +26,7 @@ struct ContentView: View {
 						.tag(1)
 					ForecastView()
 						.tabItem {
-							Label("Forecast", systemImage: "forward.fill")
+							Label("Forecast", systemImage: "calendar")
 						}
 						.tag(2)
 					SliderView()
@@ -34,27 +34,13 @@ struct ContentView: View {
 							Label("History", systemImage: "clock.arrow.circlepath")
 						}
 						.tag(3)
+					SearchView()
+						.tabItem {
+							Label("Search", systemImage: "magnifyingglass")
+						}
+						.tag(4)
 				}
 				.accentColor(Color("DarkBlue"))
-				//        .refreshable { // Add a pull-to-refresh to the list
-				//            await refreshWeather()
-				//             func refreshWeather() async {
-				//                do {
-				//                    try await model.refreshDayWeather()
-				//                } catch let error {
-				//                    print("Error while refreshing friends: \(error)")
-				//                }
-				//            }
-				//        }
-		//        Button("fdsfa"){
-		//            func refreshWeather() async {
-		//                do {
-		//                    try await model.fetchapi()
-		//                } catch let error {
-		//                    print("Error while refreshing friends: \(error)")
-		//                }
-		//            }
-		//        }
 			default:
 				LocationRequestView()
 			}

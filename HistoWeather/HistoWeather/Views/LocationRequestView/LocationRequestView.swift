@@ -11,8 +11,6 @@ struct LocationRequestView: View {
 	@ObservedObject var locationManager = LocationManager.shared
     var body: some View {
 		ZStack {
-			Color("HWBackgroundColor")
-				.ignoresSafeArea()
 			VStack {
 				Spacer()
 				Image(systemName: "location.square.fill")
@@ -22,13 +20,13 @@ struct LocationRequestView: View {
 					.foregroundColor(/*@START_MENU_TOKEN@*/Color("DarkBlue")/*@END_MENU_TOKEN@*/)
 					.padding(.bottom, 40)
 				Text("locationRequestTitle1")
-					.font(.title)
+					.font(.title2)
 					.fontWeight(.bold)
 					.multilineTextAlignment(.center)
 					.padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
 				
 				Text("locationRequestTitle2")
-					.font(.title3)
+					.font(.caption)
 					.multilineTextAlignment(.center)
 					.padding(/*@START_MENU_TOKEN@*/[.leading, .bottom, .trailing]/*@END_MENU_TOKEN@*/)
 				Spacer()

@@ -15,7 +15,7 @@ struct DayWeatherRepository {
     }
 
 
-    func loadData() async throws{
+    func loadData() async throws {
         try await dayWeatherPersistence.removeAllFriends()
         
         guard let url = URL(string: "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum,windspeed_10m_max&current_weather=true&timezone=Europe%2FBerlin") else {
@@ -32,7 +32,7 @@ struct DayWeatherRepository {
                    if let data = data {
                        if let response = try? decoder.decode(Weather.self, from: data) {
                            DispatchQueue.main.async {
-                        Task{
+                        Task {
                             await dayWeatherPersistence.addDayWeather(from: response)
                             print("\(response.elevation)")
                         }
@@ -61,7 +61,7 @@ struct CurrentWeather: Decodable {
 
 struct Daily: Decodable {
     let time: [String]
-    let weathercode : [Int16]
+    let weathercode: [Int16]
     let temperature_2m_max: [Double]
     let temperature_2m_min: [Double]
     let sunrise: [Date]
@@ -69,5 +69,3 @@ struct Daily: Decodable {
     let precipitation_sum: [Double]
     let windspeed_10m_max: [Double]
 }
-
-

@@ -10,13 +10,25 @@
 "hello" = "Hello";
 "world" = "World";
 
-// Location View
+// Content View
+"today" = "Today";
+"forecast" = "Forecast";
+"history" = "History";
+"search" = "Search";
+
+// Current View
 "high" = "High";
 "low" = "Low";
 "humidity" = "Humidity";
 "windSpeed" = "Wind Speed";
 "uvIndex" = "UV-Index";
 "rain" = "Rain";
+"elevation" = "Elevation";
+"precipitation" = "Precipitation";
+"winddirection" = "Wind Direction";
+"windSpeed" = "Wind Speed";
+"sunrise" = "Sunrise";
+"sunset" = "Sunset";
 
 // Fake Data
 "vienna" = "Vienna";

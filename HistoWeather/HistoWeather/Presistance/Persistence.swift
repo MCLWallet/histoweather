@@ -94,7 +94,7 @@ extension NSManagedObjectContext {
     }
 }
 
-//extension PersistenceController {
+// extension PersistenceController {
 //
 //    /// Only used for SwiftUI previews, **do not use this otherwise**
 //    /// Adds a list of `Item` to the an in memory `CoreData` context.
@@ -108,4 +108,4 @@ extension NSManagedObjectContext {
 //        }
 //        return result
 //    }()
-//}
+// }
