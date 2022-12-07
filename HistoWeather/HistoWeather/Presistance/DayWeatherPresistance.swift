@@ -53,8 +53,8 @@ struct DayWeatherPersistence {
 }
 
 
-func weatherCodeToIcon(weatherCode: Int16) -> String{
-    if weatherCode == 0  {
+func weatherCodeToIcon(weatherCode: Int16) -> String {
+    if weatherCode == 0 {
         return "sun.max"
     } else if weatherCode == 1 || weatherCode == 2 || weatherCode == 3 {
         return "cloud.sun"
@@ -70,7 +70,7 @@ func weatherCodeToIcon(weatherCode: Int16) -> String{
         return "cloud.sleet"
     } else if weatherCode == 71 || weatherCode == 73 || weatherCode == 75 {
         return "snowflake"
-    } else if weatherCode == 77{
+    } else if weatherCode == 77 {
         return "cloud.snow"
     } else if weatherCode == 80 || weatherCode == 81 || weatherCode == 82 {
         return "cloud.heavyrain"
@@ -86,9 +86,9 @@ func weatherCodeToIcon(weatherCode: Int16) -> String{
 }
 
 func converteDate(date: String) -> Date {
-    let dateFromatter = DateFormatter()
-    dateFromatter.dateFormat = "yyyy-mm-dd"
-    return dateFromatter.date(from: date)!
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-mm-dd"
+    return dateFormatter.date(from: date)!
 }
 
 extension DayWeather {

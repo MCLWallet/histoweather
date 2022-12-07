@@ -26,7 +26,7 @@ struct ContentView: View {
 						.tag(1)
 					ForecastView()
 						.tabItem {
-							Label("Forecast", systemImage: "forward.fill")
+							Label("Forecast", systemImage: "calendar")
 						}
 						.tag(2)
                 SliderView()
@@ -41,14 +41,6 @@ struct ContentView: View {
                         .tag(4)
 				}
 				.accentColor(Color("DarkBlue"))
-//                .onAppear(){
-//                    Coordinates.coordinate = self.locationManager.userlocation != nil
-//                            ? self.locationManager.userlocation!.coordinate : CLLocationCoordinate2D()
-//                }
-//                .onChange(of: self.locationManager) { newValue in
-//                    Coordinates.coordinate = self.locationManager.userlocation != nil
-//                            ? self.locationManager.userlocation!.coordinate : CLLocationCoordinate2D()
-//                }
 		}
     }
 

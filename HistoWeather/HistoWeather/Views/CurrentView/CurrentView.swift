@@ -16,39 +16,41 @@ struct WeatcherIcon: Identifiable {
 }
 
 struct CurrentView: View {
-
     @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDayWeather(),
                   animation: .default)
     private var dayWeather: FetchedResults<DayWeather>
 
     @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(),
                   animation: .default)
-    
     private var day: FetchedResults<Day>
-    
-	
+                  
     @State private var model = ForecastViewModel()
+	@ObservedObject var locationManager = LocationManager.shared
+	
 	var body: some View {
-		return ScrollView {
+		let coordinate = self.locationManager.userlocation != nil
+		? self.locationManager.userlocation!.coordinate : CLLocationCoordinate2D()
+
+		return NavigationStack {
 
 			// Top Container
 			HStack {
-				Spacer()
 				// Date & Location View
-				VStack(alignment: .trailing) {
+				VStack(alignment: .leading) {
 					Text("vienna")
 						.font(.largeTitle)
 					Text("fakeDate")
 						.font(.title3)
 				}.padding()
+				Spacer()
 			}
-			Spacer()
 			// Middle Container
 			VStack {
 				// Current Weather View
-                Image(systemName:dayWeather.last?.weathericoncode ?? "wrench.fill")
+                Image(systemName: dayWeather.last?.weathericoncode ?? "wrench.fill")
 					.resizable()
-					.frame(width: 150, height: 120)
+					.scaledToFit()
+					.padding(.all)
 				Text("\(dayWeather.last?.temperature ?? 0.0)°C")
 					.font(.largeTitle)
 					.fontWeight(.light)
@@ -68,65 +70,64 @@ struct CurrentView: View {
                 Text("\(dayWeather.last?.latitude ?? 0), \(dayWeather.last?.longitude ?? 0)")
                 Text("\(Coordinates.latitude), \(Coordinates.longitude)")
 			}
-
-			Spacer()
 			// Humidity & Windspeed
 			HStack {
 				VStack(alignment: .leading) {
-					Text("elevation")
+					Label("elevation", systemImage: "plusminus")
 					Text("\(dayWeather.last?.elevation ?? 0.0)")
 						.fontWeight(.bold)
 				}.padding(.all)
 				Spacer()
                 VStack(alignment: .trailing) {
-                    Text("precipitation")
+					Label("precipitation", systemImage: "cloud.rain.fill")
                     Text("\(day.first?.precipitation_sum ?? 0)")
                         .fontWeight(.bold)
                 }.padding(.all)
 			}
             HStack {
                 VStack(alignment: .leading) {
-                    Text("winddirection")
+					Label("winddirection", systemImage: "location.fill")
                     Text("\(dayWeather.last?.winddirection ?? 0.0)")
                         .fontWeight(.bold)
                 }.padding(.all)
                 Spacer()
                 VStack(alignment: .trailing) {
-                    Text("windSpeed")
+					Label("windSpeed", systemImage: "wind")
                     Text("\(dayWeather.last?.windspeed ?? 0.0)")
                         .fontWeight(.bold)
                 }.padding(.all)
             }
             HStack {
                 VStack(alignment: .leading) {
-                    Text("sunrise")
-                    Text("\(day.first?.sunrise ?? Date())")
+					Label("sunrise", systemImage: "sunrise.fill")
+					Text("\((day.first?.sunrise ?? Date()).formatted(date: .omitted, time: .shortened))")
                         .fontWeight(.bold)
                 }.padding(.all)
                 Spacer()
                 VStack(alignment: .trailing) {
-                    Text("sunset")
-                    Text("\(day.first?.sunset ?? Date())")
+					Label("sunset", systemImage: "sunset.fill")
+					Text("\((day.first?.sunset ?? Date()).formatted(date: .omitted, time: .shortened))")
                         .fontWeight(.bold)
                 }.padding(.all)
             }
 		}
         .refreshable {
-            do{
+            do {
                 try await model.fetchapi()
-            } catch let error{
-                print("Error while refreshing friends: \(error)")
+            } catch let error {
+				print("Error while refreshing friends: \(error)")
             }
         }
         .onAppear {
-            Task{
-                do{
+            Task {
+                do {
                     try await model.fetchapi()
-                } catch let error{
+                } catch let error {
                     print("Error while refreshing friends: \(error)")
                 }
             }
 		}
+
 	}
 }
 
