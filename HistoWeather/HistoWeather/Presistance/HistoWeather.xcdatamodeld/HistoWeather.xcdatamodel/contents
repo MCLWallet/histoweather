@@ -20,6 +20,6 @@
         <attribute name="weathericoncode" optional="YES" attributeType="String"/>
         <attribute name="winddirection" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
         <attribute name="windspeed" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
-        <relationship name="day" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Day" inverseName="dayweather" inverseEntity="Day"/>
+        <relationship name="day" optional="YES" toMany="YES" minCount="7" maxCount="7" deletionRule="Cascade" destinationEntity="Day" inverseName="dayweather" inverseEntity="Day"/>
     </entity>
 </model>

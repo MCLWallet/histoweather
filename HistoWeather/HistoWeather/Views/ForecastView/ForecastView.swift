@@ -7,21 +7,14 @@
 
 import SwiftUI
 
-struct Forecast: Identifiable {
-    let id = UUID()
-    let date: String
-    let temperature: String
-    let sfImageID: String
-}
-
-
 struct ForecastView: View {
-    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(latitude: 0, longitude: 0),
+    
+    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(),
                   animation: .default)
     private var day: FetchedResults<Day>
     
-    
     @State private var model = ForecastViewModel()
+    
     var body: some View {
         VStack{
             HStack {
@@ -34,18 +27,33 @@ struct ForecastView: View {
                         .font(.title3)
                 }.padding()
             }
+            
             ScrollView {
                 // Top Container
-                
                 Spacer()
                 ForEach(day) { index in
                     HStack {
-                        Text("\(index.time ?? Date())")
+                        Text("\(index.time?.ISO8601Format() ?? Date().ISO8601Format())")
                         Spacer()
-                        Text("\(index.temperature_2m_max)")
-                            .fontWeight(.bold)
-                            .fontWeight(.bold)
+                        VStack(alignment: .trailing){
+                            Text(String(format: "min: %.1f",index.temperature_2m_min))
+                                .fontWeight(.bold)
+                                .fontWeight(.bold)
+                            Text(String(format: "max: %.1f",index.temperature_2m_max))
+                                .fontWeight(.bold)
+                                .fontWeight(.bold)
+                            
+                        }
                         Image(systemName: index.weathericoncode ?? "wrench.fill")
+                    }
+                }
+            }
+            .onAppear {
+                Task{
+                    do{
+                        try await model.fetchapi()
+                    } catch let error{
+                        print("Error while refreshing friends: \(error)")
                     }
                 }
             }

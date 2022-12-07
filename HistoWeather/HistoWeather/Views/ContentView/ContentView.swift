@@ -7,19 +7,19 @@
 
 import SwiftUI
 import CoreData
+import MapKit
 
 struct ContentView: View {
-	@ObservedObject var locationManager = LocationManager.shared
+    
+    @ObservedObject var locationManager = LocationManager.shared
+        
+    @State var coordinates: Coordinates = Coordinates()
+    @State var tab = (LocationManager.shared.authStatus != "authorizedAlways" && LocationManager.shared.authStatus != "authorizedWhenInUse") ? 1 : 4
     var body: some View {
+
 		Group {
-			switch locationManager.authStatus {
-			case "notDetermined", "restricted":
-				LocationRequestView()
-			case "denied", "maybeLater":
-				SearchView()
-			case "authorizedAlways", "authorizedWhenInUse":
-				TabView {
-					CurrentView()
+            TabView(selection: $tab) {
+                CurrentView()
 						.tabItem {
 							Label("Weather", systemImage: "cloud.sun.fill")
 						}
@@ -29,37 +29,36 @@ struct ContentView: View {
 							Label("Forecast", systemImage: "forward.fill")
 						}
 						.tag(2)
-					SliderView()
+                SliderView()
 						.tabItem {
 							Label("History", systemImage: "clock.arrow.circlepath")
 						}
 						.tag(3)
+                SearchView(tab: $tab)
+                        .tabItem {
+                            Label("Search", systemImage: "location.magnifyingglass")
+                        }
+                        .tag(4)
 				}
 				.accentColor(Color("DarkBlue"))
-				//        .refreshable { // Add a pull-to-refresh to the list
-				//            await refreshWeather()
-				//             func refreshWeather() async {
-				//                do {
-				//                    try await model.refreshDayWeather()
-				//                } catch let error {
-				//                    print("Error while refreshing friends: \(error)")
-				//                }
-				//            }
-				//        }
-		//        Button("fdsfa"){
-		//            func refreshWeather() async {
-		//                do {
-		//                    try await model.fetchapi()
-		//                } catch let error {
-		//                    print("Error while refreshing friends: \(error)")
-		//                }
-		//            }
-		//        }
-			default:
-				LocationRequestView()
-			}
+//                .onAppear(){
+//                    Coordinates.coordinate = self.locationManager.userlocation != nil
+//                            ? self.locationManager.userlocation!.coordinate : CLLocationCoordinate2D()
+//                }
+//                .onChange(of: self.locationManager) { newValue in
+//                    Coordinates.coordinate = self.locationManager.userlocation != nil
+//                            ? self.locationManager.userlocation!.coordinate : CLLocationCoordinate2D()
+//                }
 		}
     }
+
+}
+
+struct Coordinates{
+        static var coordinate: CLLocationCoordinate2D = LocationManager.shared.userlocation != nil
+        ? LocationManager.shared.userlocation!.coordinate : CLLocationCoordinate2D()
+        static var longitude:Double = coordinate.longitude
+    static var latitude:Double = coordinate.latitude
 }
 
 struct ContentView_Previews: PreviewProvider {

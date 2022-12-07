@@ -16,23 +16,21 @@ struct WeatcherIcon: Identifiable {
 }
 
 struct CurrentView: View {
-    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDayWeather(latitude: 0, longitude:0),
+
+    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDayWeather(),
                   animation: .default)
     private var dayWeather: FetchedResults<DayWeather>
 
-    
-    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(latitude: 0, longitude: 0),
+    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(),
                   animation: .default)
+    
     private var day: FetchedResults<Day>
     
-	@ObservedObject var locationManager = LocationManager.shared
 	
     @State private var model = ForecastViewModel()
 	var body: some View {
-		let coordinate = self.locationManager.userlocation != nil
-		? self.locationManager.userlocation!.coordinate : CLLocationCoordinate2D()
-
 		return ScrollView {
+
 			// Top Container
 			HStack {
 				Spacer()
@@ -67,15 +65,10 @@ struct CurrentView: View {
 				}
 				.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
 				// Debug Log Coordinates
-				Text("\(coordinate.latitude), \(coordinate.longitude)")
+                Text("\(dayWeather.last?.latitude ?? 0), \(dayWeather.last?.longitude ?? 0)")
+                Text("\(Coordinates.latitude), \(Coordinates.longitude)")
 			}
-            .refreshable {
-                do{
-                    try await model.fetchapi()
-                } catch let error{
-                    print("Error while refreshing friends: \(error)")
-                }
-            }
+
 			Spacer()
 			// Humidity & Windspeed
 			HStack {
@@ -137,8 +130,8 @@ struct CurrentView: View {
 	}
 }
 
-struct CurrentView_Previews: PreviewProvider {
-    static var previews: some View {
-        CurrentView()
-    }
-}
+//struct CurrentView_Previews: PreviewProvider {
+//    static var previews: some View {
+////        CurrentView()
+//    }
+//}

@@ -11,23 +11,26 @@ struct DayWeatherPersistence {
     
     private let context = PersistenceController.shared.backgroundContext
     
-    static func fetchDayWeather(latitude: Double, longitude: Double) -> NSFetchRequest<DayWeather> {
-        
-        let request = DayWeather.fetchRequest()
-        request.predicate = NSPredicate(format:"latitude == %d AND longitude == %d", latitude, longitude)
-        request.sortDescriptors = []
-        return request
-    }
-    
     static func fetchDayWeather() -> NSFetchRequest<DayWeather> {
+        print("fetching")
+        let request = DayWeather.fetchRequest()
+//        print("Lat:\(Coordinates.coordinate.latitude)   Long:\(Coordinates.coordinate.longitude)")
+//        request.predicate = NSPredicate(format:"latitude == %@ AND longitude == %@", Coordinates.latitude as NSNumber, Coordinates.longitude as NSNumber)
+
+        
+        request.sortDescriptors = []
+        return request
+    }
+    
+    static func fetchAllDayWeather() -> NSFetchRequest<DayWeather> {
         let request = DayWeather.fetchRequest()
         request.sortDescriptors = []
         return request
     }
     
-    static func fetchDay(latitude: Double, longitude: Double) -> NSFetchRequest<Day> {
+    static func fetchDay() -> NSFetchRequest<Day> {
         let request = Day.fetchRequest()
-        request.predicate = NSPredicate(format: "dayweather.latitude == %d AND dayweather.longitude == %d", latitude, longitude)
+//        request.predicate = NSPredicate(format: "dayweather.latitude == %d AND dayweather.longitude == %d", Coordinates.coordinate.latitude, Coordinates.coordinate.longitude)
         request.sortDescriptors = [NSSortDescriptor(key: "time", ascending: true)]
         return request
     }
@@ -41,7 +44,7 @@ struct DayWeatherPersistence {
     func removeAllFriends() async throws {
         try await context.perform {
             
-            try context.fetch(DayWeatherPersistence.fetchDayWeather()).forEach {
+            try context.fetch(DayWeatherPersistence.fetchAllDayWeather()).forEach {
                 context.delete($0)
             }
             context.saveContext()
@@ -94,14 +97,16 @@ extension DayWeather {
                      context: NSManagedObjectContext) {
         self.init(context: context)
         
-        self.time = weather.current_weather.time
+        self.longitude = weather.longitude
+        self.latitude = weather.latitude
+        self.time = weather.current_weather.time 
         self.elevation = (weather.elevation) as NSNumber
         self.temperature = (weather.current_weather.temperature) as NSNumber
         self.weathericoncode = weatherCodeToIcon(weatherCode: weather.current_weather.weathercode)
         self.windspeed = (weather.current_weather.windspeed) as NSNumber
         self.winddirection = (weather.current_weather.winddirection) as NSNumber
-        
-        for i in 0...(weather.daily.temperature_2m_max.count-1) {
+            
+        for i in 0...(weather.daily.temperature_2m_max.count - 1) {
             addToDay(Day(d: d(time: converteDate(date: weather.daily.time[i]),
                               weathericoncode: weatherCodeToIcon(weatherCode: weather.daily.weathercode[i]),
                               temperature_2m_max: weather.daily.temperature_2m_max[i],

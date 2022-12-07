@@ -35,8 +35,5 @@ class LocationSearchWebservice {
 		
 		let locationResponse = try? JSONDecoder().decode(LocationResponse.self, from: data)
 		return locationResponse?.locations ?? []
-		
-		
 	}
-	
 }

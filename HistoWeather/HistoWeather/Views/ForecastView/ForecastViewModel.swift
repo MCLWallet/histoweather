@@ -6,7 +6,6 @@
 //
 
 struct ForecastViewModel {
-
     private let dayWeatherRepository: DayWeatherRepository
 
     init(dayWeatherRepository: DayWeatherRepository = DayWeatherRepository()) {
@@ -14,7 +13,6 @@ struct ForecastViewModel {
     }
 
     func fetchapi() async throws{
-        print("fetchapi")
         try await dayWeatherRepository.loadData()
     }
 }

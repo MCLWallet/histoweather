@@ -9,7 +9,7 @@ import CoreLocation
 
 class LocationManager: NSObject, ObservableObject {
 	private let manager = CLLocationManager()
-	@Published var userlocation: CLLocation?
+    @Published var userlocation: CLLocation?
 	@Published var authStatus: String?
 	static let shared = LocationManager()
 	
@@ -47,6 +47,7 @@ extension LocationManager: CLLocationManagerDelegate {
 			authStatus = "notDetermined"
 		}
 	}
+    
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 		guard let location = locations.last else { return }
 		self.userlocation = location

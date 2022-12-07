@@ -10,7 +10,12 @@ import SwiftUI
 @main
 struct HistoWeatherApp: App {
     let persistenceController = PersistenceController.shared
-
+    @ObservedObject var locationManager = LocationManager.shared
+    init(){
+        if locationManager.authStatus != "authorizedAlways" && locationManager.authStatus != "authorizedWhenInUse"{
+            LocationManager.shared.requestLocation()
+        }
+    }
     var body: some Scene {
         WindowGroup {
             ContentView()
