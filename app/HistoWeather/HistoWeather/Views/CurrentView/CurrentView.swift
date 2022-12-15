@@ -106,6 +106,7 @@ struct CurrentView: View {
                 }.padding(.all)
             }
 		}
+		
         .refreshable {
             do {
                 try await model.fetchapi()
