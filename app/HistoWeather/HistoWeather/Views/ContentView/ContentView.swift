@@ -38,7 +38,6 @@ struct ContentView: View {
                     .tag(4)
             }
             .accentColor(Color("DarkBlue"))
-            .background(.white)
         }
     }
 }

@@ -8,16 +8,17 @@
 import SwiftUI
 
 struct SliderView: View {
+	@State private var sliderValue: Double = 0.5
     var body: some View {
-        VStack(alignment: .trailing) {
-            Text("hello")
-                .font(.title)
-                .foregroundColor(Color("BordeauxRed"))
-                .multilineTextAlignment(.leading)
-            Text("world")
-                .font(.subheadline)
-                .multilineTextAlignment(.leading)
-        }
+		ZStack {
+			LinearGradient(gradient: Gradient(colors: [Color("BordeauxRed"), Color("VeryLightYellow")]), startPoint: .topLeading, endPoint: .bottomTrailing)
+				.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+			VStack {
+				Spacer()
+				Slider(value: $sliderValue)
+					.padding(.all)
+			}
+		}
     }
 }
 
