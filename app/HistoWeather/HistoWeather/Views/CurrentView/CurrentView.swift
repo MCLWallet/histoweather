@@ -8,7 +8,7 @@
 import SwiftUI
 import MapKit
 
-struct WeatcherIcon: Identifiable {
+struct WeatherIcon: Identifiable {
 	let id = UUID()
 	let weatherCode: [Int16]
 	let description: String
@@ -109,7 +109,7 @@ struct CurrentView: View {
 		
         .refreshable {
             do {
-                try await model.fetchapi()
+                try await model.fetchApi()
             } catch let error {
                 print("Error while refreshing friends: \(error)")
             }
@@ -117,7 +117,7 @@ struct CurrentView: View {
         .onAppear {
             Task {
                 do {
-                    try await model.fetchapi()
+                    try await model.fetchApi()
                 } catch let error {
                     print("Error while refreshing friends: \(error)")
                 }

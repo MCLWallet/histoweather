@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		07625915293A4BFB0003056A /* DayWeatherRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07625914293A4BFB0003056A /* DayWeatherRepository.swift */; };
-		07625917293A4C430003056A /* DayWeatherPresistance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07625916293A4C430003056A /* DayWeatherPresistance.swift */; };
+		07625917293A4C430003056A /* DayWeatherPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07625916293A4C430003056A /* DayWeatherPersistence.swift */; };
 		076F7CE4293A97B70054847F /* ForecastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F7CE3293A97B70054847F /* ForecastViewModel.swift */; };
 		60145B0F2938D74C00DFC75B /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 60145B0E2938D74C00DFC75B /* .swiftlint.yml */; };
 		60145B112939271900DFC75B /* CurrentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60145B102939271900DFC75B /* CurrentView.swift */; };
@@ -52,7 +52,7 @@
 
 /* Begin PBXFileReference section */
 		07625914293A4BFB0003056A /* DayWeatherRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWeatherRepository.swift; sourceTree = "<group>"; };
-		07625916293A4C430003056A /* DayWeatherPresistance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWeatherPresistance.swift; sourceTree = "<group>"; };
+		07625916293A4C430003056A /* DayWeatherPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWeatherPersistence.swift; sourceTree = "<group>"; };
 		076F7CE3293A97B70054847F /* ForecastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewModel.swift; sourceTree = "<group>"; };
 		60145B0E2938D74C00DFC75B /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		60145B102939271900DFC75B /* CurrentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentView.swift; sourceTree = "<group>"; };
@@ -123,14 +123,14 @@
 			path = Repository;
 			sourceTree = "<group>";
 		};
-		07625913293A4B380003056A /* Presistance */ = {
+		07625913293A4B380003056A /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
 				60631382292F9BCD00949DF2 /* HistoWeather.xcdatamodeld */,
 				60631380292F9BCD00949DF2 /* Persistence.swift */,
-				07625916293A4C430003056A /* DayWeatherPresistance.swift */,
+				07625916293A4C430003056A /* DayWeatherPersistence.swift */,
 			);
-			path = Presistance;
+			path = Persistence;
 			sourceTree = "<group>";
 		};
 		076F7CE2293A97AC0054847F /* ForecastView */ = {
@@ -188,7 +188,7 @@
 				606313A8292FA33600949DF2 /* Views */,
 				6063137B292F9BCD00949DF2 /* Assets.xcassets */,
 				07625912293A4B230003056A /* Repository */,
-				07625913293A4B380003056A /* Presistance */,
+				07625913293A4B380003056A /* Persistence */,
 				6063137D292F9BCD00949DF2 /* Preview Content */,
 			);
 			path = HistoWeather;
@@ -414,7 +414,7 @@
 				60C1E2592930115D003E23CE /* SliderView.swift in Sources */,
 				608C5DCF293BCC7A000F51A8 /* SearchView.swift in Sources */,
 				60145B112939271900DFC75B /* CurrentView.swift in Sources */,
-				07625917293A4C430003056A /* DayWeatherPresistance.swift in Sources */,
+				07625917293A4C430003056A /* DayWeatherPersistence.swift in Sources */,
 				608C5DC6293B97EF000F51A8 /* LocationManager.swift in Sources */,
 				601757E2293D2AC90048139D /* LocationSearchWebservice.swift in Sources */,
 			);
