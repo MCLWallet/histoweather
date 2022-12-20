@@ -24,7 +24,7 @@ struct DayWeatherRepository {
         dateFormatter.dateFormat = "yyyy-mm-dd'T'HH:mm"
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(dateFormatter)
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: request) { data, response, _ in
             if let data = data {
                 if let response = try? decoder.decode(Weather.self, from: data) {
                     DispatchQueue.main.async {

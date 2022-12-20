@@ -53,7 +53,7 @@ struct ForecastView: View {
             .onAppear {
                 Task {
                     do {
-                        try await model.fetchapi()
+                        try await model.fetchApi()
                     } catch let error {
                         print("Error while refreshing friends: \(error)")
                     }
@@ -61,7 +61,7 @@ struct ForecastView: View {
             }
             .refreshable {
                 do {
-                    try await model.fetchapi()
+                    try await model.fetchApi()
                 } catch let error {
                     print("Error while refreshing friends: \(error)")
                 }
