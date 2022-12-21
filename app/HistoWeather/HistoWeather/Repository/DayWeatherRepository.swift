@@ -39,7 +39,7 @@ struct DayWeatherRepository {
         }
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-mm-dd'T'HH:mm"
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm"
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(dateFormatter)
         
