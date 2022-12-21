@@ -31,6 +31,7 @@ struct DayWeatherRepository {
         guard let url = components.url else {
             throw NetworkError.badURL
         }
+        
         print("\(url)")
         
         let (data, response) = try await URLSession.shared.data(from: url)

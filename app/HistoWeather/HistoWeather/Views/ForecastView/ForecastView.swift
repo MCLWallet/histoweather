@@ -12,60 +12,47 @@ struct ForecastView: View {
                   animation: .none)
     private var day: FetchedResults<Day>
     @State private var model = ForecastViewModel()
+    
     var body: some View {
-        VStack {
-            HStack {
-                // Date & Location View
-                VStack(alignment: .leading) {
-                    Text("vienna")
-                        .font(.largeTitle)
-                    Text("\((day.first?.time ?? Date()).formatted(date: .complete, time: .omitted))")
-                        .font(.title3)
-                }.padding()
-				Spacer()
-            }
-            ScrollView {
-                // Top Container
-                Spacer()
-                ForEach(day) { index in
-                    HStack(alignment: .center) {
-                        HStack {
-                            Text("\((index.time ?? Date()).formatted(date: .complete, time: .omitted))")
-                                .font(.title3)
-                                .fontWeight(.medium)
-                            Spacer()
-                            VStack(alignment: .trailing) {
-                                Text(String(format: "%.1f / %.1f", index.temperature_2m_min, index.temperature_2m_max))
+        NavigationView {
+                ScrollView {
+                    // Top Container
+                    ForEach(day) { index in
+                            HStack {
+                                Text("\((index.time ?? Date()).formatted(.dateTime.weekday(.wide)))")
+                                    .font(.title3)
+                                    .fontWeight(.medium)
+                                Spacer()
+                                    Image(systemName: index.weathericoncode ?? "wrench.fill")
+                                        .font(.title)
+                                Spacer()
+                                Text(String(format: "%.0f / %.0f", index.temperature_2m_min, index.temperature_2m_max))
                                     .font(.title2)
                             }
-                            .padding(.trailing)
-                            Image(systemName: index.weathericoncode ?? "wrench.fill")
-                                .font(.title)
-                        }
-                        .padding(.all)
+                            .padding(.all)
+                            .background(.yellow)
+                            .cornerRadius(20)
+                            .padding(.all, 10)
+                        
                     }
-                    .background(.red)
-                    .cornerRadius(20)
-                    .padding(10)
-
                 }
-            }
-            .onAppear {
-                Task {
+                .onAppear {
+                    Task {
+                        do {
+                            try await model.fetchApi()
+                        } catch let error {
+                            print("Error while refreshing friends: \(error)")
+                        }
+                    }
+                }
+                .refreshable {
                     do {
                         try await model.fetchApi()
                     } catch let error {
                         print("Error while refreshing friends: \(error)")
                     }
                 }
-            }
-            .refreshable {
-                do {
-                    try await model.fetchApi()
-                } catch let error {
-                    print("Error while refreshing friends: \(error)")
-                }
-            }
+                .navigationTitle("vienna")
         }
     }
 }
