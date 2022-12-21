@@ -9,6 +9,7 @@ import Foundation
 import CoreLocation
 
 struct DayWeatherRepository {
+    let unitSystem: String = "metric"
     private let dayWeatherPersistence: DayWeatherPersistence
     init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence()) {
         self.dayWeatherPersistence = dayWeatherPersistence
@@ -25,7 +26,11 @@ struct DayWeatherRepository {
             URLQueryItem(name: "longitude", value: "\(Coordinates.longitude)"),
             URLQueryItem(name: "daily", value: "weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum,windspeed_10m_max"),
             URLQueryItem(name: "current_weather", value: "true"),
-            URLQueryItem(name: "timezone", value: TimeZone.current.identifier)
+            URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
+            URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
+            URLQueryItem(name: "temperature_unit", value: (unitSystem == "metric" ? "celsius": "fahrenheit")),
+            URLQueryItem(name: "precipitation_unit", value: (unitSystem == "metric" ? "mm": "inch")),
+            URLQueryItem(name: "windspeed_unit", value: (unitSystem == "metric" ? "ms": "kn"))
         ]
         
         guard let url = components.url else {
@@ -52,11 +57,18 @@ struct DayWeatherRepository {
 }
 
 public struct Weather: Decodable {
+    let daily_units: Unit
     let daily: Daily
     let elevation: Double
     let latitude: Double
     let longitude: Double
     let current_weather: CurrentWeather
+}
+
+public struct Unit: Decodable {
+    let temperature_2m_max: String
+    let precipitation_sum: String
+    let windspeed_10m_max: String
 }
 
 struct CurrentWeather: Decodable {
