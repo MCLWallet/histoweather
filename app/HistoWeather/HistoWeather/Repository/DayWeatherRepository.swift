@@ -9,6 +9,7 @@ import Foundation
 import CoreLocation
 
 struct DayWeatherRepository {
+    let tempUnit: String = "celsius"
     private let dayWeatherPersistence: DayWeatherPersistence
     init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence()) {
         self.dayWeatherPersistence = dayWeatherPersistence
@@ -25,7 +26,9 @@ struct DayWeatherRepository {
             URLQueryItem(name: "longitude", value: "\(Coordinates.longitude)"),
             URLQueryItem(name: "daily", value: "weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum,windspeed_10m_max"),
             URLQueryItem(name: "current_weather", value: "true"),
-            URLQueryItem(name: "timezone", value: TimeZone.current.identifier)
+            URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
+            URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
+            URLQueryItem(name: "temperature_unit", value: tempUnit)
         ]
         
         guard let url = components.url else {
