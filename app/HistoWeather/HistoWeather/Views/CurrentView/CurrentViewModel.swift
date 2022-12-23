@@ -16,6 +16,6 @@ struct CurrentViewModel {
     }
 
     func fetchApi() async throws {
-        try await dayWeatherRepository.loadData()
+        try await dayWeatherRepository.loadCurrentWeatherData()
     }
 }
