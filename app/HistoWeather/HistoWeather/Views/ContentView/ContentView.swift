@@ -18,22 +18,22 @@ struct ContentView: View {
             TabView(selection: $tab) {
                 CurrentView()
                     .tabItem {
-                        Label("Weather", systemImage: "cloud.sun.fill")
+                        Label("today", systemImage: "cloud.sun.fill")
                     }
                     .tag(1)
                 ForecastView()
                     .tabItem {
-                        Label("Forecast", systemImage: "calendar")
+                        Label("forecast", systemImage: "calendar")
                     }
                     .tag(2)
                 SliderView()
                     .tabItem {
-                        Label("History", systemImage: "clock.arrow.circlepath")
+                        Label("history", systemImage: "clock.arrow.circlepath")
                     }
                     .tag(3)
                 SearchView(tab: $tab)
                     .tabItem {
-                        Label("Search", systemImage: "location.magnifyingglass")
+                        Label("search", systemImage: "location.magnifyingglass")
                     }
                     .tag(4)
             }
