@@ -13,6 +13,7 @@ struct DayWeatherRepository {
     init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence()) {
         self.dayWeatherPersistence = dayWeatherPersistence
     }
+	// Two calls: get lat, long and then pass it to getCityName and then persist it
     func loadData() async throws {
         try await dayWeatherPersistence.removeAllFriends()
         guard let url = URL(string: "https://api.open-meteo.com/v1/forecast?latitude=\(Coordinates.latitude)&longitude=\(Coordinates.longitude)&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum,windspeed_10m_max&current_weather=true&timezone=\( TimeZone.current.identifier)") else {
@@ -41,6 +42,7 @@ struct DayWeatherRepository {
     }
 }
 
+// Only used for decoding
 public struct Weather: Decodable {
     let daily: Daily
     let elevation: Double
