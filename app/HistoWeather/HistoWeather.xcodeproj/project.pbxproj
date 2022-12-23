@@ -33,6 +33,7 @@
 		60C1E2592930115D003E23CE /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1E2582930115D003E23CE /* SliderView.swift */; };
 		60C1E25D293014B5003E23CE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 60C1E25F293014B5003E23CE /* Localizable.strings */; };
 		60C1E26329301D59003E23CE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C1E26229301D59003E23CE /* ContentView.swift */; };
+		60DF33E42955D6D800F4E095 /* HistoricalWeatherPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DF33E32955D6D800F4E095 /* HistoricalWeatherPersistence.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +85,7 @@
 		60C1E25E293014B5003E23CE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		60C1E260293014B8003E23CE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		60C1E26229301D59003E23CE /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		60DF33E32955D6D800F4E095 /* HistoricalWeatherPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalWeatherPersistence.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 				60631382292F9BCD00949DF2 /* HistoWeather.xcdatamodeld */,
 				60631380292F9BCD00949DF2 /* Persistence.swift */,
 				07625916293A4C430003056A /* DayWeatherPersistence.swift */,
+				60DF33E32955D6D800F4E095 /* HistoricalWeatherPersistence.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -167,9 +170,9 @@
 		6063136B292F9BCB00949DF2 = {
 			isa = PBXGroup;
 			children = (
+				60631377292F9BCB00949DF2 /* HistoWeatherApp.swift */,
 				608C5DCB293BB563000F51A8 /* InfoPlist.strings */,
 				60631376292F9BCB00949DF2 /* HistoWeather */,
-				60631377292F9BCB00949DF2 /* HistoWeatherApp.swift */,
 				60C1E25F293014B5003E23CE /* Localizable.strings */,
 				6063138C292F9BCD00949DF2 /* HistoWeatherTests */,
 				60631396292F9BCD00949DF2 /* HistoWeatherUITests */,
@@ -410,6 +413,7 @@
 				60631384292F9BCD00949DF2 /* HistoWeather.xcdatamodeld in Sources */,
 				601757E4293D4F1E0048139D /* NetworkChecker.swift in Sources */,
 				601757E0293D29D90048139D /* Location.swift in Sources */,
+				60DF33E42955D6D800F4E095 /* HistoricalWeatherPersistence.swift in Sources */,
 				60297AB32952288600B32328 /* CurrentViewModel.swift in Sources */,
 				60C1E26329301D59003E23CE /* ContentView.swift in Sources */,
 				60631381292F9BCD00949DF2 /* Persistence.swift in Sources */,
