@@ -111,7 +111,7 @@ struct CurrentView: View {
             do {
                 try await model.fetchApi()
             } catch let error {
-                print("Error while refreshing friends: \(error)")
+                print("Error while refreshing weather: \(error)")
             }
         }
         .onAppear {
@@ -119,7 +119,7 @@ struct CurrentView: View {
                 do {
                     try await model.fetchApi()
                 } catch let error {
-                    print("Error while refreshing friends: \(error)")
+                    print("Error while refreshing weather: \(error)")
                 }
             }
 		}
