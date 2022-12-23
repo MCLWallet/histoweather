@@ -22,18 +22,19 @@ struct ForecastView: View {
                                 Text("\((index.time ?? Date()).formatted(.dateTime.weekday(.wide)))")
                                     .font(.title3)
                                     .fontWeight(.medium)
+									.frame(minWidth: 150, alignment: .leading)
                                 Spacer()
                                     Image(systemName: index.weathericoncode ?? "wrench.fill")
                                         .font(.title)
-                                Spacer()
                                 Text(String(format: "%.0f / %.0f", index.temperature_2m_min, index.temperature_2m_max))
                                     .font(.title2)
+									.padding(.leading)
+									.frame(minWidth: 80)
                             }
                             .padding(.all)
                             .background(.yellow)
                             .cornerRadius(20)
-                            .padding(.all, 10)
-                        
+							.padding(.all, 10)
                     }
                 }
                 .onAppear {
@@ -52,7 +53,7 @@ struct ForecastView: View {
                         print("Error while refreshing friends: \(error)")
                     }
                 }
-                .navigationTitle("vienna")
+				.navigationTitle(Coordinates.locationName)
         }
     }
 }

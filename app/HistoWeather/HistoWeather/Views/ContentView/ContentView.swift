@@ -31,7 +31,7 @@ struct ContentView: View {
                         Label("History", systemImage: "clock.arrow.circlepath")
                     }
                     .tag(3)
-                SearchView(tab: $tab)
+                SearchView()
                     .tabItem {
                         Label("Search", systemImage: "location.magnifyingglass")
                     }
