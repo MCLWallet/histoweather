@@ -28,9 +28,9 @@ struct CurrentView: View {
 	
 	var body: some View {
         NavigationStack {
-			ScrollView {
+		ScrollView {
 				// Top Container
-				HStack {
+			HStack {
 					// Date & Location View
 					VStack(alignment: .leading) {
 						Text("\((dayWeather.last?.time ?? Date()).formatted(date: .abbreviated, time: .shortened))")
@@ -47,7 +47,8 @@ struct CurrentView: View {
 						.resizable()
 						.scaledToFit()
 						.padding(.all)
-					Text("\(dayWeather.last?.temperature ?? 0.0)°C")
+						.frame(maxWidth: 250)
+					Text("\(String(format: "%.0f", dayWeather.last?.temperature ?? 0)) °C")
 						.font(.largeTitle)
 						.fontWeight(.light)
 						.multilineTextAlignment(.center)
@@ -55,10 +56,10 @@ struct CurrentView: View {
 						.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
 					HStack {
 						Text("high")
-						Text(String(format: "%.1f", day.first?.temperature_2m_max ?? 0))
+						Text("\(String(format: "%.0f", day.first?.temperature_2m_max ?? 0)) °C")
 							.bold()
 						Text("low")
-						Text(String(format: "%.1f", day.first?.temperature_2m_min ?? 0))
+						Text("\(String(format: "%.0f", day.first?.temperature_2m_min ?? 0)) °C")
 							.bold()
 					}
 					.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
