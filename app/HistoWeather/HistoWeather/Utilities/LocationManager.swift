@@ -12,12 +12,14 @@ class LocationManager: NSObject, ObservableObject {
     @Published var userlocation: CLLocation?
 	@Published var authStatus: String?
 	static let shared = LocationManager()
+	
 	override init() {
 		super.init()
 		manager.delegate = self
 		manager.desiredAccuracy = kCLLocationAccuracyBest
 		manager.startUpdatingLocation()
 	}
+	
 	func requestLocation() {
 		manager.requestWhenInUseAuthorization()
 	}
@@ -45,6 +47,7 @@ extension LocationManager: CLLocationManagerDelegate {
 			authStatus = "notDetermined"
 		}
 	}
+	
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 		guard let location = locations.last else { return }
 		self.userlocation = location

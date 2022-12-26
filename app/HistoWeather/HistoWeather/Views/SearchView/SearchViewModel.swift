@@ -8,8 +8,9 @@
 import Foundation
 
 @MainActor
-class LocationListViewModel: ObservableObject {
+class SearchViewModel: ObservableObject {
 	@Published var locations: [LocationViewModel] = []
+	
 	func search(name: String) async {
 		do {
 			let locations = try await LocationSearchWebservice().getLocations(searchTerm: name)
