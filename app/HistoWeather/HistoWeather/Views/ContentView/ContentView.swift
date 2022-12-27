@@ -42,7 +42,6 @@ struct ContentView: View {
 					.tag(4)
 					.onAppear {
 						self.sheetIsPresenting = true
-						self.selectedTab = 1
 					}
             }
 			.onChange(of: selectedTab) {
