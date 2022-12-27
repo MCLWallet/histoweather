@@ -61,7 +61,7 @@ extension HistoricalWeather {
         self.init(context: context)
         self.city = city
         self.country = country
-        for i in 0...(historicalWeather.daily.temperature_2m_max.count - 1) {
+        for i in 0...(historicalWeather.daily.weathercode.count - 1) {
             
             addToHistoricalDaily(HistoricalDaily(day: HistoricalDailyEntry(
                 time: convertDate(date: historicalWeather.daily.time[i]),
