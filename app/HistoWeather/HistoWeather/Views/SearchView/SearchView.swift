@@ -9,10 +9,14 @@ import SwiftUI
 import MapKit
 
 struct SearchView: View {
+	@Environment(\.dismiss) var dismiss
+	
     @StateObject private var model = SearchViewModel()
     @State private var searchText: String = ""
     @ObservedObject var networkChecker = NetworkChecker()
     @ObservedObject var locationManager = LocationManager.shared
+	
+	@State var lastSelectedTab = 1
 	
     var body: some View {
 		NavigationView {
@@ -22,6 +26,7 @@ struct SearchView: View {
 						Coordinates.coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
 						Coordinates.locationName = location.name
 						searchText = ""
+						dismiss()
 					}
 				}
 			}
@@ -32,6 +37,18 @@ struct SearchView: View {
 				runSearch(searchString: searchText)
 			}
 			.navigationTitle("search")
+			.toolbar {
+				ToolbarItem(placement: .cancellationAction) {
+					Button("Cancel") {
+						dismiss()
+					}
+				}
+				ToolbarItem(placement: .confirmationAction) {
+					Button("Done") {
+						dismiss()
+					}
+				}
+			}
 		}
     }
     func runSearch(searchString: String) {

@@ -12,10 +12,14 @@ import MapKit
 struct ContentView: View {
     @ObservedObject var locationManager: LocationManager = LocationManager.shared
     @State var coordinates: Coordinates = Coordinates()
-    @State var tab: Int
+    @State var selectedTab: Int
+	@State private var oldSelectedTab = 1
+	
+	@State var sheetIsPresenting = false
+	
     var body: some View {
         Group {
-            TabView(selection: $tab) {
+            TabView(selection: $selectedTab) {
                 CurrentView()
                     .tabItem {
                         Label("Weather", systemImage: "cloud.sun.fill")
@@ -31,12 +35,27 @@ struct ContentView: View {
                         Label("History", systemImage: "clock.arrow.circlepath")
                     }
                     .tag(3)
-                SearchView()
-                    .tabItem {
-                        Label("Search", systemImage: "location.magnifyingglass")
-                    }
-                    .tag(4)
+				Text("")
+					.tabItem {
+						Label("Search", systemImage: "location.magnifyingglass")
+					}
+					.tag(4)
+					.onAppear() {
+						self.sheetIsPresenting = true
+					}
             }
+			.onChange(of: selectedTab) {
+				if selectedTab == 4 {
+					self.sheetIsPresenting = true
+				} else {
+					self.oldSelectedTab = $0
+				}
+			}
+			.sheet(isPresented: $sheetIsPresenting, onDismiss: {
+				self.selectedTab = self.oldSelectedTab
+			}) {
+				SearchView(lastSelectedTab: self.oldSelectedTab)
+			}
             .accentColor(Color("DarkBlue"))
         }
     }
@@ -52,6 +71,6 @@ struct Coordinates {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(tab: 4)
+        ContentView(selectedTab: 4)
     }
 }

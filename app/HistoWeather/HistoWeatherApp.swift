@@ -18,7 +18,7 @@ struct HistoWeatherApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            ContentView(tab: (locationManager.authStatus != "authorizedAlways"
+            ContentView(selectedTab: (locationManager.authStatus != "authorizedAlways"
                               && locationManager.authStatus != "authorizedWhenInUse") ? 4 : 1)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }

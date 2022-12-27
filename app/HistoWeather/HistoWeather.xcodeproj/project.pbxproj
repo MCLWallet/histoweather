@@ -18,6 +18,7 @@
 		601757E0293D29D90048139D /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601757DF293D29D90048139D /* Location.swift */; };
 		601757E2293D2AC90048139D /* LocationSearchWebservice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601757E1293D2AC90048139D /* LocationSearchWebservice.swift */; };
 		601757E4293D4F1E0048139D /* NetworkChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601757E3293D4F1E0048139D /* NetworkChecker.swift */; };
+		601DA75B295A6A4800E7B040 /* LocationRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601DA75A295A6A4800E7B040 /* LocationRequestView.swift */; };
 		60297AB32952288600B32328 /* CurrentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60297AB22952288600B32328 /* CurrentViewModel.swift */; };
 		60631378292F9BCB00949DF2 /* HistoWeatherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60631377292F9BCB00949DF2 /* HistoWeatherApp.swift */; };
 		6063137C292F9BCD00949DF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6063137B292F9BCD00949DF2 /* Assets.xcassets */; };
@@ -64,6 +65,7 @@
 		601757DF293D29D90048139D /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		601757E1293D2AC90048139D /* LocationSearchWebservice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchWebservice.swift; sourceTree = "<group>"; };
 		601757E3293D4F1E0048139D /* NetworkChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkChecker.swift; sourceTree = "<group>"; };
+		601DA75A295A6A4800E7B040 /* LocationRequestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationRequestView.swift; sourceTree = "<group>"; };
 		60297AB22952288600B32328 /* CurrentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentViewModel.swift; sourceTree = "<group>"; };
 		60631374292F9BCB00949DF2 /* HistoWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HistoWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60631377292F9BCB00949DF2 /* HistoWeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoWeatherApp.swift; sourceTree = "<group>"; };
@@ -182,6 +184,14 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		601DA759295A6A4800E7B040 /* LocationRequestView */ = {
+			isa = PBXGroup;
+			children = (
+				601DA75A295A6A4800E7B040 /* LocationRequestView.swift */,
+			);
+			path = LocationRequestView;
+			sourceTree = "<group>";
+		};
 		6063136B292F9BCB00949DF2 = {
 			isa = PBXGroup;
 			children = (
@@ -248,6 +258,7 @@
 		606313A8292FA33600949DF2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				601DA759295A6A4800E7B040 /* LocationRequestView */,
 				0762590F293A48C30003056A /* ContentView */,
 				076F7CE5293AB7F20054847F /* CurrentView */,
 				076F7CE2293A97AC0054847F /* ForecastView */,
@@ -440,6 +451,7 @@
 				60145B112939271900DFC75B /* CurrentView.swift in Sources */,
 				07625917293A4C430003056A /* DayWeatherPersistence.swift in Sources */,
 				608C5DC6293B97EF000F51A8 /* LocationManager.swift in Sources */,
+				601DA75B295A6A4800E7B040 /* LocationRequestView.swift in Sources */,
 				601757E2293D2AC90048139D /* LocationSearchWebservice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
