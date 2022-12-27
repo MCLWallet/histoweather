@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SliderView: View {
 	@State private var sliderValue: Double = 0.5
+	@State private var model = SliderViewModel()
+	
     var body: some View {
 		ZStack {
 			LinearGradient(gradient: Gradient(colors: [Color("BordeauxRed"), Color("VeryLightYellow")]), startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -17,6 +19,15 @@ struct SliderView: View {
 				Spacer()
 				Slider(value: $sliderValue)
 					.padding(.all)
+			}
+		}
+		.onAppear {
+			Task {
+				do {
+					try await model.fetchApi()
+				} catch let error {
+					print("Error while refreshing weather: \(error)")
+				}
 			}
 		}
     }
