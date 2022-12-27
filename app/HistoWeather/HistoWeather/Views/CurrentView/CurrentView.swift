@@ -25,11 +25,10 @@ struct CurrentView: View {
     private var day: FetchedResults<Day>
     @State private var model = ForecastViewModel()
 	@ObservedObject var locationManager = LocationManager.shared
+	
 	var body: some View {
         NavigationStack {
-
-			// Top Container
-			HStack {
+			ScrollView {
 				// Date & Location View
 				VStack(alignment: .leading) {
                     Text(Coordinates.locationName)
@@ -51,7 +50,59 @@ struct CurrentView: View {
 					.fontWeight(.light)
 					.multilineTextAlignment(.center)
 					.padding(.bottom)
-					.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
+					.padding(.leading)
+					Spacer()
+				}
+				// Temperature View
+				VStack {
+					Image(systemName: dayWeather.last?.weathericoncode ?? "wrench.fill")
+						.resizable()
+						.scaledToFit()
+						.padding(.all)
+						.frame(maxWidth: 250)
+					Text("\(String(format: "%.0f", dayWeather.last?.temperature ?? 0)) °C")
+						.font(.largeTitle)
+						.fontWeight(.light)
+						.multilineTextAlignment(.center)
+						.padding(.bottom)
+						.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
+					HStack {
+						Text("high")
+						Text("\(String(format: "%.0f", day.first?.temperature_2m_max ?? 0)) °C")
+							.bold()
+						Text("low")
+						Text("\(String(format: "%.0f", day.first?.temperature_2m_min ?? 0)) °C")
+							.bold()
+					}
+					.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
+				}
+				// Other Weather Parameters View
+				HStack {
+					VStack(alignment: .leading) {
+						Label("elevation", systemImage: "plusminus")
+						Text("\(dayWeather.last?.elevation ?? 0.0)")
+							.fontWeight(.bold)
+					}.padding(.all)
+					Spacer()
+					VStack(alignment: .trailing) {
+						Label("precipitation", systemImage: "cloud.rain.fill")
+						Text(String(format: "%.1f", day.first?.precipitation_sum ?? 0))
+							.fontWeight(.bold)
+					}.padding(.all)
+				}
+				HStack {
+					VStack(alignment: .leading) {
+						Label("winddirection", systemImage: "location.fill")
+						Text("\(dayWeather.last?.winddirection ?? 0.0)")
+							.fontWeight(.bold)
+					}.padding(.all)
+					Spacer()
+					VStack(alignment: .trailing) {
+						Label("windSpeed", systemImage: "wind")
+						Text("\(dayWeather.last?.windspeed ?? 0.0)")
+							.fontWeight(.bold)
+					}.padding(.all)
+				}
 				HStack {
 					Text("high")
                     Text("\(String(format: "%lld", day.first?.temperature_2m_max ?? 0)) °C")
@@ -60,10 +111,6 @@ struct CurrentView: View {
                     Text("\(String(format: "%lld", day.first?.temperature_2m_min ?? 0)) °C")
 						.bold()
 				}
-				.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
-				// Debug Log Coordinates
-//                Text("\(dayWeather.last?.latitude ?? 0), \(dayWeather.last?.longitude ?? 0)")
-//                Text("\(Coordinates.latitude), \(Coordinates.longitude)")
 			}
 			// Humidity & Windspeed
 			HStack {
@@ -106,24 +153,15 @@ struct CurrentView: View {
                 }.padding(.all)
             }
 		}
-		
-        .refreshable {
-            do {
-                try await model.fetchApi()
-            } catch let error {
-                print("Error while refreshing weather: \(error)")
-            }
-        }
-        .onAppear {
-            Task {
-                do {
-                    try await model.fetchApi()
-                } catch let error {
-                    print("Error while refreshing weather: \(error)")
-                }
-            }
+		.onAppear {
+			Task {
+				do {
+					try await model.fetchApi()
+				} catch let error {
+					print("Error while refreshing weather: \(error)")
+				}
+			}
 		}
-
 	}
 }
 

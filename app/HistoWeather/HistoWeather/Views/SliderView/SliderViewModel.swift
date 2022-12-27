@@ -18,4 +18,3 @@ struct SliderViewModel {
 		try await dayWeatherRepository.loadHistoricalData()
 	}
 }
-
