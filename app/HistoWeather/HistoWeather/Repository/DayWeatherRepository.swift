@@ -11,8 +11,10 @@ import CoreLocation
 struct DayWeatherRepository {
     let tempUnit: String = "celsius"
     private let dayWeatherPersistence: DayWeatherPersistence
-    init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence()) {
+    private let historicalWeatherPersistence: HistoricalWeatherPersistence
+    init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence(),  historicalWeatherPersistence: HistoricalWeatherPersistence = HistoricalWeatherPersistence()) {
         self.dayWeatherPersistence = dayWeatherPersistence
+        self.historicalWeatherPersistence = historicalWeatherPersistence
     }
 	// Two calls: get lat, long and then pass it to getCityName and then persist it
     func loadCurrentWeatherData() async throws {
@@ -54,6 +56,7 @@ struct DayWeatherRepository {
     }
 	
 	func loadHistoricalData() async throws {
+        try await historicalWeatherPersistence.removeAllEntries()
 		
 		var components = URLComponents()
 		components.scheme = "https"
@@ -85,10 +88,10 @@ struct DayWeatherRepository {
 		let decoder = JSONDecoder()
 		decoder.dateDecodingStrategy = .formatted(dateFormatter)
 
-		let optionalWeatherResponse = try? decoder.decode(HistoricalWeather.self, from: data)
+		let optionalWeatherResponse = try? decoder.decode(HistoricalWeatherDecodable.self, from: data)
 		if let weatherResponse = optionalWeatherResponse {
 			print("Optional Weather: \(weatherResponse.daily.temperature_2m_max)")
-//			await dayWeatherPersistence.addDayWeather(from: weatherResponse)
+			await historicalWeatherPersistence.addHistoricalWeather(from: weatherResponse, city: "City", country: "country")
 		}
 		
 	}
