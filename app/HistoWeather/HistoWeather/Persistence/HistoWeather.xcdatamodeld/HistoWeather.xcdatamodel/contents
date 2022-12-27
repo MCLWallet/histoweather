@@ -22,16 +22,16 @@
         <attribute name="windspeed" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
         <relationship name="day" optional="YES" toMany="YES" minCount="7" maxCount="7" deletionRule="Cascade" destinationEntity="Day" inverseName="dayweather" inverseEntity="Day"/>
     </entity>
-    <entity name="HistoricalDaily" representedClassName="HistoricalDaily" syncable="YES">
-        <attribute name="temperature_2m_max" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="temperature_2m_min" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="weathericoncode" optional="YES" attributeType="String"/>
+    <entity name="HistoricalDaily" representedClassName="HistoricalDaily" syncable="YES" codeGenerationType="class">
+        <attribute name="temperature_2m_max" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="temperature_2m_min" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="time" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="weathericoncode" attributeType="String"/>
         <relationship name="historicalWeather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HistoricalWeather" inverseName="historicalDaily" inverseEntity="HistoricalWeather"/>
     </entity>
-    <entity name="HistoricalWeather" representedClassName="HistoricalWeather" syncable="YES">
-        <attribute name="city" optional="YES" attributeType="String"/>
-        <attribute name="country" optional="YES" attributeType="String"/>
-        <relationship name="historicalDaily" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HistoricalDaily" inverseName="historicalWeather" inverseEntity="HistoricalDaily"/>
+    <entity name="HistoricalWeather" representedClassName="HistoricalWeather" syncable="YES" codeGenerationType="class">
+        <attribute name="city" attributeType="String"/>
+        <attribute name="country" attributeType="String"/>
+        <relationship name="historicalDaily" toMany="YES" deletionRule="Nullify" destinationEntity="HistoricalDaily" inverseName="historicalWeather" inverseEntity="HistoricalDaily"/>
     </entity>
 </model>
