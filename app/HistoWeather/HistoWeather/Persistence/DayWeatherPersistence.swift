@@ -24,8 +24,6 @@ struct DayWeatherPersistence {
     }
     static func fetchDay() -> NSFetchRequest<Day> {
         let request = Day.fetchRequest()
-//       request.predicate = NSPredicate(format: "dayweather.latitude == %d AND dayweather.longitude == %d",
-//        Coordinates.coordinate.latitude, Coordinates.coordinate.longitude)
         request.sortDescriptors = [NSSortDescriptor(key: "time", ascending: true)]
         return request
     }
