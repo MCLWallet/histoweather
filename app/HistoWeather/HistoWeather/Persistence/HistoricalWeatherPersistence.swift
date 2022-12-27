@@ -35,7 +35,7 @@ struct HistoricalWeatherPersistence {
 		context.saveContext()
 	}
 
-	func removeAllFriends() async throws {
+	func removeAllEntries() async throws {
 		try await context.perform {
 			try context.fetch(HistoricalWeatherPersistence.fetchAllHistoricalWeather()).forEach {
 				context.delete($0)
