@@ -28,10 +28,9 @@ struct CurrentView: View {
 	
 	var body: some View {
         NavigationStack {
-		ScrollView {
-				// Top Container
-			HStack {
-					// Date & Location View
+			ScrollView {
+				// Date & Location View
+				HStack {
 					VStack(alignment: .leading) {
 						Text("\((dayWeather.last?.time ?? Date()).formatted(date: .abbreviated, time: .shortened))")
 							.font(.title3)
@@ -40,9 +39,8 @@ struct CurrentView: View {
 					.padding(.leading)
 					Spacer()
 				}
-				// Middle Container
+				// Temperature View
 				VStack {
-					// Current Weather View
 					Image(systemName: dayWeather.last?.weathericoncode ?? "wrench.fill")
 						.resizable()
 						.scaledToFit()
@@ -63,11 +61,8 @@ struct CurrentView: View {
 							.bold()
 					}
 					.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
-					// Debug Log Coordinates
-	//                Text("\(dayWeather.last?.latitude ?? 0), \(dayWeather.last?.longitude ?? 0)")
-	//                Text("\(Coordinates.latitude), \(Coordinates.longitude)")
 				}
-				// Humidity & Windspeed
+				// Other Weather Parameters View
 				HStack {
 					VStack(alignment: .leading) {
 						Label("elevation", systemImage: "plusminus")
@@ -111,21 +106,21 @@ struct CurrentView: View {
 			.navigationTitle(Coordinates.locationName)
 			.navigationBarTitleDisplayMode(.automatic)
 		}
-        .refreshable {
-            do {
-                try await model.fetchApi()
-            } catch let error {
-                print("Error while refreshing weather: \(error)")
-            }
-        }
-        .onAppear {
-            Task {
-                do {
-                    try await model.fetchApi()
-                } catch let error {
-                    print("Error while refreshing weather: \(error)")
-                }
-            }
+		.refreshable {
+			do {
+				try await model.fetchApi()
+			} catch let error {
+				print("Error while refreshing weather: \(error)")
+			}
+		}
+		.onAppear {
+			Task {
+				do {
+					try await model.fetchApi()
+				} catch let error {
+					print("Error while refreshing weather: \(error)")
+				}
+			}
 		}
 	}
 }

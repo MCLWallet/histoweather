@@ -40,8 +40,9 @@ struct ContentView: View {
 						Label("Search", systemImage: "location.magnifyingglass")
 					}
 					.tag(4)
-					.onAppear() {
+					.onAppear {
 						self.sheetIsPresenting = true
+						self.selectedTab = 1
 					}
             }
 			.onChange(of: selectedTab) {
@@ -53,9 +54,9 @@ struct ContentView: View {
 			}
 			.sheet(isPresented: $sheetIsPresenting, onDismiss: {
 				self.selectedTab = self.oldSelectedTab
-			}) {
+			}, content: {
 				SearchView(lastSelectedTab: self.oldSelectedTab)
-			}
+			})
             .accentColor(Color("DarkBlue"))
         }
     }
@@ -71,6 +72,6 @@ struct Coordinates {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(selectedTab: 4)
+        ContentView(selectedTab: 1)
     }
 }
