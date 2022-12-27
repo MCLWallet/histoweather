@@ -9,40 +9,40 @@ import Foundation
 import CoreData
 
 struct HistoricalWeatherPersistence {
-	private let context = PersistenceController.shared.backgroundContext
+    private let context = PersistenceController.shared.backgroundContext
 
-	static func fetchHistoricalWeather() -> NSFetchRequest<HistoricalWeather> {
-		let request = HistoricalWeather.fetchRequest()
-		request.sortDescriptors = []
-		return request
-	}
+    static func fetchHistoricalWeather() -> NSFetchRequest<HistoricalWeather> {
+        let request = HistoricalWeather.fetchRequest()
+        request.sortDescriptors = []
+        return request
+    }
 
-	static func fetchAllHistoricalWeather() -> NSFetchRequest<HistoricalWeather> {
-		let request = HistoricalWeather.fetchRequest()
-		request.sortDescriptors = []
-		return request
-	}
+    static func fetchAllHistoricalWeather() -> NSFetchRequest<HistoricalWeather> {
+        let request = HistoricalWeather.fetchRequest()
+        request.sortDescriptors = []
+        return request
+    }
 
-	static func fetchHistoricalDaily() -> NSFetchRequest<HistoricalDaily> {
-		let request = HistoricalDaily.fetchRequest()
-		request.sortDescriptors = [NSSortDescriptor(key: "time", ascending: true)]
-		return request
-	}
+    static func fetchHistoricalDaily() -> NSFetchRequest<HistoricalDaily> {
+        let request = HistoricalDaily.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "time", ascending: true)]
+        return request
+    }
 
-	func addHistoricalWeather(from historicalWeatherDecodable: HistoricalWeatherDecodable, city: String, country: String) async {
-		await context.perform {
+    func addHistoricalWeather(from historicalWeatherDecodable: HistoricalWeatherDecodable, city: String, country: String) async {
+        await context.perform {
             _ = HistoricalWeather(historicalWeather: historicalWeatherDecodable, city: city, country: country, context: context) }
-		context.saveContext()
-	}
+        context.saveContext()
+    }
 
-	func removeAllEntries() async throws {
-		try await context.perform {
-			try context.fetch(HistoricalWeatherPersistence.fetchAllHistoricalWeather()).forEach {
-				context.delete($0)
-			}
-			context.saveContext()
-		}
-	}
+    func removeAllEntries() async throws {
+        try await context.perform {
+            try context.fetch(HistoricalWeatherPersistence.fetchAllHistoricalWeather()).forEach {
+                context.delete($0)
+            }
+            context.saveContext()
+        }
+    }
 }
 
 extension HistoricalDaily {
@@ -71,11 +71,4 @@ extension HistoricalWeather {
                              ), context: context))
         }
     }
-}
-
-struct HistoricalDailyEntry {
-    let time: Date
-    let weathericoncode: String
-    let temperature_2m_max: Double
-    let temperature_2m_min: Double
 }
