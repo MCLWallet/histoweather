@@ -23,8 +23,7 @@ struct SearchView: View {
 			List {
 				ForEach(model.locations, id: \.id) { location in
 					Button("\(location.name), \(location.country)") {
-						Coordinates.coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
-						Coordinates.locationName = location.name
+                        model.setLocation(latitude: location.latitude, longitude: location.longitude)
 						searchText = ""
 						dismiss()
 					}

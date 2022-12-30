@@ -103,7 +103,7 @@ struct CurrentView: View {
 					}.padding(.all)
 				}
 			}
-			.navigationTitle(Coordinates.locationName)
+//			.navigationTitle(Coordinates.locationName)
 			.navigationBarTitleDisplayMode(.automatic)
 		}
 		.refreshable {

@@ -8,25 +8,40 @@
 import Foundation
 import CoreLocation
 
-struct DayWeatherRepository {
+class DayWeatherRepository {
+    
     let tempUnit: String = "celsius"
+    @Published var location: CLLocation
+    
     private let dayWeatherPersistence: DayWeatherPersistence
     private let historicalWeatherPersistence: HistoricalWeatherPersistence
+    
     init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence(),  historicalWeatherPersistence: HistoricalWeatherPersistence = HistoricalWeatherPersistence()) {
         self.dayWeatherPersistence = dayWeatherPersistence
         self.historicalWeatherPersistence = historicalWeatherPersistence
+        self.location = CLLocation(latitude: LocationManager.shared.userlocation?.coordinate.latitude ?? 48.20849, longitude: LocationManager.shared.userlocation?.coordinate.longitude ?? 16.37208)
     }
+    
 	// Two calls: get lat, long and then pass it to getCityName and then persist it
     func loadCurrentWeatherData() async throws {
         try await dayWeatherPersistence.removeAllFriends()
         
+        CLGeocoder().reverseGeocodeLocation(self.location) { placemarks, error in
+            guard let placemark = placemarks?.first else {
+                return }
+            let city = placemark.locality! // This is the city name
+            let country = placemark.country!
+            print("\(city)")
+            print("\(country)")
+        }
+
         var components = URLComponents()
         components.scheme = "https"
         components.host = "api.open-meteo.com"
         components.path = "/v1/forecast"
         components.queryItems = [
-            URLQueryItem(name: "latitude", value: "\(Coordinates.latitude)"),
-            URLQueryItem(name: "longitude", value: "\(Coordinates.longitude)"),
+            URLQueryItem(name: "latitude", value: "\(location.coordinate.latitude)"),
+            URLQueryItem(name: "longitude", value: "\(location.coordinate.longitude)"),
             URLQueryItem(name: "daily", value: "weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum,windspeed_10m_max"),
             URLQueryItem(name: "current_weather", value: "true"),
             URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
@@ -58,13 +73,22 @@ struct DayWeatherRepository {
 	func loadHistoricalData() async throws {
         try await historicalWeatherPersistence.removeAllEntries()
 		
+        CLGeocoder().reverseGeocodeLocation(self.location) { placemarks, error in
+            guard let placemark = placemarks?.first else {
+                return }
+            let city = placemark.locality! // This is the city name
+            let country = placemark.country!
+            print("\(city)")
+            print("\(country)")
+        }
+        
 		var components = URLComponents()
 		components.scheme = "https"
 		components.host = "archive-api.open-meteo.com"
 		components.path = "/v1/era5"
 		components.queryItems = [
-			URLQueryItem(name: "latitude", value: "\(Coordinates.latitude)"),
-			URLQueryItem(name: "longitude", value: "\(Coordinates.longitude)"),
+			URLQueryItem(name: "latitude", value: "\(location.coordinate.latitude)"),
+            URLQueryItem(name: "longitude", value: "\(location.coordinate.longitude)"),
 			URLQueryItem(name: "start_date", value: "2022-11-18"), // TODO: get start_date from UI YYYY-MM-DD
 			URLQueryItem(name: "end_date", value: "2022-12-18"), // TODO: get end_date from UI YYYY-MM-DD
 			URLQueryItem(name: "daily", value: "weathercode,temperature_2m_max,temperature_2m_min"),
@@ -76,7 +100,7 @@ struct DayWeatherRepository {
 			throw NetworkError.badURL
 		}
 		
-		print("\(url)")
+//		print("\(url)")
 		
 		let (data, response) = try await URLSession.shared.data(from: url)
 		guard (response as? HTTPURLResponse)?.statusCode == 200 else {
@@ -96,3 +120,4 @@ struct DayWeatherRepository {
 		
 	}
 }
+

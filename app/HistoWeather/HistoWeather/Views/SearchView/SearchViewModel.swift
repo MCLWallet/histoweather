@@ -6,10 +6,17 @@
 //
 
 import Foundation
+import CoreLocation
 
 @MainActor
 class SearchViewModel: ObservableObject {
-	@Published var locations: [LocationViewModel] = []
+    
+    @Published var locations: [LocationViewModel] = []
+    private let dayWeatherRepository: DayWeatherRepository
+
+    init(dayWeatherRepository: DayWeatherRepository = DayWeatherRepository()) {
+        self.dayWeatherRepository = dayWeatherRepository
+    }
 	
 	func search(name: String) async {
 		do {
@@ -19,6 +26,11 @@ class SearchViewModel: ObservableObject {
 			print(error)
 		}
 	}
+    
+    func setLocation(latitude: Double, longitude: Double){
+        dayWeatherRepository.location = CLLocation(latitude: latitude, longitude: longitude)
+        
+    }
 }
 
 struct LocationViewModel {
