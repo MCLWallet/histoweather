@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07087FD6295BAC81000187B5 /* HistoricalWeatherPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07087FD5295BAC81000187B5 /* HistoricalWeatherPersistence.swift */; };
 		07625915293A4BFB0003056A /* DayWeatherRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07625914293A4BFB0003056A /* DayWeatherRepository.swift */; };
 		07625917293A4C430003056A /* DayWeatherPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07625916293A4C430003056A /* DayWeatherPersistence.swift */; };
 		076F7CE4293A97B70054847F /* ForecastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F7CE3293A97B70054847F /* ForecastViewModel.swift */; };
@@ -60,6 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		07087FD5295BAC81000187B5 /* HistoricalWeatherPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalWeatherPersistence.swift; sourceTree = "<group>"; };
 		07625914293A4BFB0003056A /* DayWeatherRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWeatherRepository.swift; sourceTree = "<group>"; };
 		07625916293A4C430003056A /* DayWeatherPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWeatherPersistence.swift; sourceTree = "<group>"; };
 		076F7CE3293A97B70054847F /* ForecastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewModel.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				60631382292F9BCD00949DF2 /* HistoWeather.xcdatamodeld */,
 				60631380292F9BCD00949DF2 /* Persistence.swift */,
 				07625916293A4C430003056A /* DayWeatherPersistence.swift */,
+				07087FD5295BAC81000187B5 /* HistoricalWeatherPersistence.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -494,6 +497,7 @@
 				60E7D3C2295B781100FBED0B /* HistoryWeather.swift in Sources */,
 				608C5DCF293BCC7A000F51A8 /* SearchView.swift in Sources */,
 				6005BADA2955CD06004E9DA5 /* SliderViewModel.swift in Sources */,
+				07087FD6295BAC81000187B5 /* HistoricalWeatherPersistence.swift in Sources */,
 				60E7D3C4295B797D00FBED0B /* WeatherFunctions.swift in Sources */,
 				60E7D3C7295C9FB700FBED0B /* GraphView.swift in Sources */,
 				60145B112939271900DFC75B /* CurrentView.swift in Sources */,
