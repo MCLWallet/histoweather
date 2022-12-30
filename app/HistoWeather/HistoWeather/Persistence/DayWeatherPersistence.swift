@@ -27,9 +27,9 @@ struct DayWeatherPersistence {
         request.sortDescriptors = [NSSortDescriptor(key: "time", ascending: true)]
         return request
     }
-    func addDayWeather(from weather: Weather) async {
+    func addDayWeather(from weather: Weather, city: String, country: String) async {
         await context.perform {
-            _ = DayWeather(weather: weather, context: context) }
+            _ = DayWeather(weather: weather, city: city, country: country, context: context) }
         context.saveContext()
     }
     func removeAllFriends() async throws {
@@ -50,8 +50,12 @@ func convertDate(date: String) -> Date {
 
 extension DayWeather {
     convenience init(weather: Weather,
+                     city: String,
+                     country: String,
                      context: NSManagedObjectContext) {
         self.init(context: context)
+//        self.city = city
+//        self.country = country
         self.longitude = weather.longitude
         self.latitude = weather.latitude
         self.time = weather.current_weather.time

@@ -26,11 +26,13 @@ class DayWeatherRepository {
     func loadCurrentWeatherData() async throws {
         try await dayWeatherPersistence.removeAllFriends()
         
+        var city: String = "N/A"
+        var country: String = "N/A"
         CLGeocoder().reverseGeocodeLocation(self.location) { placemarks, error in
             guard let placemark = placemarks?.first else {
                 return }
-            let city = placemark.locality! // This is the city name
-            let country = placemark.country!
+            city = placemark.locality! // This is the city name
+            country = placemark.country!
             print("\(city)")
             print("\(country)")
         }
@@ -66,18 +68,20 @@ class DayWeatherRepository {
         
         let optionalWeatherResponse = try? decoder.decode(Weather.self, from: data)
         if let weatherResponse = optionalWeatherResponse {
-            await dayWeatherPersistence.addDayWeather(from: weatherResponse)
+            await dayWeatherPersistence.addDayWeather(from: weatherResponse, city: city, country: country)
         }
     }
 	
 	func loadHistoricalData() async throws {
         try await historicalWeatherPersistence.removeAllEntries()
 		
+        var city: String = "N/A"
+        var country: String = "N/A"
         CLGeocoder().reverseGeocodeLocation(self.location) { placemarks, error in
             guard let placemark = placemarks?.first else {
                 return }
-            let city = placemark.locality! // This is the city name
-            let country = placemark.country!
+            city = placemark.locality! // This is the city name
+            country = placemark.country!
             print("\(city)")
             print("\(country)")
         }
@@ -115,7 +119,7 @@ class DayWeatherRepository {
 		let optionalWeatherResponse = try? decoder.decode(HistoricalWeatherDecodable.self, from: data)
 		if let weatherResponse = optionalWeatherResponse {
 			print("Optional Weather: \(weatherResponse.daily.temperature_2m_max)")
-			await historicalWeatherPersistence.addHistoricalWeather(from: weatherResponse, city: "City", country: "country")
+			await historicalWeatherPersistence.addHistoricalWeather(from: weatherResponse, city: city, country: country)
 		}
 		
 	}
