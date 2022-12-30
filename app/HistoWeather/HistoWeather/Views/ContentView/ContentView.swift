@@ -29,7 +29,7 @@ struct ContentView: View {
                         Label("forecast", systemImage: "calendar")
                     }
                     .tag(2)
-                SliderView()
+                HistoryView()
                     .tabItem {
                         Label("history", systemImage: "clock.arrow.circlepath")
                     }
