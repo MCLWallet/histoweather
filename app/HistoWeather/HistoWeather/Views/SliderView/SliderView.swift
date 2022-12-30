@@ -45,7 +45,7 @@ struct SliderView: View {
 struct SliderView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-			SliderView(days: ["", ""])
+			SliderView(days: ["12-2-2022", "13-2-2022"])
         }
     }
 }
