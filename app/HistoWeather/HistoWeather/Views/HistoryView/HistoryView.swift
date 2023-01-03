@@ -64,7 +64,7 @@ struct HistoryView: View {
 					.cornerRadius(20)
 					.padding(.bottom, 10)
 					NavigationLink(destination: {
-						SliderView(days: daysBetween(startDate: startDate, endDate: endDate))
+                        SliderView()
 					}, label: {
 						Label("Slider", systemImage: "slider.horizontal.2.gobackward")
 							.font(/*@START_MENU_TOKEN@*/.largeTitle/*@END_MENU_TOKEN@*/)

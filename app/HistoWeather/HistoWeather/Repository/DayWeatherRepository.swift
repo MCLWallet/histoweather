@@ -28,6 +28,7 @@ class DayWeatherRepository {
         
         var city: String = "N/A"
         var country: String = "N/A"
+        
         CLGeocoder().reverseGeocodeLocation(self.location) { placemarks, error in
             guard let placemark = placemarks?.first else {
                 return }
@@ -54,7 +55,7 @@ class DayWeatherRepository {
             throw NetworkError.badURL
         }
         
-        print("\(url)")
+//        print("\(url)")
         
         let (data, response) = try await URLSession.shared.data(from: url)
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
@@ -82,8 +83,8 @@ class DayWeatherRepository {
                 return }
             city = placemark.locality! // This is the city name
             country = placemark.country!
-            print("\(city)")
-            print("\(country)")
+//            print("\(city)")
+//            print("\(country)")
         }
         
 		var components = URLComponents()
@@ -93,7 +94,7 @@ class DayWeatherRepository {
 		components.queryItems = [
 			URLQueryItem(name: "latitude", value: "\(location.coordinate.latitude)"),
             URLQueryItem(name: "longitude", value: "\(location.coordinate.longitude)"),
-			URLQueryItem(name: "start_date", value: "2022-11-18"), // TODO: get start_date from UI YYYY-MM-DD
+			URLQueryItem(name: "start_date", value: "2000-11-18"), // TODO: get start_date from UI YYYY-MM-DD
 			URLQueryItem(name: "end_date", value: "2022-12-18"), // TODO: get end_date from UI YYYY-MM-DD
 			URLQueryItem(name: "daily", value: "weathercode,temperature_2m_max,temperature_2m_min"),
 			URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
@@ -104,7 +105,7 @@ class DayWeatherRepository {
 			throw NetworkError.badURL
 		}
 		
-//		print("\(url)")
+		print("\(url)")
 		
 		let (data, response) = try await URLSession.shared.data(from: url)
 		guard (response as? HTTPURLResponse)?.statusCode == 200 else {
@@ -118,7 +119,6 @@ class DayWeatherRepository {
 
 		let optionalWeatherResponse = try? decoder.decode(HistoricalWeatherDecodable.self, from: data)
 		if let weatherResponse = optionalWeatherResponse {
-			print("Optional Weather: \(weatherResponse.daily.temperature_2m_max)")
 			await historicalWeatherPersistence.addHistoricalWeather(from: weatherResponse, city: city, country: country)
 		}
 		

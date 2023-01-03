@@ -12,6 +12,8 @@
         <relationship name="dayweather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DayWeather" inverseName="day" inverseEntity="DayWeather"/>
     </entity>
     <entity name="DayWeather" representedClassName="DayWeather" syncable="YES" codeGenerationType="class">
+        <attribute name="city" attributeType="String"/>
+        <attribute name="country" attributeType="String"/>
         <attribute name="elevation" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -27,11 +29,11 @@
         <attribute name="temperature_2m_min" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="time" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="weathericoncode" attributeType="String"/>
-        <relationship name="historicalWeather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HistoricalWeather" inverseName="historicalDaily" inverseEntity="HistoricalWeather"/>
+        <relationship name="historicalWeather" maxCount="1" deletionRule="Cascade" destinationEntity="HistoricalWeather" inverseName="historicalDaily" inverseEntity="HistoricalWeather"/>
     </entity>
     <entity name="HistoricalWeather" representedClassName="HistoricalWeather" syncable="YES" codeGenerationType="class">
         <attribute name="city" attributeType="String"/>
         <attribute name="country" attributeType="String"/>
-        <relationship name="historicalDaily" toMany="YES" deletionRule="Nullify" destinationEntity="HistoricalDaily" inverseName="historicalWeather" inverseEntity="HistoricalDaily"/>
+        <relationship name="historicalDaily" toMany="YES" deletionRule="Cascade" destinationEntity="HistoricalDaily" inverseName="historicalWeather" inverseEntity="HistoricalDaily"/>
     </entity>
 </model>

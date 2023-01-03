@@ -53,7 +53,7 @@ struct ForecastView: View {
                         print("Error while refreshing friends: \(error)")
                     }
                 }
-//				.navigationTitle(Coordinates.locationName)
+                .navigationTitle("\(day.first?.dayweather?.city ?? "NA"), \(day.first?.dayweather?.country ?? "NA")")
         }
     }
 }

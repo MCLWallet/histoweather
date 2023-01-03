@@ -11,12 +11,10 @@ struct DayWeatherPersistence {
     private let context = PersistenceController.shared.backgroundContext
     static func fetchDayWeather() -> NSFetchRequest<DayWeather> {
         let request = DayWeather.fetchRequest()
-// print("Lat:\(Coordinates.coordinate.latitude)   Long:\(Coordinates.coordinate.longitude)")
-// request.predicate = NSPredicate(format:"latitude == %d AND longitude == %d",
-//        Coordinates.latitude, Coordinates.longitude)
         request.sortDescriptors = []
         return request
     }
+    
     static func fetchAllDayWeather() -> NSFetchRequest<DayWeather> {
         let request = DayWeather.fetchRequest()
         request.sortDescriptors = []
@@ -54,8 +52,8 @@ extension DayWeather {
                      country: String,
                      context: NSManagedObjectContext) {
         self.init(context: context)
-//        self.city = city
-//        self.country = country
+        self.city = city
+        self.country = country
         self.longitude = weather.longitude
         self.latitude = weather.latitude
         self.time = weather.current_weather.time
