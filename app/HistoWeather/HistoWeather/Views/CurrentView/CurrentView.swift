@@ -25,6 +25,7 @@ struct CurrentView: View {
 	private var day: FetchedResults<Day>
 	@State private var model = ForecastViewModel()
 	@ObservedObject var locationManager = LocationManager.shared
+	@ObservedObject var unitsManager = UnitsManager.shared
 	
 	var body: some View {
 		NavigationStack {
@@ -105,6 +106,16 @@ struct CurrentView: View {
 			}
 			.navigationTitle(Coordinates.locationName)
 			.navigationBarTitleDisplayMode(.automatic)
+			.toolbar {
+				ToolbarItem(placement: .navigationBarTrailing) {
+					Button(action: {
+						unitsManager.changeCurrentTemperatureUnit()
+					}, label: {
+						Text("\(unitsManager.currentTemperatureUnit.rawValue)")
+							.font(.title)
+					})
+				}
+			}
 		}
 		.refreshable {
 			do {
