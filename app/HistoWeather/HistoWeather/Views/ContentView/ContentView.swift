@@ -62,9 +62,10 @@ struct ContentView: View {
 }
 
 struct Coordinates {
-    static var coordinate: CLLocationCoordinate2D = LocationManager.shared.userlocation != nil
-    ? LocationManager.shared.userlocation!.coordinate : CLLocationCoordinate2D(latitude: 48.20849, longitude: 16.37208)
-    static var locationName: String = (LocationManager.shared.userlocation == nil) ? "Vienna" :  "gpsLocation"
+    static var coordinate: CLLocationCoordinate2D = LocationManager.shared.userLocation != nil
+    ? LocationManager.shared.userLocation!.coordinate : CLLocationCoordinate2D(latitude: 48.20849, longitude: 16.37208)
+    static var locationName: String = (LocationManager.shared.userLocation == nil) ? "Vienna" :  "gpsLocation"
+	static var locationCountry: String = LocationManager.shared.userLocationCountry
     static var longitude: Double = coordinate.longitude
     static var latitude: Double = coordinate.latitude
 }
