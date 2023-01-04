@@ -9,7 +9,9 @@ import CoreLocation
 
 class LocationManager: NSObject, ObservableObject {
 	private let manager = CLLocationManager()
-    @Published var userlocation: CLLocation?
+    @Published var userLocation: CLLocation? = CLLocation(latitude: 48.20849, longitude: 16.37208)
+	@Published var userLocationName: String = "Vienna"
+	@Published var userLocationCountry: String = "Austria"
 	@Published var authStatus: String?
 	static let shared = LocationManager()
 	
@@ -50,6 +52,25 @@ extension LocationManager: CLLocationManagerDelegate {
 	
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 		guard let location = locations.last else { return }
-		self.userlocation = location
+		self.userLocation = location
+		
+		let defaultLocationCoordinate = CLLocation(latitude: 48.20849, longitude: 16.37208)
+		let defaultLocationName = "Vienna"
+		let defaultLocationCountry = "Austria"
+		
+		CLGeocoder().reverseGeocodeLocation(self.userLocation ?? defaultLocationCoordinate, completionHandler: {(placemarks, error) in
+			if error != nil {
+				print("Error: \(String(describing: error))")
+			} else {
+				let placemark = CLPlacemark(placemark: (placemarks?[0] as CLPlacemark?)!)
+				
+				if placemark.country != nil {
+					self.userLocationCountry = placemark.country ?? defaultLocationCountry
+				}
+				if placemark.name != nil {
+					self.userLocationName = placemark.name ?? defaultLocationName
+				}
+			}
+		})
 	}
 }

@@ -104,7 +104,7 @@ struct SliderView: View {
 		.onAppear {
 			Task {
 				do {
-					try await model.fetchApi()
+					try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
 				} catch let error {
 					print("Error while refreshing weather: \(error)")
 				}
