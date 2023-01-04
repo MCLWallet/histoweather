@@ -22,6 +22,8 @@ struct SliderView: View {
 	var days: [String] = ["12-2-2022", "13-2-2022"]
 	@State private var date = Date()
 	
+	@ObservedObject var unitsManager = UnitsManager.shared
+	
     var body: some View {
 		NavigationStack {
 			ZStack {
