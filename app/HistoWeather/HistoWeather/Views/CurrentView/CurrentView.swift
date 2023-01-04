@@ -26,7 +26,7 @@ struct CurrentView: View {
 	@State private var model = CurrentViewModel()
 	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
-	
+
 	var body: some View {
 		NavigationStack {
 			ScrollView {
@@ -123,6 +123,12 @@ struct CurrentView: View {
 					})
 				}
 			}
+			.background(
+				getTemperatureGradient(
+					temperature: Double(truncating: (dayWeather.last?.temperature ?? 0)),
+					unit: unitsManager.currentTemperatureUnit)
+			)
+			.toolbarBackground(.hidden, for: .navigationBar)
 		}
 		.refreshable {
 			do {
