@@ -9,15 +9,14 @@ import Foundation
 import CoreLocation
 
 struct DayWeatherRepository {
-    let tempUnit: String = "celsius"
     private let dayWeatherPersistence: DayWeatherPersistence
     private let historicalWeatherPersistence: HistoricalWeatherPersistence
-    init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence(),  historicalWeatherPersistence: HistoricalWeatherPersistence = HistoricalWeatherPersistence()) {
+    init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence(), historicalWeatherPersistence: HistoricalWeatherPersistence = HistoricalWeatherPersistence()) {
         self.dayWeatherPersistence = dayWeatherPersistence
         self.historicalWeatherPersistence = historicalWeatherPersistence
     }
 	// Two calls: get lat, long and then pass it to getCityName and then persist it
-    func loadCurrentWeatherData() async throws {
+	func loadCurrentWeatherData(tempUnit: String) async throws {
         try await dayWeatherPersistence.removeAllFriends()
         
         var components = URLComponents()
@@ -55,7 +54,7 @@ struct DayWeatherRepository {
         }
     }
 	
-	func loadHistoricalData() async throws {
+	func loadHistoricalData(tempUnit: String) async throws {
         try await historicalWeatherPersistence.removeAllEntries()
 		
 		var components = URLComponents()

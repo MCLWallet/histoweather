@@ -11,6 +11,7 @@ struct SliderView: View {
 	@State private var sliderValue: Double = 0
 	@State private var model = SliderViewModel()
 	@State var days: [String]
+	@ObservedObject var unitsManager = UnitsManager.shared
 	
     var body: some View {
 		ZStack {
@@ -33,7 +34,7 @@ struct SliderView: View {
 		.onAppear {
 			Task {
 				do {
-					try await model.fetchApi()
+					try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
 				} catch let error {
 					print("Error while refreshing weather: \(error)")
 				}
