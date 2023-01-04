@@ -30,22 +30,27 @@ struct ContentView: View {
                         Label("forecast", systemImage: "calendar")
                     }
                     .tag(2)
-                HistoryView()
+				GraphView()
+					.tabItem {
+						Label("Graph", systemImage: "chart.xyaxis.line")
+					}
+					.tag(3)
+                SliderView()
                     .tabItem {
-                        Label("history", systemImage: "clock.arrow.circlepath")
+                        Label("Slider", systemImage: "slider.horizontal.2.gobackward")
                     }
-                    .tag(3)
+                    .tag(4)
 				Text("")
 					.tabItem {
 						Label("Search", systemImage: "location.magnifyingglass")
 					}
-					.tag(4)
+					.tag(5)
 					.onAppear {
 						self.sheetIsPresenting = true
 					}
             }
 			.onChange(of: selectedTab) {
-				if selectedTab == 4 {
+				if selectedTab == 5 {
 					self.sheetIsPresenting = true
 				} else {
 					self.oldSelectedTab = $0

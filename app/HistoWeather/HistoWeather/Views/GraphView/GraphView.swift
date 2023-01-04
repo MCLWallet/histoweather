@@ -11,10 +11,10 @@ import Charts
 struct LineGraphDate: Identifiable {
 	var id: UUID
 	
-	var day: String										// represents line
+	var day: String									// represents line
 	var time: Date									// x-axis
-	var temperature: Double				// y-axis
-	var windSpeed: Double					// y-axis
+	var temperature: Double							// y-axis
+	var windSpeed: Double							// y-axis
 	var rain: Double								// y-axis
 	
 	init(day: String, time: String, temperature: Double, windSpeed: Double, rain: Double) {
@@ -91,45 +91,48 @@ struct GraphView: View {
 	]
 	
     var body: some View {
-		VStack {
-			HStack {
-				Text("Pick 2 days to compare ")
-					.font(.title2)
-					.fontWeight(.bold)
-				Spacer()
+		NavigationStack {
+			ScrollView {
+				HStack {
+					Text("Pick 2 days to compare ")
+						.font(.title2)
+						.fontWeight(.bold)
+					Spacer()
+				}
+				VStack {
+					DatePicker(
+						selection: .constant(Date()),
+						displayedComponents: [.date],
+						label: { Text("Day 1") }
+					)
+					DatePicker(
+						selection: .constant(Date()),
+						displayedComponents: [.date],
+						label: { Text("Day 2") }
+					)
+				}
+				.padding(.bottom, 30)
+				Picker("Parameter", selection: $selectedParameter) {
+					Text("Temperature").tag(LineGraphParameter.temperature)
+					Text("Wind Speed").tag(LineGraphParameter.windSpeed)
+					Text("Rain").tag(LineGraphParameter.rain)
+				}
+				.pickerStyle(.segmented)
+				Chart(data) {
+					LineMark(
+						x: .value("Hours", $0.time),
+						y: .value("Temperature", $0.temperature)
+					)
+					.foregroundStyle(by: .value("Day", $0.day))
+				}
+				.chartXAxisLabel("Time")
+				.chartYAxisLabel("°C")
+				.frame(minHeight: 420)
+				.padding(.all)
 			}
-			VStack {
-				DatePicker(
-					selection: .constant(Date()),
-					displayedComponents: [.date],
-					label: { Text("Day 1") }
-				)
-				DatePicker(
-					selection: .constant(Date()),
-					displayedComponents: [.date],
-					label: { Text("Day 2") }
-				)
-			}
-			.padding(.bottom, 30)
-			Picker("Parameter", selection: $selectedParameter) {
-				Text("Temperature").tag(LineGraphParameter.temperature)
-				Text("Wind Speed").tag(LineGraphParameter.windSpeed)
-				Text("Rain").tag(LineGraphParameter.rain)
-			}
-			.pickerStyle(.segmented)
-			Chart(data) {
-				LineMark(
-					x: .value("Hours", $0.time),
-					y: .value("Temperature", $0.temperature)
-				)
-				.foregroundStyle(by: .value("Day", $0.day))
-			}
-			.chartXAxisLabel("Time")
-			.chartYAxisLabel("°C")
+			.navigationTitle(Coordinates.locationName)
 			.padding(.all)
-			Spacer()
 		}
-		.padding(.all)
     }
 }
 
