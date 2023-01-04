@@ -23,7 +23,7 @@ struct CurrentView: View {
 	@FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(),
 				  animation: .default)
 	private var day: FetchedResults<Day>
-	@State private var model = ForecastViewModel()
+	@State private var model = CurrentViewModel()
 	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
 	
@@ -47,7 +47,7 @@ struct CurrentView: View {
 						.scaledToFit()
 						.padding(.all)
 						.frame(maxWidth: 250)
-					Text("\(String(format: "%.0f", dayWeather.last?.temperature ?? 0)) °C")
+					Text("\(String(format: "%.0f", dayWeather.last?.temperature ?? 0)) \(unitsManager.currentTemperatureUnit.rawValue)")
 						.font(.largeTitle)
 						.fontWeight(.light)
 						.multilineTextAlignment(.center)
@@ -55,10 +55,10 @@ struct CurrentView: View {
 						.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
 					HStack {
 						Text("high")
-						Text("\(String(format: "%.0f", day.first?.temperature_2m_max ?? 0)) °C")
+						Text("\(String(format: "%.0f", day.first?.temperature_2m_max ?? 0)) \(unitsManager.currentTemperatureUnit.rawValue)")
 							.bold()
 						Text("low")
-						Text("\(String(format: "%.0f", day.first?.temperature_2m_min ?? 0)) °C")
+						Text("\(String(format: "%.0f", day.first?.temperature_2m_min ?? 0)) \(unitsManager.currentTemperatureUnit.rawValue)")
 							.bold()
 					}
 					.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
@@ -110,6 +110,13 @@ struct CurrentView: View {
 				ToolbarItem(placement: .navigationBarTrailing) {
 					Button(action: {
 						unitsManager.changeCurrentTemperatureUnit()
+						Task {
+							do {
+								try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
+							} catch let error {
+								print("Error while refreshing weather: \(error)")
+							}
+						}
 					}, label: {
 						Text("\(unitsManager.currentTemperatureUnit.rawValue)")
 							.font(.title)
@@ -119,7 +126,7 @@ struct CurrentView: View {
 		}
 		.refreshable {
 			do {
-				try await model.fetchApi()
+				try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
 			} catch let error {
 				print("Error while refreshing weather: \(error)")
 			}
@@ -127,7 +134,7 @@ struct CurrentView: View {
 		.onAppear {
 			Task {
 				do {
-					try await model.fetchApi()
+					try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
 				} catch let error {
 					print("Error while refreshing weather: \(error)")
 				}

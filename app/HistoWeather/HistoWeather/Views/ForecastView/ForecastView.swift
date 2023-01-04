@@ -41,7 +41,7 @@ struct ForecastView: View {
 			.onAppear {
 				Task {
 					do {
-						try await model.fetchApi()
+						try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
 					} catch let error {
 						print("Error while refreshing friends: \(error)")
 					}
@@ -49,7 +49,7 @@ struct ForecastView: View {
 			}
 			.refreshable {
 				do {
-					try await model.fetchApi()
+					try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
 				} catch let error {
 					print("Error while refreshing friends: \(error)")
 				}
@@ -59,6 +59,13 @@ struct ForecastView: View {
 				ToolbarItem(placement: .navigationBarTrailing) {
 					Button(action: {
 						unitsManager.changeCurrentTemperatureUnit()
+						Task {
+							do {
+								try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
+							} catch let error {
+								print("Error while refreshing friends: \(error)")
+							}
+						}
 					}, label: {
 						Text("\(unitsManager.currentTemperatureUnit.rawValue)")
 							.font(.title)

@@ -28,4 +28,14 @@ class UnitsManager: NSObject, ObservableObject {
 			currentTemperatureUnit = .celsius
 		}
 	}
+	
+	func getCurrentTemperatureFullString() -> String {
+		if currentTemperatureUnit == .celsius {
+			return "celsius"
+		} else if currentTemperatureUnit == .fahrenheit {
+			return "fahrenheit"
+		} else {
+			return "unknown"
+		}
+	}
 }
