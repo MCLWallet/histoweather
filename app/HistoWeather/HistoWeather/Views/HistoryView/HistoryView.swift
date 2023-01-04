@@ -47,52 +47,25 @@ struct HistoryView: View {
 				// 2. Pick visualization style
 				VStack {
 					HStack {
-						Text("2. Pick a visualization style")
+						Text("2. Start exploring with Slider")
 							.font(.title2)
 							.fontWeight(.bold)
 						Spacer()
 					}
-					NavigationLink(destination: {
-						GraphView()
-					}, label: {
-						Label("Graph", systemImage: "chart.xyaxis.line")
-							.font(/*@START_MENU_TOKEN@*/.largeTitle/*@END_MENU_TOKEN@*/)
-					})
-					.frame(maxWidth: .infinity, minHeight: 180)
-					.padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-					.background(Color("VeryLightBlue"))
-					.cornerRadius(20)
-					.padding(.bottom, 10)
 					NavigationLink(destination: {
 						SliderView(days: daysBetween(startDate: startDate, endDate: endDate))
 					}, label: {
 						Label("Slider", systemImage: "slider.horizontal.2.gobackward")
 							.font(/*@START_MENU_TOKEN@*/.largeTitle/*@END_MENU_TOKEN@*/)
 					})
-					.frame(maxWidth: .infinity, minHeight: 180)
+					.frame(maxWidth: .infinity, minHeight: 400)
 					.padding(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
 					.background(Color("VeryLightBlue"))
 					.cornerRadius(20)
 				}
 				.padding(.all)
-//				VStack {
-//					NavigationLink {
-//						// TODO: condition if Graph or Slider
-//						GraphView()
-//					} label: {
-//						Text("Show Result")
-//							.padding()
-//							.fontWeight(.bold)
-//							.foregroundColor(.white)
-//					}
-//					.frame(maxWidth: .infinity)
-//					.padding(.horizontal, -32)
-//					.background(Color("AccentColor"))
-//					.clipShape(Capsule())
-//					.padding(.horizontal)
-//				}
 			}
-			.navigationTitle("History")
+			.navigationTitle(Coordinates.locationName)
 		}
     }
 	
