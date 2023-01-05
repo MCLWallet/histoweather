@@ -98,10 +98,10 @@ struct SliderView: View {
 					}
 					.padding(.horizontal)
 					.padding(.bottom)
-					
 				}
 			}
 			.navigationTitle(Coordinates.locationName)
+			.foregroundColor(.hWBlack)
 		}
 		.onAppear {
 			Task {
