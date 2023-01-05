@@ -121,6 +121,7 @@ struct CurrentView: View {
 						Text("\(unitsManager.currentTemperatureUnit.rawValue)")
 							.font(.title)
 					})
+					.foregroundColor(.hWFontColor)
 				}
 			}
 			.background(
@@ -128,7 +129,8 @@ struct CurrentView: View {
 					temperature: Double(truncating: (dayWeather.last?.temperature ?? 0)),
 					unit: unitsManager.currentTemperatureUnit)
 			)
-			.toolbarBackground(.hidden, for: .navigationBar)
+			.toolbarBackground(getNavigationBarColorByTemperature(temperature: Double(truncating: (dayWeather.last?.temperature ?? 0)), unit: unitsManager.currentTemperatureUnit), for: .navigationBar)
+			.foregroundColor(.hWBlack)
 		}
 		.refreshable {
 			do {

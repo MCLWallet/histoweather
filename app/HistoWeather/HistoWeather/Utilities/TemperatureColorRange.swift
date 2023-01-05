@@ -9,6 +9,13 @@ import Foundation
 import SwiftUI
 
 extension Color {
+	// Typography & Background Colors
+	static let hWWhite = Color("HWWhite")
+	static let hWBlack = Color("HWBlack")
+	static let hWFontColor = Color("HWFontColor")
+	static let hWBackgroundColor = Color("HWBackgroundColor")
+	
+	// App Icon & Weather Colors
 	static let bordeauxRed = Color("BordeauxRed")
 	static let darkBlue = Color("DarkBlue")
 	static let justBlue = Color("JustBlue")
@@ -111,5 +118,33 @@ func getTemperatureGradient(temperature: Double, unit: TemperatureUnit) -> Linea
 		return TemperatureColorRange.veryHot.gradient
 	} else {
 		return TemperatureColorRange.cool.gradient
+	}
+}
+
+func getNavigationBarColorByTemperature(temperature: Double, unit: TemperatureUnit) -> Color {
+	let celsiusRange: [Double] = [0, 10, 15, 20, 30, 40]
+	let fahrenheitRange: [Double] = convertTemperatureRange(temperatures: celsiusRange, unit: .celsius)
+	var temperatureRange: [Double] = celsiusRange
+
+	if unit == .fahrenheit {
+		temperatureRange = fahrenheitRange
+	}
+
+	if temperature < temperatureRange[0] {
+		return .white
+	} else if temperature >= temperatureRange[0] && temperature < temperatureRange[1] {
+		return .justBlue
+	} else if temperature >= temperatureRange[1] && temperature < temperatureRange[2] {
+		return .darkBlue
+	} else if temperature >= temperatureRange[2] && temperature < temperatureRange[3] {
+		return .lightYellow
+	} else if temperature >= temperatureRange[3] && temperature < temperatureRange[4] {
+		return .lightRed
+	} else if temperature >= temperatureRange[4] && temperature < temperatureRange[5] {
+		return .lightRed
+	} else if temperature >= temperatureRange[5] {
+		return .veryRed
+	} else {
+		return .darkBlue
 	}
 }

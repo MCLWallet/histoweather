@@ -23,17 +23,22 @@ struct ForecastView: View {
 							Text("\((index.time ?? Date()).formatted(.dateTime.weekday(.wide)))")
 								.font(.title3)
 								.fontWeight(.medium)
+								.foregroundColor(.hWBlack)
 								.frame(minWidth: 150, alignment: .leading)
 							Spacer()
 								Image(systemName: index.weathericoncode ?? "wrench.fill")
 									.font(.title)
+									.foregroundColor(.hWBlack)
 							Text(String(format: "%.0f / %.0f", index.temperature_2m_min, index.temperature_2m_max))
 								.font(.title2)
+								.foregroundColor(.hWBlack)
 								.padding(.leading)
 								.frame(minWidth: 80)
 						}
 						.padding(.all)
-						.background(.yellow)
+						.background(
+							getTemperatureGradient(temperature: Double(index.temperature_2m_max), unit: unitsManager.currentTemperatureUnit)
+						)
 						.cornerRadius(20)
 						.padding(.all, 10)
 				}
@@ -70,6 +75,7 @@ struct ForecastView: View {
 						Text("\(unitsManager.currentTemperatureUnit.rawValue)")
 							.font(.title)
 					})
+					.foregroundColor(.hWFontColor)
 				}
 			}
         }

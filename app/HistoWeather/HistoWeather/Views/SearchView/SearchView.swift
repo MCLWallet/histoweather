@@ -31,6 +31,7 @@ struct SearchView: View {
 					}, label: {
 						Label("\(locationManager.userLocationName), \(locationManager.userLocationCountry)", systemImage: "location.fill")
 					})
+					.foregroundColor(.hWFontColor)
 //				}
 				
 				ForEach(model.locations, id: \.id) { location in
@@ -41,6 +42,7 @@ struct SearchView: View {
 						searchText = ""
 						dismiss()
 					}
+					.foregroundColor(.hWFontColor)
 				}
 			}
 			.searchable(text: $searchText, prompt: "typeInLocation")
