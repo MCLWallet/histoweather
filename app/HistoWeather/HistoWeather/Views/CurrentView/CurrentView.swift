@@ -47,7 +47,7 @@ struct CurrentView: View {
 						.scaledToFit()
 						.padding(.all)
 						.frame(maxWidth: 250)
-					Text("\(String(format: "%.0f", dayWeather.last?.temperature ?? 0)) \(unitsManager.currentTemperatureUnit.rawValue)")
+					Text("\(String(format: "%.0f", Double(truncating: dayWeather.last?.temperature ?? 0))) \(unitsManager.currentTemperatureUnit.rawValue)")
 						.font(.largeTitle)
 						.fontWeight(.light)
 						.multilineTextAlignment(.center)
