@@ -16,7 +16,7 @@ class DayWeatherRepository {
     private let dayWeatherPersistence: DayWeatherPersistence
     private let historicalWeatherPersistence: HistoricalWeatherPersistence
     
-    init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence(),  historicalWeatherPersistence: HistoricalWeatherPersistence = HistoricalWeatherPersistence()) {
+    init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence(), historicalWeatherPersistence: HistoricalWeatherPersistence = HistoricalWeatherPersistence()) {
         self.dayWeatherPersistence = dayWeatherPersistence
         self.historicalWeatherPersistence = historicalWeatherPersistence
         self.location = CLLocation(latitude: LocationManager.shared.userlocation?.coordinate.latitude ?? 48.20849, longitude: LocationManager.shared.userlocation?.coordinate.longitude ?? 16.37208)
@@ -124,4 +124,3 @@ class DayWeatherRepository {
 		
 	}
 }
-

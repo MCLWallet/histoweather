@@ -29,16 +29,13 @@ struct HistoricalWeatherPersistence {
         request.sortDescriptors = [NSSortDescriptor(key: "time", ascending: true)]
         return request
     }
-
     func addHistoricalWeather(from historicalWeatherDecodable: HistoricalWeatherDecodable, city: String, country: String) async {
         await context.perform {
-            
             let x = HistoricalWeather(historicalWeather: historicalWeatherDecodable, city: city, country: country, context: context)
             print("\nHERE:\n \(x) \n\n")
-        }
-        
-        context.saveContext()
 
+            context.saveContext() // saveContext moved inside the perform scope
+        }
     }
 
     func removeAllEntries() async throws {
@@ -68,7 +65,6 @@ extension HistoricalWeather {
         self.city = city
         self.country = country
         for i in 0...historicalWeather.daily.temperature_2m_max.count - 1{ // when i try to save more than 1800 entryies save context throws an error
-            
             
             addToHistoricalDaily(HistoricalDaily(day: HistoricalDailyEntry(
                 time: convertDate(date: historicalWeather.daily.time[i]),
