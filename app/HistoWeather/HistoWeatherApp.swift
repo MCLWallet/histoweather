@@ -18,7 +18,7 @@ struct HistoWeatherApp: App {
 				LocationRequestView().environment(\.managedObjectContext, persistenceController.container.viewContext)
 			} else {
 				ContentView(selectedTab: (locationManager.authStatus != "authorizedAlways"
-								  && locationManager.authStatus != "authorizedWhenInUse") ? 4 : 1)
+								  && locationManager.authStatus != "authorizedWhenInUse") ? 5 : 1)
 					.environment(\.managedObjectContext, persistenceController.container.viewContext)
 			}
         }
