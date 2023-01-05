@@ -10,7 +10,7 @@ import CoreLocation
 class LocationManager: NSObject, ObservableObject {
 	private let manager = CLLocationManager()
     @Published var userLocation: CLLocation? = CLLocation(latitude: 48.20849, longitude: 16.37208)
-	@Published var userLocationName: String = "Vienna"
+	@Published var userLocationCity: String = "Vienna"
 	@Published var userLocationCountry: String = "Austria"
 	@Published var authStatus: String?
 	static let shared = LocationManager()
@@ -68,7 +68,7 @@ extension LocationManager: CLLocationManagerDelegate {
 					self.userLocationCountry = placemark.country ?? defaultLocationCountry
 				}
 				if placemark.name != nil {
-					self.userLocationName = placemark.name ?? defaultLocationName
+					self.userLocationCity = placemark.name ?? defaultLocationName
 				}
 			}
 		})

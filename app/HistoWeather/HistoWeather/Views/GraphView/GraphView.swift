@@ -130,7 +130,7 @@ struct GraphView: View {
 				.frame(minHeight: 420)
 				.padding(.all)
 			}
-			.navigationTitle(Coordinates.locationName)
+//			.navigationTitle(Coordinates.locationName)
 			.padding(.all)
 		}
     }

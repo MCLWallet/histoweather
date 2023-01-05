@@ -54,6 +54,7 @@ struct HistoryView: View {
 					}
 					NavigationLink(destination: {
 						SliderView(days: daysBetween(startDate: startDate, endDate: endDate))
+
 					}, label: {
 						Label("Slider", systemImage: "slider.horizontal.2.gobackward")
 							.font(/*@START_MENU_TOKEN@*/.largeTitle/*@END_MENU_TOKEN@*/)
@@ -65,7 +66,7 @@ struct HistoryView: View {
 				}
 				.padding(.all)
 			}
-			.navigationTitle(Coordinates.locationName)
+//			.navigationTitle(Coordinates.locationName)
 		}
     }
 	

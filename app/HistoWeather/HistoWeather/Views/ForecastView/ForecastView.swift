@@ -54,7 +54,7 @@ struct ForecastView: View {
 					print("Error while refreshing friends: \(error)")
 				}
 			}
-			.navigationTitle(Coordinates.locationName)
+//			.navigationTitle(Coordinates.locationName)
 			.toolbar {
 				ToolbarItem(placement: .navigationBarTrailing) {
 					Button(action: {
