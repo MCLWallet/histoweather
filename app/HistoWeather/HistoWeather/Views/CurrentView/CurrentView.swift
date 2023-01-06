@@ -104,7 +104,7 @@ struct CurrentView: View {
 					}.padding(.all)
 				}
 			}
-			.navigationTitle(Coordinates.locationName)
+            .navigationTitle("\(dayWeather.last?.city ?? "N/A"), \(dayWeather.last?.country ?? "N/A")")
 			.navigationBarTitleDisplayMode(.automatic)
 			.toolbar {
 				ToolbarItem(placement: .navigationBarTrailing) {

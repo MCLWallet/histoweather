@@ -11,6 +11,8 @@
 		07625915293A4BFB0003056A /* DayWeatherRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07625914293A4BFB0003056A /* DayWeatherRepository.swift */; };
 		07625917293A4C430003056A /* DayWeatherPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07625916293A4C430003056A /* DayWeatherPersistence.swift */; };
 		076F7CE4293A97B70054847F /* ForecastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076F7CE3293A97B70054847F /* ForecastViewModel.swift */; };
+		0772736A29682EC900CD0188 /* HistoricalPersistenceGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0772736929682EC900CD0188 /* HistoricalPersistenceGraph.swift */; };
+		07C503C629672B5100A7B218 /* GraphViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C503C529672B5100A7B218 /* GraphViewModel.swift */; };
 		6005BADA2955CD06004E9DA5 /* SliderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6005BAD92955CD06004E9DA5 /* SliderViewModel.swift */; };
 		60145B0F2938D74C00DFC75B /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 60145B0E2938D74C00DFC75B /* .swiftlint.yml */; };
 		60145B112939271900DFC75B /* CurrentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60145B102939271900DFC75B /* CurrentView.swift */; };
@@ -73,6 +75,8 @@
 		07625914293A4BFB0003056A /* DayWeatherRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWeatherRepository.swift; sourceTree = "<group>"; };
 		07625916293A4C430003056A /* DayWeatherPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayWeatherPersistence.swift; sourceTree = "<group>"; };
 		076F7CE3293A97B70054847F /* ForecastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastViewModel.swift; sourceTree = "<group>"; };
+		0772736929682EC900CD0188 /* HistoricalPersistenceGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalPersistenceGraph.swift; sourceTree = "<group>"; };
+		07C503C529672B5100A7B218 /* GraphViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewModel.swift; sourceTree = "<group>"; };
 		6005BAD92955CD06004E9DA5 /* SliderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderViewModel.swift; sourceTree = "<group>"; };
 		60145B0E2938D74C00DFC75B /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		60145B102939271900DFC75B /* CurrentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentView.swift; sourceTree = "<group>"; };
@@ -162,6 +166,7 @@
 				60631380292F9BCD00949DF2 /* Persistence.swift */,
 				07625916293A4C430003056A /* DayWeatherPersistence.swift */,
 				07087FD5295BAC81000187B5 /* HistoricalWeatherPersistence.swift */,
+				0772736929682EC900CD0188 /* HistoricalPersistenceGraph.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -342,6 +347,7 @@
 			isa = PBXGroup;
 			children = (
 				60E7D3C6295C9FB700FBED0B /* GraphView.swift */,
+				07C503C529672B5100A7B218 /* GraphViewModel.swift */,
 			);
 			path = GraphView;
 			sourceTree = "<group>";
@@ -512,6 +518,7 @@
 				60631384292F9BCD00949DF2 /* HistoWeather.xcdatamodeld in Sources */,
 				60BCD979295CA02F000F2FB1 /* HistoryView.swift in Sources */,
 				601757E4293D4F1E0048139D /* NetworkChecker.swift in Sources */,
+				0772736A29682EC900CD0188 /* HistoricalPersistenceGraph.swift in Sources */,
 				601757E0293D29D90048139D /* Location.swift in Sources */,
 				60297AB32952288600B32328 /* CurrentViewModel.swift in Sources */,
 				60C1E26329301D59003E23CE /* ContentView.swift in Sources */,
@@ -519,6 +526,7 @@
 				60E7D3C0295B77E700FBED0B /* CurrentWeather.swift in Sources */,
 				6082310C296618360085BC76 /* TemperatureColorRange.swift in Sources */,
 				60631378292F9BCB00949DF2 /* HistoWeatherApp.swift in Sources */,
+				07C503C629672B5100A7B218 /* GraphViewModel.swift in Sources */,
 				601757DE293D289A0048139D /* SearchViewModel.swift in Sources */,
 				60145B13293928BD00DFC75B /* ForecastView.swift in Sources */,
 				07625915293A4BFB0003056A /* DayWeatherRepository.swift in Sources */,
