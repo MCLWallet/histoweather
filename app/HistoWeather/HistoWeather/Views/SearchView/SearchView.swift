@@ -58,12 +58,12 @@ struct SearchView: View {
 					}
 					// TODO: Don't show when you're at beginning of app (no location yet)
 				}
-				ToolbarItem(placement: .confirmationAction) {
-					Button("Done") {
-						dismiss()
-					}
-					// TODO: Disable when there is no location yet
-				}
+//				ToolbarItem(placement: .confirmationAction) {
+//					Button("Done") {
+//						dismiss()
+//					}
+//					// TODO: Disable when there is no location yet
+//				}
 			}
 		}
     }

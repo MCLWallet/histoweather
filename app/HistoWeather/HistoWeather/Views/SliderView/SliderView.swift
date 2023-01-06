@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct SliderView: View {
+	@FetchRequest(fetchRequest: HistoricalWeatherPersistence.fetchAllHistoricalWeather(),
+				  animation: .default)
+	private var historicalWeather: FetchedResults<HistoricalWeather>
     @State private var sliderValue: Double = 1999
 	@State private var model = SliderViewModel()
 	@State private var startDate = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
@@ -31,10 +34,7 @@ struct SliderView: View {
 					Spacer()
 					Slider(
 						value: $sliderValue,
-                        in: 2000 ... 2022,
-						label: {
-//							Text("\(days[Int(round(sliderValue))])")
-						}
+                        in: 2000 ... 2022
 					)
 					.padding(.horizontal)
 					HStack {
@@ -57,7 +57,7 @@ struct SliderView: View {
 					.padding(.bottom)
 				}
 			}
-			.navigationTitle(Coordinates.locationName)
+			.navigationTitle(String(historicalWeather.last?.city ?? "nA"))
 			.foregroundColor(.hWBlack)
 		}
 		.onAppear {

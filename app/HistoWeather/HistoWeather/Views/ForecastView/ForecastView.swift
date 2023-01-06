@@ -53,10 +53,12 @@ struct ForecastView: View {
 				}
 			}
 			.refreshable {
-				do {
-					try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
-				} catch let error {
-					print("Error while refreshing friends: \(error)")
+				Task {
+					do {
+						try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
+					} catch let error {
+						print("Error while refreshing friends: \(error)")
+					}
 				}
 			}
 //			.navigationTitle(Coordinates.locationName)

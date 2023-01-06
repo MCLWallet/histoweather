@@ -10,7 +10,6 @@ import CoreLocation
 
 class DayWeatherRepository {
     
-
     @Published var location: CLLocation
     
     private let dayWeatherPersistence: DayWeatherPersistence
@@ -37,8 +36,8 @@ class DayWeatherRepository {
                 return }
             city = placemark.locality! // This is the city name
             country = placemark.country!
-//            print("\(city)")
-//            print("\(country)")
+            print("\(city)")
+            print("\(country)")
         }
 
         var components = URLComponents()
