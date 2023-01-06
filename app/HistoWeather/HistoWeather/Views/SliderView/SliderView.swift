@@ -19,7 +19,6 @@ struct SliderView: View {
 		return calendar.date(from: startComponents)! ... Date()
 	}()
 	
-	var days: [String] = ["12-2-2022", "13-2-2022"]
 	@State private var date = Date()
 	
 	@ObservedObject var unitsManager = UnitsManager.shared
@@ -27,54 +26,12 @@ struct SliderView: View {
     var body: some View {
 		NavigationStack {
 			ZStack {
-				LinearGradient(gradient: Gradient(colors: {
-					if sliderValue > Double(days.count-1) / 2 {
-						return [Color("BordeauxRed"), Color("VeryLightYellow")]
-					} else {
-						return [Color("DarkBlue"), Color("VeryLightBlue")]
-					}
-				}()), startPoint: .topLeading,
-				   endPoint: .bottomTrailing)
-					.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                dynamicHistoricalData(date: Calendar.current.date(from: DateComponents(year: Int(sliderValue), month: 1, day: 1)) ?? Date())
 				VStack {
-					// Date & Location View
-					HStack {
-						VStack(alignment: .leading) {
-//							Text("\(days[Int(round(sliderValue))])")
-//								.font(.title3)
-						}
-						.padding(.bottom)
-						.padding(.leading)
-						Spacer()
-					}
-					Spacer()
-					// Temperature View
-					VStack {
-						Image(systemName: "wrench.fill")			// TODO: weathercode from History Weather API
-							.resizable()
-							.scaledToFit()
-							.padding(.all)
-							.frame(maxWidth: 250)
-						Text("0 °C")													// TODO: temperature from History Weather API
-							.font(.largeTitle)
-							.fontWeight(.light)
-							.multilineTextAlignment(.center)
-							.padding(.bottom)
-							.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
-						HStack {
-							Text("high")
-							Text("0 °C")												// TODO: max_temperature from History Weather API
-								.bold()
-							Text("low")
-							Text("0 °C")												// TODO: min_temperature from History Weather API
-								.bold()
-						}
-						.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
-					}
 					Spacer()
 					Slider(
 						value: $sliderValue,
-						in: 0 ... Double(days.count-1),
+                        in: 2000 ... 2022,
 						label: {
 //							Text("\(days[Int(round(sliderValue))])")
 						}
@@ -100,9 +57,8 @@ struct SliderView: View {
 					.padding(.bottom)
 					
 				}
-
 			}
-//			.navigationTitle(Coordinates.locationName)
+//            .navigationTitle(model.dayWeatherReposi)
 		}
 		.onAppear {
 			Task {
@@ -115,8 +71,6 @@ struct SliderView: View {
 		}
     }
 }
-
-
 
 struct dynamicHistoricalData: View {
     @FetchRequest var day: FetchedResults<HistoricalDaily>
@@ -140,10 +94,27 @@ struct dynamicHistoricalData: View {
                endPoint: .bottomTrailing)
                 .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             
-            VStack{
-                Text("Max Temp: \(self.day.first?.temperature_2m_max ?? 0)")
-                Text("Max Temp: \(self.day.first?.time ?? Date())")
-                Text("City: \(self.day.first?.historicalWeather?.city ?? "Missing")")
+            VStack {
+                Image(systemName: self.day.last?.weathericoncode ?? "wrench.fill")            // TODO: weathercode from History Weather API
+                    .resizable()
+                    .scaledToFit()
+                    .padding(.all)
+                    .frame(maxWidth: 250)
+                Text("0 °C")                                                    // TODO: temperature from History Weather API
+                    .font(.largeTitle)
+                    .fontWeight(.light)
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom)
+                    .dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
+                HStack {
+                    Text("high")
+                    Text("\(self.day.last?.temperature_2m_max ?? 0)")                                                // TODO: max_temperature from History Weather API
+                        .bold()
+                    Text("low")
+                    Text("\(self.day.last?.temperature_2m_min ?? 0)")                                                // TODO: min_temperature from History Weather API
+                        .bold()
+                }
+                .dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
             }
         }
     }

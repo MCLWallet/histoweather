@@ -53,7 +53,7 @@ struct HistoryView: View {
 						Spacer()
 					}
 					NavigationLink(destination: {
-						SliderView(days: daysBetween(startDate: startDate, endDate: endDate))
+//						SliderView(days: daysBetween(startDate: startDate, endDate: endDate))
 
 					}, label: {
 						Label("Slider", systemImage: "slider.horizontal.2.gobackward")

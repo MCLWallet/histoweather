@@ -31,6 +31,18 @@
         <attribute name="weathericoncode" attributeType="String"/>
         <relationship name="historicalWeather" maxCount="1" deletionRule="Cascade" destinationEntity="HistoricalWeather" inverseName="historicalDaily" inverseEntity="HistoricalWeather"/>
     </entity>
+    <entity name="HistoricalGraph" representedClassName="HistoricalGraph" syncable="YES" codeGenerationType="class">
+        <attribute name="city" attributeType="String"/>
+        <attribute name="country" attributeType="String"/>
+        <relationship name="historicalHourly" toMany="YES" deletionRule="Cascade" destinationEntity="HistoricalHourly" inverseName="historicalGraph" inverseEntity="HistoricalHourly"/>
+    </entity>
+    <entity name="HistoricalHourly" representedClassName="HistoricalHourly" syncable="YES" codeGenerationType="class">
+        <attribute name="rain" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="temperature_2m" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="time" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="windspeed_10m" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="historicalGraph" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HistoricalGraph" inverseName="historicalHourly" inverseEntity="HistoricalGraph"/>
+    </entity>
     <entity name="HistoricalWeather" representedClassName="HistoricalWeather" syncable="YES" codeGenerationType="class">
         <attribute name="city" attributeType="String"/>
         <attribute name="country" attributeType="String"/>

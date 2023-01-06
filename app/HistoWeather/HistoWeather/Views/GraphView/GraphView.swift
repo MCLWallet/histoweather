@@ -36,7 +36,14 @@ enum LineGraphParameter: String, CaseIterable, Identifiable {
 }
 
 struct GraphView: View {
+    @State private var model = GraphViewModel()
+    @ObservedObject var unitsManager = UnitsManager.shared
+    @FetchRequest(fetchRequest: HistoricalPersistenceGraph.fetchHistoricalGraph(),
+                  animation: .default)
+    private var historicalGraph: FetchedResults<HistoricalGraph>
+
 	@State private var selectedParameter: LineGraphParameter = .temperature
+
 	var data: [LineGraphDate] = [
 		// Day 1
 		LineGraphDate(day: "2022-10-27", time: "00:00", temperature: 10.7, windSpeed: 9, rain: 0),
@@ -89,52 +96,82 @@ struct GraphView: View {
 		LineGraphDate(day: "2022-10-28", time: "22:00", temperature: 6, windSpeed: 9, rain: 0),
 		LineGraphDate(day: "2022-10-28", time: "23:00", temperature: 6, windSpeed: 9, rain: 0)
 	]
-	
+    
+
     var body: some View {
-		NavigationStack {
-			ScrollView {
-				HStack {
-					Text("Pick 2 days to compare ")
-						.font(.title2)
-						.fontWeight(.bold)
-					Spacer()
-				}
-				VStack {
-					DatePicker(
-						selection: .constant(Date()),
-						displayedComponents: [.date],
-						label: { Text("Day 1") }
-					)
-					DatePicker(
-						selection: .constant(Date()),
-						displayedComponents: [.date],
-						label: { Text("Day 2") }
-					)
-				}
-				.padding(.bottom, 30)
-				Picker("Parameter", selection: $selectedParameter) {
-					Text("Temperature").tag(LineGraphParameter.temperature)
-					Text("Wind Speed").tag(LineGraphParameter.windSpeed)
-					Text("Rain").tag(LineGraphParameter.rain)
-				}
-				.pickerStyle(.segmented)
-				Chart(data) {
-					LineMark(
-						x: .value("Hours", $0.time),
-						y: .value("Temperature", $0.temperature)
-					)
-					.foregroundStyle(by: .value("Day", $0.day))
-				}
-				.chartXAxisLabel("Time")
-				.chartYAxisLabel("°C")
-				.frame(minHeight: 420)
-				.padding(.all)
-			}
-//			.navigationTitle(Coordinates.locationName)
-			.padding(.all)
-		}
+        NavigationStack {
+            ScrollView {
+                VStack {
+//                    dynamicHistoricalDataGraph(historicalHourly:  (historicalGraph.last?.historicalHourly ?? NSSet()) as! Set<HistoricalHourly>)
+                    DatePicker(
+                        selection: .constant(Date()),
+                        displayedComponents: [.date],
+                        label: { Text("Day 1") }
+                    )
+                    DatePicker(
+                        selection: .constant(Date()),
+                        displayedComponents: [.date],
+                        label: { Text("Day 2") }
+                    )
+                    
+                }
+                .padding(.bottom, 30)
+                Picker("Parameter", selection: $selectedParameter) {
+                    Text("Temperature").tag(LineGraphParameter.temperature)
+                    Text("Wind Speed").tag(LineGraphParameter.windSpeed)
+                    Text("Rain").tag(LineGraphParameter.rain)
+                }
+                .pickerStyle(.segmented)
+                Chart(data) {
+                    LineMark(
+                        x: .value("Hours", $0.time),
+                        y: .value("Temperature", $0.temperature)
+                    )
+                    .foregroundStyle(by: .value("Day", $0.day))
+                }
+                .chartXAxisLabel("Time")
+                .chartYAxisLabel("°C")
+                .frame(minHeight: 420)
+                .padding(.all)
+            }
+            //            .navigationTitle("\(dayWeather.last?.city ?? "N/A"), \(dayWeather.last?.country ?? "N/A")")
+            
+            //			.navigationTitle(Coordinates.locationName)
+            .padding(.all)
+            .navigationTitle("Title")
+        }
+        .onAppear {
+            Task {
+                do {
+                    try await model.fetchApi(tempUnit: self.unitsManager.getCurrentTemperatureFullString(), hourlyParameter: "temperature_2m")
+                } catch let error {
+                    print("Error while refreshing weather: \(error)")
+                }
+            }
+        }
     }
 }
+
+//struct dynamicHistoricalDataGraph: View {
+//    var historicalHourly: Set<HistoricalHourly>
+//    var data: [LineGraphDate] = []
+//    init(historicalHourly: Set<HistoricalHourly>) {
+//        self.historicalHourly = historicalHourly
+//
+//            self.historicalHourly.forEach { element in
+//                data.append(LineGraphDate(day: "\(element.time ?? Date().formatted(.dateTime.day(.defaultDigits).month(.defaultDigits).year(.defaultDigits)))",
+//                                          time: "\(element.time ?? Date().formatted(.dateTime.day(.defaultDigits).month(.defaultDigits).year(.defaultDigits)))",
+//                    temperature: element.temperature_2m,
+//                    windSpeed: element.windspeed_10m,
+//                    rain: element.rain))
+//
+//        }
+//    }
+//
+//    var body: some View {
+//        Text("")
+//    }
+//}
 
 struct GraphView_Previews: PreviewProvider {
     static var previews: some View {
