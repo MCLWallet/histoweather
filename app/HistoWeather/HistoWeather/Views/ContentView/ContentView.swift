@@ -60,7 +60,7 @@ struct ContentView: View {
 			}, content: {
 				SearchView(lastSelectedTab: self.oldSelectedTab)
 			})
-            .accentColor(Color("DarkBlue"))
+			.accentColor(.hWFontColor)	
         }
     }
 }

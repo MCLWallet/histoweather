@@ -17,7 +17,7 @@ struct LocationRequestView: View {
 				.resizable()
 				.scaledToFit()
 				.frame(maxWidth: 150)
-				.foregroundColor(Color("AccentColor"))
+				.foregroundColor(Color.accentColor)
 					.padding(.bottom, 20)
 			Text("locationRequestTitle1")
 				.font(.title2)
@@ -39,7 +39,7 @@ struct LocationRequestView: View {
 			}
 			.frame(width: UIScreen.main.bounds.width)
 			.padding(.horizontal, -32)
-			.background(Color("AccentColor"))
+			.background(Color.accentColor)
 			.clipShape(Capsule())
 			Button {
 				locationManager.authStatus = "maybeLater"
@@ -48,6 +48,7 @@ struct LocationRequestView: View {
 					.padding()
 					.fontWeight(.bold)
 			}
+			.foregroundColor(.accentColor)
 			Spacer()
 		}
 	}

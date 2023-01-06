@@ -26,7 +26,7 @@ struct CurrentView: View {
 	@State private var model = CurrentViewModel()
 	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
-	
+
 	var body: some View {
 		NavigationStack {
 			ScrollView {
@@ -47,7 +47,7 @@ struct CurrentView: View {
 						.scaledToFit()
 						.padding(.all)
 						.frame(maxWidth: 250)
-					Text("\(String(format: "%.0f", dayWeather.last?.temperature ?? 0)) \(unitsManager.currentTemperatureUnit.rawValue)")
+					Text("\(String(format: "%.0f", Double(truncating: dayWeather.last?.temperature ?? 0))) \(unitsManager.currentTemperatureUnit.rawValue)")
 						.font(.largeTitle)
 						.fontWeight(.light)
 						.multilineTextAlignment(.center)
@@ -121,8 +121,16 @@ struct CurrentView: View {
 						Text("\(unitsManager.currentTemperatureUnit.rawValue)")
 							.font(.title)
 					})
+					.foregroundColor(.hWFontColor)
 				}
 			}
+			.background(
+				getTemperatureGradient(
+					temperature: Double(truncating: (dayWeather.last?.temperature ?? 0)),
+					unit: unitsManager.currentTemperatureUnit)
+			)
+			.toolbarBackground(getNavigationBarColorByTemperature(temperature: Double(truncating: (dayWeather.last?.temperature ?? 0)), unit: unitsManager.currentTemperatureUnit), for: .navigationBar)
+			.foregroundColor(.hWBlack)
 		}
 		.refreshable {
 			do {

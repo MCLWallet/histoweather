@@ -55,10 +55,10 @@ struct SliderView: View {
 					}
 					.padding(.horizontal)
 					.padding(.bottom)
-					
 				}
 			}
-//            .navigationTitle(model.dayWeatherReposi)
+			.navigationTitle(Coordinates.locationName)
+			.foregroundColor(.hWBlack)
 		}
 		.onAppear {
 			Task {
