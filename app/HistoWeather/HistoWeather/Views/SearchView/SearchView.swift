@@ -24,21 +24,20 @@ struct SearchView: View {
 //				if (locationManager.authStatus == "authorizedAlways") ||
 //					(locationManager.authStatus == "authorizedWhenInUse") {
 					Button(action: {
-						Coordinates.coordinate = CLLocationCoordinate2D(latitude: locationManager.userLocation?.coordinate.latitude ?? 48.20849, longitude: locationManager.userLocation?.coordinate.latitude ?? 16.37208)
-						Coordinates.locationName = locationManager.userLocationName
+//						Coordinates.coordinate = CLLocationCoordinate2D(latitude: locationManager.userLocation?.coordinate.latitude ?? 48.20849, longitude: locationManager.userLocation?.coordinate.latitude ?? 16.37208)
+//						Coordinates.locationName = locationManager.userLocationName
 						dismiss()
 //						print("This location: \(locationManager.userLocationName)")
 					}, label: {
-						Label("\(locationManager.userLocationName), \(locationManager.userLocationCountry)", systemImage: "location.fill")
+//						Label("\(locationManager.userLocationName), \(locationManager.userLocationCountry)", systemImage: "location.fill")
 					})
 					.foregroundColor(.hWFontColor)
 //				}
 				
 				ForEach(model.locations, id: \.id) { location in
 					Button("\(location.name), \(location.country)") {
-						Coordinates.coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
-						Coordinates.locationName = location.name
-						Coordinates.locationCountry = location.country
+
+                        model.setLocation(latitude: location.latitude, longitude: location.longitude)
 						searchText = ""
 						dismiss()
 					}
@@ -59,12 +58,12 @@ struct SearchView: View {
 					}
 					// TODO: Don't show when you're at beginning of app (no location yet)
 				}
-				ToolbarItem(placement: .confirmationAction) {
-					Button("Done") {
-						dismiss()
-					}
-					// TODO: Disable when there is no location yet
-				}
+//				ToolbarItem(placement: .confirmationAction) {
+//					Button("Done") {
+//						dismiss()
+//					}
+//					// TODO: Disable when there is no location yet
+//				}
 			}
 		}
     }
