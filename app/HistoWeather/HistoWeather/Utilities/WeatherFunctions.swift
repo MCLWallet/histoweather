@@ -38,3 +38,20 @@ func weatherCodeToIcon(weatherCode: Int16) -> String {
 		return "wrench.fill"
 	}
 }
+
+func getSameDayWithDifferentYear(newYear: Double) -> Date {
+	let calendar = Calendar.current
+	let currentDate = Date()
+
+	// Get the month and day of the current date
+	let currentMonth = calendar.component(.month, from: currentDate)
+	let currentDay = calendar.component(.day, from: currentDate)
+
+	// Create a new DateComponents object with the same month and day but a different year
+	let newDateComponents = DateComponents(calendar: calendar, year: Int(newYear), month: currentMonth, day: currentDay)
+
+	// Create a new Date object from the DateComponents object
+	let newDate = calendar.date(from: newDateComponents)
+
+	return newDate ?? Date()
+}

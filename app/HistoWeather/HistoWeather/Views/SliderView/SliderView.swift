@@ -13,8 +13,8 @@ struct SliderView: View {
 	private var historicalWeather: FetchedResults<HistoricalWeather>
     @State private var sliderValue: Double = 1999
 	@State private var model = SliderViewModel()
-	@State private var startDate = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
-	@State private var endDate = Date()
+	@State private var startYear = 2000
+	@State private var endYear = 2023
 	
 	let dateRange: ClosedRange<Date> = {
 		let calendar = Calendar.current
@@ -30,7 +30,12 @@ struct SliderView: View {
 		NavigationStack {
 			ZStack {
                 dynamicHistoricalData(date: Calendar.current.date(from: DateComponents(year: Int(sliderValue), month: 1, day: 1)) ?? Date())
-				VStack {
+				VStack(alignment: .leading) {
+					HStack {
+						Text("\(getSameDayWithDifferentYear(newYear: sliderValue).formatted(date: .abbreviated, time: .omitted))")
+							.font(.title3)
+					}
+					.padding(.leading)
 					Spacer()
 					Slider(
 						value: $sliderValue,
@@ -38,20 +43,19 @@ struct SliderView: View {
 					)
 					.padding(.horizontal)
 					HStack {
-						DatePicker(
-							selection: $startDate,
-							in: dateRange,
-							displayedComponents: [.date],
-							label: { Text("Start Date") }
-						)
-						.labelsHidden()
+						Picker("", selection: $startYear) {
+							ForEach(1959...2023, id: \.self) {
+								Text(String($0))
+							}
+						}
+						.pickerStyle(.menu)
 						Spacer()
-						DatePicker(
-							selection: $endDate,
-							in: dateRange,
-							displayedComponents: [.date],
-							label: { Text("End Date") })
-						.labelsHidden()
+						Picker("", selection: $endYear) {
+							ForEach(1959...2023, id: \.self) {
+								Text(String($0))
+							}
+						}
+						.pickerStyle(.menu)
 					}
 					.padding(.horizontal)
 					.padding(.bottom)
@@ -123,7 +127,7 @@ struct dynamicHistoricalData: View {
 struct SliderView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-//			SliderView(days: ["", ""])
+			SliderView()
 
         }
     }
