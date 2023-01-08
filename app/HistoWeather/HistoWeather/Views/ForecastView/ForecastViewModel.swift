@@ -12,7 +12,11 @@ struct ForecastViewModel {
         self.dayWeatherRepository = dayWeatherRepository
     }
 
-	func fetchApi(unit: String) async throws {
-        try await dayWeatherRepository.loadCurrentWeatherData(tempUnit: unit)
+	func fetchApi(unit: String, latitude: Double, longitude: Double) async throws {
+        try await dayWeatherRepository.loadCurrentWeatherData(tempUnit: unit, latitude: latitude, longitude: longitude)
     }
+	
+	func getLocationTitle() -> String {
+		return dayWeatherRepository.locationTitle
+	}
 }
