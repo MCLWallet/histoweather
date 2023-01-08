@@ -75,7 +75,7 @@ class DayWeatherRepository {
         }
     }
 	
-	func loadHistoricalData(tempUnit: String) async throws {
+	func loadHistoricalData(tempUnit: String, startYear: Int, endYear: Int) async throws {
         try await historicalWeatherPersistence.removeAllEntries()
 		
         var city: String = "N/A"
@@ -89,19 +89,25 @@ class DayWeatherRepository {
 //            print("\(country)")
         }
         
-		var components = URLComponents()
-		components.scheme = "https"
-		components.host = "archive-api.open-meteo.com"
-		components.path = "/v1/era5"
-		components.queryItems = [
-			URLQueryItem(name: "latitude", value: "\(location.coordinate.latitude)"),
+        let calendar = Calendar.current
+        let date = calendar.date(byAdding: .day, value: -6, to: Date())!
+        let formatter = DateFormatter()
+        formatter.dateFormat = "-MM-DD"
+        let monthDay = formatter.string(from: date)
+        
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "archive-api.open-meteo.com"
+        components.path = "/v1/era5"
+        components.queryItems = [
+            URLQueryItem(name: "latitude", value: "\(location.coordinate.latitude)"),
             URLQueryItem(name: "longitude", value: "\(location.coordinate.longitude)"),
-			URLQueryItem(name: "start_date", value: "2000-11-18"), // TODO: get start_date from UI YYYY-MM-DD
-			URLQueryItem(name: "end_date", value: "2022-12-18"), // TODO: get end_date from UI YYYY-MM-DD
-			URLQueryItem(name: "daily", value: "weathercode,temperature_2m_max,temperature_2m_min"),
-			URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
-			URLQueryItem(name: "temperature_unit", value: tempUnit)
-		]
+            URLQueryItem(name: "start_date", value: "\(startYear)" + monthDay), // TODO: get start_date from UI YYYY-MM-DD
+            URLQueryItem(name: "end_date", value: "\(endYear)" + monthDay), // TODO: get end_date from UI YYYY-MM-DD
+            URLQueryItem(name: "daily", value: "weathercode,temperature_2m_max,temperature_2m_min"),
+            URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
+            URLQueryItem(name: "temperature_unit", value: tempUnit)
+        ]
 		
 		guard let url = components.url else {
 			throw NetworkError.badURL

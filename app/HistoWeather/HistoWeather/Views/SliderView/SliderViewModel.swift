@@ -14,7 +14,7 @@ struct SliderViewModel {
 		self.dayWeatherRepository = dayWeatherRepository
 	}
 
-	func fetchApi(unit: String) async throws {
-		try await dayWeatherRepository.loadHistoricalData(tempUnit: unit)
+	func fetchApi(unit: String, startYear: Int, endYear: Int) async throws {
+		try await dayWeatherRepository.loadHistoricalData(tempUnit: unit, startYear: startYear, endYear: endYear)
 	}
 }
