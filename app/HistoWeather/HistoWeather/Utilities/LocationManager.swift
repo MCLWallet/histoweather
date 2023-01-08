@@ -6,10 +6,10 @@
 //
 
 import CoreLocation
-
+// This is only used for getting user's coordinates
 class LocationManager: NSObject, ObservableObject {
 	private let manager = CLLocationManager()
-    @Published var userLocation: CLLocation? = CLLocation(latitude: 48.20849, longitude: 16.37208)
+    @Published var userLocation: CLLocation = CLLocation(latitude: 48.20849, longitude: 16.37208)
 	@Published var userLocationCity: String = "Vienna"
 	@Published var userLocationCountry: String = "Austria"
 	@Published var authStatus: String?
@@ -25,25 +25,32 @@ class LocationManager: NSObject, ObservableObject {
 	func requestLocation() {
 		manager.requestWhenInUseAuthorization()
 	}
+	
+	func startUpdatingLocation() {
+		manager.startUpdatingLocation()
+	}
+	func stopUpdatingLocation() {
+		manager.stopUpdatingLocation()
+	}
 }
 
 extension LocationManager: CLLocationManagerDelegate {
 	func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
 		switch manager.authorizationStatus {
 		case .notDetermined:
-			print("DEBUG: Not determined")
+			print("LocationManager: Not determined")
 			authStatus = "notDetermined"
 		case .restricted:
-			print("DEBUG: Restricted")
+			print("LocationManager: Restricted")
 			authStatus = "restricted"
 		case .denied:
-			print("DEBUG: Denied")
+			print("LocationManager: Denied")
 			authStatus = "denied"
 		case .authorizedAlways:
-			print("DEBUG: Auth always")
+			print("LocationManager: Auth always")
 			authStatus = "authorizedAlways"
 		case .authorizedWhenInUse:
-			print("DEBUG: Auth when in use")
+			print("LocationManager: Auth when in use")
 			authStatus = "authorizedWhenInUse"
 		@unknown default:
 			authStatus = "notDetermined"
@@ -54,23 +61,10 @@ extension LocationManager: CLLocationManagerDelegate {
 		guard let location = locations.last else { return }
 		self.userLocation = location
 		
-		let defaultLocationCoordinate = CLLocation(latitude: 48.20849, longitude: 16.37208)
-		let defaultLocationName = "Vienna"
-		let defaultLocationCountry = "Austria"
+		print("LocationManager running ...")
+		print("LocationManager lat: \(location.coordinate.latitude)")
+		print("LocationManager long: \(location.coordinate.longitude)")
 		
-		CLGeocoder().reverseGeocodeLocation(self.userLocation ?? defaultLocationCoordinate, completionHandler: {(placemarks, error) in
-			if error != nil {
-				print("Error: \(String(describing: error))")
-			} else {
-				let placemark = CLPlacemark(placemark: (placemarks?[0] as CLPlacemark?)!)
-				
-				if placemark.country != nil {
-					self.userLocationCountry = placemark.country ?? defaultLocationCountry
-				}
-				if placemark.name != nil {
-					self.userLocationCity = placemark.name ?? defaultLocationName
-				}
-			}
-		})
+		manager.stopUpdatingLocation()
 	}
 }

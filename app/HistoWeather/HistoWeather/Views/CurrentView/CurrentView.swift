@@ -23,7 +23,9 @@ struct CurrentView: View {
 	@FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(),
 				  animation: .default)
 	private var day: FetchedResults<Day>
+	
 	@State private var model = CurrentViewModel()
+	
 	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
 
@@ -104,7 +106,7 @@ struct CurrentView: View {
 					}.padding(.all)
 				}
 			}
-            .navigationTitle("\(dayWeather.last?.city ?? "N/A"), \(dayWeather.last?.country ?? "N/A")")
+			.navigationTitle(model.getLocationTitle())
 			.navigationBarTitleDisplayMode(.automatic)
 			.toolbar {
 				ToolbarItem(placement: .navigationBarTrailing) {
@@ -112,7 +114,11 @@ struct CurrentView: View {
 						unitsManager.changeCurrentTemperatureUnit()
 						Task {
 							do {
-								try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
+								try await model.fetchApi(
+									unit: self.unitsManager.getCurrentUnit(),
+									latitude: LocationManager.shared.userLocation.coordinate.latitude,
+									longitude: LocationManager.shared.userLocation.coordinate.longitude
+								)
 							} catch let error {
 								print("Error while refreshing weather: \(error)")
 							}
@@ -133,19 +139,35 @@ struct CurrentView: View {
 			.foregroundColor(.hWBlack)
 		}
 		.refreshable {
-			do {
-				try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
-			} catch let error {
-				print("Error while refreshing weather: \(error)")
-			}
-		}
-		.onAppear {
+			LocationManager.shared.startUpdatingLocation()
 			Task {
 				do {
-					try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
+					try await model.fetchApi(
+						unit: self.unitsManager.getCurrentUnit(),
+						latitude: LocationManager.shared.userLocation.coordinate.latitude,
+						longitude: LocationManager.shared.userLocation.coordinate.longitude
+					)
 				} catch let error {
 					print("Error while refreshing weather: \(error)")
 				}
+			}
+			LocationManager.shared.stopUpdatingLocation()
+		}
+		.onAppear {
+			if model.getLocationTitle() == "N/A" {
+				LocationManager.shared.startUpdatingLocation()
+				Task {
+					do {
+						try await model.fetchApi(
+							unit: self.unitsManager.getCurrentUnit(),
+							latitude: LocationManager.shared.userLocation.coordinate.latitude,
+							longitude: LocationManager.shared.userLocation.coordinate.longitude
+						)
+					} catch let error {
+						print("Error while refreshing weather: \(error)")
+					}
+				}
+				LocationManager.shared.stopUpdatingLocation()
 			}
 		}
 	}

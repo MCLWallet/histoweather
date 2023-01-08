@@ -8,10 +8,17 @@
 import SwiftUI
 
 struct ForecastView: View {
+	@FetchRequest(fetchRequest: DayWeatherPersistence.fetchDayWeather(),
+				  animation: .default)
+	private var dayWeather: FetchedResults<DayWeather>
+	
     @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(),
                   animation: .none)
     private var day: FetchedResults<Day>
-    @State private var model = ForecastViewModel()
+	
+	@State private var model = ForecastViewModel()
+	var contentViewModel: ContentViewModel = ContentViewModel()
+	
 	@ObservedObject var unitsManager = UnitsManager.shared
     
     var body: some View {
@@ -44,31 +51,50 @@ struct ForecastView: View {
 				}
 			}
 			.onAppear {
-				Task {
-					do {
-						try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
-					} catch let error {
-						print("Error while refreshing friends: \(error)")
+				if model.getLocationTitle() == "N/A" {
+					Task {
+						LocationManager.shared.startUpdatingLocation()
+						do {
+							try await model.fetchApi(
+								unit: self.unitsManager.getCurrentUnit(),
+								latitude: LocationManager.shared.userLocation.coordinate.latitude,
+								longitude: LocationManager.shared.userLocation.coordinate.longitude
+							)
+						} catch let error {
+							print("Error while refreshing friends: \(error)")
+						}
 					}
+					LocationManager.shared.stopUpdatingLocation()
 				}
 			}
 			.refreshable {
 				Task {
+					LocationManager.shared.startUpdatingLocation()
 					do {
-						try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
+						try await model.fetchApi(
+							unit: self.unitsManager.getCurrentUnit(),
+							latitude: LocationManager.shared.userLocation.coordinate.latitude,
+							longitude: LocationManager.shared.userLocation.coordinate.longitude
+						)
 					} catch let error {
 						print("Error while refreshing friends: \(error)")
 					}
 				}
+				LocationManager.shared.stopUpdatingLocation()
 			}
-//			.navigationTitle(Coordinates.locationName)
+			.navigationTitle(model.getLocationTitle())
+			.navigationBarTitleDisplayMode(.automatic)
 			.toolbar {
 				ToolbarItem(placement: .navigationBarTrailing) {
 					Button(action: {
 						unitsManager.changeCurrentTemperatureUnit()
 						Task {
 							do {
-								try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
+								try await model.fetchApi(
+									unit: self.unitsManager.getCurrentUnit(),
+									latitude: LocationManager.shared.userLocation.coordinate.latitude,
+									longitude: LocationManager.shared.userLocation.coordinate.longitude
+								)
 							} catch let error {
 								print("Error while refreshing friends: \(error)")
 							}

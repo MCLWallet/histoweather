@@ -61,15 +61,17 @@ struct SliderView: View {
 					.padding(.bottom)
 				}
 			}
-			.navigationTitle(String(historicalWeather.last?.city ?? "nA"))
+			.navigationTitle(model.getLocationTitle())
 			.foregroundColor(.hWBlack)
 		}
 		.onAppear {
-			Task {
-				do {
-					try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
-				} catch let error {
-					print("Error while refreshing weather: \(error)")
+			if model.getLocationTitle() == "N/A" {
+				Task {
+					do {
+						try await model.fetchApi(unit: self.unitsManager.getCurrentUnit())
+					} catch let error {
+						print("Error while refreshing weather: \(error)")
+					}
 				}
 			}
 		}

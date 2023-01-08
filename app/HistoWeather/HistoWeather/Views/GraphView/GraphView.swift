@@ -41,7 +41,8 @@ struct GraphView: View {
     @FetchRequest(fetchRequest: HistoricalPersistenceGraph.fetchHistoricalGraph(),
                   animation: .default)
     private var historicalGraph: FetchedResults<HistoricalGraph>
-
+	
+	var navigationTitle: String = ContentViewModel().getLocationTitle()
 	@State private var selectedParameter: LineGraphParameter = .temperature
 
 	var data: [LineGraphDate] = [
@@ -136,18 +137,20 @@ struct GraphView: View {
             }
             //            .navigationTitle("\(dayWeather.last?.city ?? "N/A"), \(dayWeather.last?.country ?? "N/A")")
             
-            //			.navigationTitle(Coordinates.locationName)
+			.navigationTitle(model.getLocationTitle())
             .padding(.all)
             .navigationTitle("Title")
         }
         .onAppear {
-            Task {
-                do {
-                    try await model.fetchApi(tempUnit: self.unitsManager.getCurrentTemperatureFullString(), hourlyParameter: "temperature_2m")
-                } catch let error {
-                    print("Error while refreshing weather: \(error)")
-                }
-            }
+			if model.getLocationTitle() == "N/A" {
+				Task {
+					do {
+						try await model.fetchApi(tempUnit: self.unitsManager.getCurrentUnit(), hourlyParameter: "temperature_2m")
+					} catch let error {
+						print("Error while refreshing weather: \(error)")
+					}
+				}
+			}
         }
     }
 }

@@ -13,13 +13,13 @@ struct ContentView: View {
     @ObservedObject var locationManager: LocationManager = LocationManager.shared
     @State var selectedTab: Int
 	@State private var oldSelectedTab = 1
-	
+	@State var model = ContentViewModel()
 	@State var sheetIsPresenting = false
 	
     var body: some View {
         Group {
             TabView(selection: $selectedTab) {
-                CurrentView()
+				CurrentView()
                     .tabItem {
                         Label("today", systemImage: "cloud.sun.fill")
                     }

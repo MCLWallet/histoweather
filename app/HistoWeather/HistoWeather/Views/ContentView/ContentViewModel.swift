@@ -1,21 +1,22 @@
 //
-//  SliderViewModel.swift
+//  ContentViewModel.swift
 //  HistoWeather
 //
-//  Created by Marcell Lanczos on 23.12.22.
+//  Created by Marcell Lanczos on 08.01.23.
 //
 
 import Foundation
 
-struct SliderViewModel {
+class ContentViewModel: ObservableObject {
+
 	private let dayWeatherRepository: DayWeatherRepository
 
 	init(dayWeatherRepository: DayWeatherRepository = DayWeatherRepository()) {
 		self.dayWeatherRepository = dayWeatherRepository
 	}
 
-	func fetchApi(unit: String) async throws {
-		try await dayWeatherRepository.loadHistoricalData(tempUnit: unit)
+	func fetchApi(unit: String, latitude: Double, longitude: Double) async throws {
+		try await dayWeatherRepository.loadCurrentWeatherData(tempUnit: unit, latitude: latitude, longitude: longitude)
 	}
 	
 	func getLocationTitle() -> String {

@@ -31,4 +31,8 @@ struct GraphViewModel {
     func fetchApi(tempUnit: String, hourlyParameter: String) async throws {
         try await dayWeatherRepository.loadHistoricalDataHourly(tempUnit: tempUnit, hourlyParameter: hourlyParameter)
     }
+	
+	func getLocationTitle() -> String {
+		return dayWeatherRepository.locationTitle
+	}
 }
