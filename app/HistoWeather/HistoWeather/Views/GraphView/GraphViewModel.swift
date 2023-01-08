@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Charts
+import CoreLocation
 
 struct GraphViewModel {
 
@@ -31,6 +32,10 @@ struct GraphViewModel {
     func fetchApi(tempUnit: String, hourlyParameter: String) async throws {
         try await dayWeatherRepository.loadHistoricalDataHourly(tempUnit: tempUnit, hourlyParameter: hourlyParameter)
     }
+	
+	func setLocation(location: CLLocation) {
+		dayWeatherRepository.updateLocation(location: location)
+	}
 	
 	func getLocationTitle() -> String {
 		return dayWeatherRepository.locationTitle

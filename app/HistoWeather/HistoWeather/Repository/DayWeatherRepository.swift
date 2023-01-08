@@ -23,34 +23,42 @@ class DayWeatherRepository {
         self.historicalWeatherPersistence = historicalWeatherPersistence
         self.historicalPersistenceGraph = historicalPersistenceGraph
         self.location = CLLocation(latitude: LocationManager.shared.userLocation.coordinate.latitude, longitude: LocationManager.shared.userLocation.coordinate.longitude)
-		self.locationTitle = "N/A"
+		self.locationTitle = "Vienna"
     }
-    
+	
+	func updateLocation(location: CLLocation) {
+		self.location = location
+	}
+	
+	func updateLocationTitle(locationTitle: String) {
+		self.locationTitle = locationTitle
+	}
+
+	//    TODO: what if no connection and no permission
+	//		TODO: what if connection but permission
+	//		TODO: what if no connection but permission
 	// Two calls: get lat, long and then pass it to getCityName and then persist it
-	func loadCurrentWeatherData(tempUnit: String, latitude: Double, longitude: Double) async throws {
+	func loadCurrentWeatherData(tempUnit: String) async throws {
         try await dayWeatherPersistence.removeAllDayWeather()
-		self.location = CLLocation(latitude: latitude, longitude: longitude)
-//        TODO: what if no connection and no permission
-//		TODO: what if connection but permission
-//		TODO: what if no connection but permission
+
         var city: String = "N/A"
         var country: String = "N/A"
-        
+		
 		try await city = CLGeocoder().reverseGeocodeLocation(self.location).first?.locality ?? "N/A"
 		try await country = CLGeocoder().reverseGeocodeLocation(self.location).first?.country ?? "N/A"
-		self.locationTitle = "\(city), \(country)"
+		self.locationTitle = "\(city)"
 		
-//		print("loadCurrentWeatherData lat: \(location.coordinate.latitude)")
-//		print("loadCurrentWeatherData long: \(location.coordinate.longitude)")
-//		print("loadCurrentWeatherData city: \(city)")
+		print("loadCurrentWeatherData lat: \(self.location.coordinate.latitude)")
+		print("loadCurrentWeatherData long: \(self.location.coordinate.longitude)")
+		print("loadCurrentWeatherData city: \(city)")
 		
         var components = URLComponents()
         components.scheme = "https"
         components.host = "api.open-meteo.com"
         components.path = "/v1/forecast"
         components.queryItems = [
-            URLQueryItem(name: "latitude", value: "\(latitude)"),
-            URLQueryItem(name: "longitude", value: "\(longitude)"),
+			URLQueryItem(name: "latitude", value: "\(self.location.coordinate.latitude)"),
+			URLQueryItem(name: "longitude", value: "\(self.location.coordinate.longitude)"),
             URLQueryItem(name: "daily", value: "weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_sum,windspeed_10m_max"),
             URLQueryItem(name: "current_weather", value: "true"),
             URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
@@ -61,7 +69,7 @@ class DayWeatherRepository {
             throw NetworkError.badURL
         }
         
-//        print("\(url)")
+        print("\(url)")
         
         let (data, response) = try await URLSession.shared.data(from: url)
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
@@ -75,11 +83,11 @@ class DayWeatherRepository {
         
         let optionalWeatherResponse = try? decoder.decode(Weather.self, from: data)
         if let weatherResponse = optionalWeatherResponse {
-//			print("DayWeatherRepository lat: \(self.location.coordinate.latitude)")
-//			print("DayWeatherRepository long: \(self.location.coordinate.longitude)")
-//			print("DayWeatherRepository city: \(city)")
             await dayWeatherPersistence.addDayWeather(from: weatherResponse, city: city, country: country)
         }
+		print("DayWeatherRepository lat: \(self.location.coordinate.latitude)")
+		print("DayWeatherRepository long: \(self.location.coordinate.longitude)")
+		print("DayWeatherRepository city: \(city)")
     }
 	
 	func loadHistoricalData(tempUnit: String) async throws {
@@ -87,14 +95,9 @@ class DayWeatherRepository {
 		
         var city: String = "N/A"
         var country: String = "N/A"
-        CLGeocoder().reverseGeocodeLocation(self.location) { placemarks, error in
-            guard let placemark = placemarks?.first else {
-                return }
-            city = placemark.locality! // This is the city name
-            country = placemark.country!
-//            print("\(city)")
-//            print("\(country)")
-        }
+		try await city = CLGeocoder().reverseGeocodeLocation(self.location).first?.locality ?? "N/A"
+		try await country = CLGeocoder().reverseGeocodeLocation(self.location).first?.country ?? "N/A"
+		self.locationTitle = "\(city)"
         
 		var components = URLComponents()
 		components.scheme = "https"
@@ -137,14 +140,9 @@ class DayWeatherRepository {
         
         var city: String = "N/A"
         var country: String = "N/A"
-        CLGeocoder().reverseGeocodeLocation(self.location) { placemarks, error in
-            guard let placemark = placemarks?.first else {
-                return }
-            city = placemark.locality! // This is the city name
-            country = placemark.country!
-//            print("\(city)")
-//            print("\(country)")
-        }
+		try await city = CLGeocoder().reverseGeocodeLocation(self.location).first?.locality ?? "N/A"
+		try await country = CLGeocoder().reverseGeocodeLocation(self.location).first?.country ?? "N/A"
+		self.locationTitle = "\(city)"
         
         var components = URLComponents()
         components.scheme = "https"

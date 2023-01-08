@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Charts
+import CoreLocation
 
 struct LineGraphDate: Identifiable {
 	var id: UUID
@@ -36,15 +37,17 @@ enum LineGraphParameter: String, CaseIterable, Identifiable {
 }
 
 struct GraphView: View {
-    @State private var model = GraphViewModel()
-    @ObservedObject var unitsManager = UnitsManager.shared
     @FetchRequest(fetchRequest: HistoricalPersistenceGraph.fetchHistoricalGraph(),
                   animation: .default)
     private var historicalGraph: FetchedResults<HistoricalGraph>
 	
-	var navigationTitle: String = ContentViewModel().getLocationTitle()
+	@State private var model = GraphViewModel()
 	@State private var selectedParameter: LineGraphParameter = .temperature
-
+	@Binding var currentLocation: CLLocation
+	@Binding var navigationTitle: String
+	
+	@ObservedObject var locationManager = LocationManager.shared
+	@ObservedObject var unitsManager = UnitsManager.shared
 	var data: [LineGraphDate] = [
 		// Day 1
 		LineGraphDate(day: "2022-10-27", time: "00:00", temperature: 10.7, windSpeed: 9, rain: 0),
@@ -98,7 +101,6 @@ struct GraphView: View {
 		LineGraphDate(day: "2022-10-28", time: "23:00", temperature: 6, windSpeed: 9, rain: 0)
 	]
     
-
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -135,20 +137,26 @@ struct GraphView: View {
                 .frame(minHeight: 420)
                 .padding(.all)
             }
-            //            .navigationTitle("\(dayWeather.last?.city ?? "N/A"), \(dayWeather.last?.country ?? "N/A")")
-            
-			.navigationTitle(model.getLocationTitle())
+			.navigationTitle(navigationTitle)
             .padding(.all)
             .navigationTitle("Title")
         }
         .onAppear {
-			if model.getLocationTitle() == "N/A" {
-				Task {
-					do {
-						try await model.fetchApi(tempUnit: self.unitsManager.getCurrentUnit(), hourlyParameter: "temperature_2m")
-					} catch let error {
-						print("Error while refreshing weather: \(error)")
+			Task {
+				do {
+					if !locationManager.locationBySearch {
+						model.setLocation(location: locationManager.userLocation)
+					} else {
+						model.setLocation(location: currentLocation)
 					}
+					try await model.fetchApi(
+						tempUnit: self.unitsManager.getCurrentUnit(),
+						hourlyParameter: "temperature_2m"
+					)
+					navigationTitle = model.getLocationTitle()
+					locationManager.stopUpdatingLocation()
+				} catch let error {
+					print("Error while refreshing weather: \(error)")
 				}
 			}
         }
@@ -178,6 +186,6 @@ struct GraphView: View {
 
 struct GraphView_Previews: PreviewProvider {
     static var previews: some View {
-        GraphView()
+        GraphView(currentLocation: .constant(CLLocation(latitude: 48.20849, longitude: 16.37208)), navigationTitle: .constant("Wien"))
     }
 }

@@ -10,9 +10,9 @@ import CoreLocation
 class LocationManager: NSObject, ObservableObject {
 	private let manager = CLLocationManager()
     @Published var userLocation: CLLocation = CLLocation(latitude: 48.20849, longitude: 16.37208)
-	@Published var userLocationCity: String = "Vienna"
-	@Published var userLocationCountry: String = "Austria"
 	@Published var authStatus: String?
+	@Published var locationBySearch: Bool = false
+	@Published var defaultStatus: Bool = true
 	static let shared = LocationManager()
 	
 	override init() {
@@ -46,12 +46,15 @@ extension LocationManager: CLLocationManagerDelegate {
 		case .denied:
 			print("LocationManager: Denied")
 			authStatus = "denied"
+			locationBySearch = true
 		case .authorizedAlways:
 			print("LocationManager: Auth always")
 			authStatus = "authorizedAlways"
+			startUpdatingLocation()
 		case .authorizedWhenInUse:
 			print("LocationManager: Auth when in use")
 			authStatus = "authorizedWhenInUse"
+			startUpdatingLocation()
 		@unknown default:
 			authStatus = "notDetermined"
 		}
@@ -60,7 +63,7 @@ extension LocationManager: CLLocationManagerDelegate {
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 		guard let location = locations.last else { return }
 		self.userLocation = location
-		
+		self.defaultStatus = false
 		print("LocationManager running ...")
 		print("LocationManager lat: \(location.coordinate.latitude)")
 		print("LocationManager long: \(location.coordinate.longitude)")

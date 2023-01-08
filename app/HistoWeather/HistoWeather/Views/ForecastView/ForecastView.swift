@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct ForecastView: View {
 	@FetchRequest(fetchRequest: DayWeatherPersistence.fetchDayWeather(),
@@ -17,8 +18,10 @@ struct ForecastView: View {
     private var day: FetchedResults<Day>
 	
 	@State private var model = ForecastViewModel()
-	var contentViewModel: ContentViewModel = ContentViewModel()
+	@Binding var currentLocation: CLLocation
+	@Binding var navigationTitle: String
 	
+	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
     
     var body: some View {
@@ -51,38 +54,44 @@ struct ForecastView: View {
 				}
 			}
 			.onAppear {
-				if model.getLocationTitle() == "N/A" {
-					Task {
-						LocationManager.shared.startUpdatingLocation()
-						do {
-							try await model.fetchApi(
-								unit: self.unitsManager.getCurrentUnit(),
-								latitude: LocationManager.shared.userLocation.coordinate.latitude,
-								longitude: LocationManager.shared.userLocation.coordinate.longitude
-							)
-						} catch let error {
-							print("Error while refreshing friends: \(error)")
+				Task {
+					do {
+						if !locationManager.locationBySearch {
+							locationManager.startUpdatingLocation()
+							model.setLocation(location: locationManager.userLocation)
+						} else {
+							model.setLocation(location: currentLocation)
 						}
+						try await model.fetchApi(
+							unit: self.unitsManager.getCurrentUnit()
+						)
+						navigationTitle = model.getLocationTitle()
+						locationManager.stopUpdatingLocation()
+					} catch let error {
+						print("Error while refreshing weather: \(error)")
 					}
-					LocationManager.shared.stopUpdatingLocation()
 				}
 			}
 			.refreshable {
 				Task {
-					LocationManager.shared.startUpdatingLocation()
 					do {
+						if !locationManager.locationBySearch {
+							locationManager.startUpdatingLocation()
+							model.setLocation(location: locationManager.userLocation)
+						} else {
+							model.setLocation(location: currentLocation)
+						}
 						try await model.fetchApi(
-							unit: self.unitsManager.getCurrentUnit(),
-							latitude: LocationManager.shared.userLocation.coordinate.latitude,
-							longitude: LocationManager.shared.userLocation.coordinate.longitude
+							unit: self.unitsManager.getCurrentUnit()
 						)
+						navigationTitle = model.getLocationTitle()
+						locationManager.stopUpdatingLocation()
 					} catch let error {
-						print("Error while refreshing friends: \(error)")
+						print("Error while refreshing weather: \(error)")
 					}
 				}
-				LocationManager.shared.stopUpdatingLocation()
 			}
-			.navigationTitle(model.getLocationTitle())
+			.navigationTitle(navigationTitle)
 			.navigationBarTitleDisplayMode(.automatic)
 			.toolbar {
 				ToolbarItem(placement: .navigationBarTrailing) {
@@ -91,9 +100,7 @@ struct ForecastView: View {
 						Task {
 							do {
 								try await model.fetchApi(
-									unit: self.unitsManager.getCurrentUnit(),
-									latitude: LocationManager.shared.userLocation.coordinate.latitude,
-									longitude: LocationManager.shared.userLocation.coordinate.longitude
+									unit: self.unitsManager.getCurrentUnit()
 								)
 							} catch let error {
 								print("Error while refreshing friends: \(error)")
@@ -112,6 +119,6 @@ struct ForecastView: View {
 
 struct ForecastView_Previews: PreviewProvider {
     static var previews: some View {
-        ForecastView()
+		ForecastView(currentLocation: .constant(CLLocation(latitude: 48.20849, longitude: 16.37208)), navigationTitle: .constant("Wien"))
     }
 }

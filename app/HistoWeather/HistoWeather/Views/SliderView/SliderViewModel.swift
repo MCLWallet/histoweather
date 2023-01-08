@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct SliderViewModel {
 	private let dayWeatherRepository: DayWeatherRepository
@@ -16,6 +17,10 @@ struct SliderViewModel {
 
 	func fetchApi(unit: String) async throws {
 		try await dayWeatherRepository.loadHistoricalData(tempUnit: unit)
+	}
+	
+	func setLocation(location: CLLocation) {
+		dayWeatherRepository.updateLocation(location: location)
 	}
 	
 	func getLocationTitle() -> String {
