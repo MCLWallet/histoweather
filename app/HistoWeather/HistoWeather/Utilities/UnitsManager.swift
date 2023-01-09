@@ -38,4 +38,14 @@ class UnitsManager: NSObject, ObservableObject {
 			return "unknown"
 		}
 	}
+	
+	func getCurrentOppositeUnit() -> String {
+		if currentTemperatureUnit == .celsius {
+			return "fahrenheit"
+		} else if currentTemperatureUnit == .fahrenheit {
+			return "celsius"
+		} else {
+			return "unknown"
+		}
+	}
 }

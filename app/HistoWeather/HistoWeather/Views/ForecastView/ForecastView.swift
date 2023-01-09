@@ -18,6 +18,17 @@ struct ForecastView: View {
     private var day: FetchedResults<Day>
 	
 	@State private var model = ForecastViewModel()
+	
+	// Cached values when pull-to-reload or onAppear
+//	@State private var cachedDays: [Day] = []
+//	@State private var cachedMinTemperatures: [Double] = Array(repeating: 0.0, count: 7)
+//	@State private var cachedMaxTemperatures: [Double] = Array(repeating: 0.0, count: 7)
+//	@State private var cachedWeekDays: [Date] = Array(repeating: Date(), count: 7)
+//	@State private var cachedWeatherIconCodes: [String] = Array(repeating: "wrench.fill", count: 7)
+//
+//	@State private var currentBackgroundColors: [Date: LinearGradient] = [:]
+//	@State private var bgIndex: Int = 0
+//
 	@Binding var currentLocation: CLLocation
 	@Binding var navigationTitle: String
 	
@@ -29,28 +40,28 @@ struct ForecastView: View {
 			ScrollView {
 				// Top Container
 				ForEach(day) { index in
-						HStack {
-							Text("\((index.time ?? Date()).formatted(.dateTime.weekday(.wide)))")
-								.font(.title3)
-								.fontWeight(.medium)
+					HStack {
+						Text("\((index.time ?? Date()).formatted(.dateTime.weekday(.wide)))")
+							.font(.title3)
+							.fontWeight(.medium)
+							.foregroundColor(.hWBlack)
+							.frame(minWidth: 150, alignment: .leading)
+						Spacer()
+							Image(systemName: index.weathericoncode ?? "wrench.fill")
+								.font(.title)
 								.foregroundColor(.hWBlack)
-								.frame(minWidth: 150, alignment: .leading)
-							Spacer()
-								Image(systemName: index.weathericoncode ?? "wrench.fill")
-									.font(.title)
-									.foregroundColor(.hWBlack)
-							Text(String(format: "%.0f / %.0f", index.temperature_2m_min, index.temperature_2m_max))
-								.font(.title2)
-								.foregroundColor(.hWBlack)
-								.padding(.leading)
-								.frame(minWidth: 80)
-						}
-						.padding(.all)
-						.background(
-							getTemperatureGradient(temperature: Double(index.temperature_2m_max), unit: unitsManager.currentTemperatureUnit)
-						)
-						.cornerRadius(20)
-						.padding(.all, 10)
+						Text(String(format: "%.0f / %.0f", index.temperature_2m_min, index.temperature_2m_max))
+							.font(.title2)
+							.foregroundColor(.hWBlack)
+							.padding(.leading)
+							.frame(minWidth: 80)
+					}
+					.padding(.all)
+					.background(
+						getTemperatureGradient(temperature: Double(index.temperature_2m_max), unit: unitsManager.currentTemperatureUnit)
+					)
+					.cornerRadius(20)
+					.padding(.all, 10)
 				}
 			}
 			.onAppear {
@@ -65,6 +76,7 @@ struct ForecastView: View {
 						try await model.fetchApi(
 							unit: self.unitsManager.getCurrentUnit()
 						)
+						
 						navigationTitle = model.getLocationTitle()
 						locationManager.stopUpdatingLocation()
 					} catch let error {
@@ -73,23 +85,7 @@ struct ForecastView: View {
 				}
 			}
 			.refreshable {
-				Task {
-					do {
-						if !locationManager.locationBySearch {
-							locationManager.startUpdatingLocation()
-							model.setLocation(location: locationManager.userLocation)
-						} else {
-							model.setLocation(location: currentLocation)
-						}
-						try await model.fetchApi(
-							unit: self.unitsManager.getCurrentUnit()
-						)
-						navigationTitle = model.getLocationTitle()
-						locationManager.stopUpdatingLocation()
-					} catch let error {
-						print("Error while refreshing weather: \(error)")
-					}
-				}
+				await reloadValues()
 			}
 			.navigationTitle(navigationTitle)
 			.navigationBarTitleDisplayMode(.automatic)
@@ -115,6 +111,37 @@ struct ForecastView: View {
 			}
         }
     }
+	
+	private func reloadValues() async {
+		Task {
+			do {
+				if !locationManager.locationBySearch {
+					locationManager.startUpdatingLocation()
+					model.setLocation(location: locationManager.userLocation)
+				} else {
+					model.setLocation(location: currentLocation)
+				}
+				try await model.fetchApi(
+					unit: self.unitsManager.getCurrentUnit()
+				)
+				navigationTitle = model.getLocationTitle()
+				locationManager.stopUpdatingLocation()
+			} catch let error {
+				print("Error while refreshing weather: \(error)")
+			}
+		}
+	}
+	
+//	func setCache() {
+//		var index: Int = 0
+//		for item in day {
+//			self.cachedMinTemperatures[index] = item.temperature_2m_min
+//			self.cachedMaxTemperatures[index] = item.temperature_2m_max
+//			self.cachedWeekDays[index] = item.time ?? Date()
+//			self.cachedWeatherIconCodes[index] = item.weathericoncode ?? "wrench.fill"
+//			index += 1
+//		}
+//	}
 }
 
 struct ForecastView_Previews: PreviewProvider {
