@@ -99,7 +99,7 @@ struct ForecastView: View {
 									unit: self.unitsManager.getCurrentUnit()
 								)
 							} catch let error {
-								print("Error while refreshing friends: \(error)")
+								print("Error while refreshing weather: \(error)")
 							}
 						}
 					}, label: {
