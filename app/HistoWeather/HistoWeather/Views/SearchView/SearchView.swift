@@ -11,34 +11,36 @@ import MapKit
 struct SearchView: View {
 	@Environment(\.dismiss) var dismiss
 	
-    @StateObject private var model = SearchViewModel()
+    @State private var model = SearchViewModel()
     @State private var searchText: String = ""
     @ObservedObject var networkChecker = NetworkChecker()
     @ObservedObject var locationManager = LocationManager.shared
+	@Binding var currentLocation: CLLocation
+	@Binding var currentLocationName: String
 	
 	@State var lastSelectedTab = 1
 	
     var body: some View {
 		NavigationView {
 			List {
-//				if (locationManager.authStatus == "authorizedAlways") ||
-//					(locationManager.authStatus == "authorizedWhenInUse") {
+				if (locationManager.authStatus == "authorizedAlways") ||
+					(locationManager.authStatus == "authorizedWhenInUse") {
 					Button(action: {
-//						Coordinates.coordinate = CLLocationCoordinate2D(latitude: locationManager.userLocation?.coordinate.latitude ?? 48.20849, longitude: locationManager.userLocation?.coordinate.latitude ?? 16.37208)
-//						Coordinates.locationName = locationManager.userLocationName
+						currentLocation = locationManager.userLocation
+						locationManager.locationBySearch = false
 						dismiss()
-//						print("This location: \(locationManager.userLocationName)")
 					}, label: {
-//						Label("\(locationManager.userLocationName), \(locationManager.userLocationCountry)", systemImage: "location.fill")
+						Label("Your current location", systemImage: "location.fill")
 					})
 					.foregroundColor(.hWFontColor)
-//				}
+				}
 				
 				ForEach(model.locations, id: \.id) { location in
 					Button("\(location.name), \(location.country)") {
-
-                        model.setLocation(latitude: location.latitude, longitude: location.longitude)
+						currentLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+						currentLocationName = location.name
 						searchText = ""
+						locationManager.locationBySearch = true
 						dismiss()
 					}
 					.foregroundColor(.hWFontColor)
@@ -56,6 +58,8 @@ struct SearchView: View {
 					Button("Cancel") {
 						dismiss()
 					}
+					.disabled((locationManager.authStatus != "authorizedAlways") ||
+							  (locationManager.authStatus != "authorizedWhenInUse"))
 					// TODO: Don't show when you're at beginning of app (no location yet)
 				}
 //				ToolbarItem(placement: .confirmationAction) {
@@ -81,6 +85,6 @@ struct SearchView: View {
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
+		SearchView(currentLocation: .constant(CLLocation(latitude: 48.20849, longitude: 16.37208)), currentLocationName: .constant("Wien"))
     }
 }

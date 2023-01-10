@@ -30,7 +30,7 @@ struct DayWeatherPersistence {
             _ = DayWeather(weather: weather, city: city, country: country, context: context) }
         context.saveContext()
     }
-    func removeAllFriends() async throws {
+    func removeAllDayWeather() async throws {
         try await context.perform {
             try context.fetch(DayWeatherPersistence.fetchAllDayWeather()).forEach {
                 context.delete($0)

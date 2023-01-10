@@ -6,15 +6,18 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct SliderView: View {
 	@FetchRequest(fetchRequest: HistoricalWeatherPersistence.fetchAllHistoricalWeather(),
 				  animation: .default)
 	private var historicalWeather: FetchedResults<HistoricalWeather>
+	
     @State private var sliderValue: Double = 1999
 	@State private var model = SliderViewModel()
 	@State private var startYear = 2000
 	@State private var endYear = 2023
+	@State private var date = Date()
 	
 	let dateRange: ClosedRange<Date> = {
 		let calendar = Calendar.current
@@ -22,8 +25,10 @@ struct SliderView: View {
 		return calendar.date(from: startComponents)! ... Date()
 	}()
 	
-	@State private var date = Date()
+	@Binding var currentLocation: CLLocation
+	@Binding var navigationTitle: String
 	
+	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
 	
     var body: some View {
@@ -61,13 +66,20 @@ struct SliderView: View {
 					.padding(.bottom)
 				}
 			}
-			.navigationTitle(String(historicalWeather.last?.city ?? "nA"))
+			.navigationTitle(navigationTitle)
 			.foregroundColor(.hWBlack)
 		}
 		.onAppear {
 			Task {
 				do {
-					try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString())
+					if !locationManager.locationBySearch {
+						model.setLocation(location: locationManager.userLocation)
+					} else {
+						model.setLocation(location: currentLocation)
+					}
+					try await model.fetchApi(unit: self.unitsManager.getCurrentUnit())
+					navigationTitle = model.getLocationTitle()
+					locationManager.stopUpdatingLocation()
 				} catch let error {
 					print("Error while refreshing weather: \(error)")
 				}
@@ -127,7 +139,7 @@ struct dynamicHistoricalData: View {
 struct SliderView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-			SliderView()
+			SliderView(currentLocation: .constant(CLLocation(latitude: 48.20849, longitude: 16.37208)), navigationTitle: .constant("Wien"))
 
         }
     }
