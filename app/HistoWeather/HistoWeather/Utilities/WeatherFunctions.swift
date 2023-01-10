@@ -44,7 +44,7 @@ func convertStringToDate(date: String, format: String) -> Date {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = format
 		dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-		return dateFormatter.date(from: date)!
+		return dateFormatter.date(from: date) ?? Date()
 	} else {
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = format

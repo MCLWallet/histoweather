@@ -19,7 +19,7 @@ struct GraphView: View {
 	@State private var dayTwo: Date = getDateByDaysAdded(from: Date(), daysAdded: -7)
 	@State private var selectedParameter: LineGraphParameter = .temperature
 	@State private var lineGraphData: [LineGraphDate] = []
-	
+    private let startDate = DateComponents(calendar: Calendar.current, year: 1959, month: 1, day: 1).date  ?? Date()
 	@Binding var currentLocation: CLLocation
 	@Binding var navigationTitle: String
 	
@@ -30,10 +30,10 @@ struct GraphView: View {
         NavigationStack {
             ScrollView {
                 VStack {
-					// TODO: Condition if dayOne is bigger than dayTwo
 					// TODO: App crashes when doing bigger API calls
                     DatePicker(
 						selection: $dayOne,
+                        in: startDate...dayTwo,
                         displayedComponents: [.date],
                         label: { Text("Day 1") }
                     )
@@ -44,8 +44,10 @@ struct GraphView: View {
 					})
                     DatePicker(
                         selection: $dayTwo,
+                        in: dayOne...Date(),
                         displayedComponents: [.date],
                         label: { Text("Day 2") }
+                        
                     )
 					.onChange(of: dayTwo, perform: { _ in
 						Task {
