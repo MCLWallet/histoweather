@@ -1,5 +1,5 @@
 //
-//  HistoricalPersistenceGraph.swift
+//  HistoricalGraphPersistence.swift
 //  HistoWeather
 //
 //  Created by Milos Stojiljkovic on 06.01.23.
@@ -57,11 +57,11 @@ extension HistoricalGraph {
         self.city = city
         self.country = country
 		
-        for i in 0...historicalGraph.hourly.time.count - 1 {
+		for i in 0...historicalGraph.hourly.time.count - 1 {
             addToHistoricalHourly(
                 HistoricalHourly(
 					day: HistoricalHourlyEntry(
-						time: convertDate(date: historicalGraph.hourly.time[i], format: "yyyy-MM-dd'T'HH:mm"),
+						time: convertStringToDate(date: historicalGraph.hourly.time[i], format: "yyyy-MM-dd'T'HH:mm"),
 						temperature_2m: historicalGraph.hourly.temperature_2m[i],
 						rain: historicalGraph.hourly.rain[i],
 						windspeed_10m: historicalGraph.hourly.windspeed_10m[i]

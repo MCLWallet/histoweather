@@ -76,7 +76,7 @@ extension HistoricalWeather {
             addToHistoricalDaily(
                 HistoricalDaily(
 					day: HistoricalDailyEntry(
-						time: convertDate(date: historicalWeather.daily.time[i], format: "yyyy-MM-dd"),
+						time: convertStringToDate(date: historicalWeather.daily.time[i], format: "yyyy-MM-dd"),
 						weathericoncode: weatherCodeToIcon(weatherCode: historicalWeather.daily.weathercode[i]),
 						temperature_2m_max: historicalWeather.daily.temperature_2m_max[i],
 						temperature_2m_min: historicalWeather.daily.temperature_2m_min[i]
