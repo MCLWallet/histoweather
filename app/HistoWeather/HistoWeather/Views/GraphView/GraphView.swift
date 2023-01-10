@@ -26,11 +26,12 @@ struct GraphView: View {
 	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
 	
-    // TODO: prepare data for charts
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack {
+					// TODO: Condition if dayOne is bigger than dayTwo
+					// TODO: App crashes when doing bigger API calls
                     DatePicker(
 						selection: $dayOne,
                         displayedComponents: [.date],
@@ -51,7 +52,6 @@ struct GraphView: View {
 							await reloadValues()
 						}
 					})
-                    
                 }
                 .padding(.bottom, 30)
                 Picker("Parameter", selection: $selectedParameter) {
@@ -60,6 +60,8 @@ struct GraphView: View {
                     Text("Rain").tag(LineGraphParameter.rain)
                 }
                 .pickerStyle(.segmented)
+				// TODO: change parameters
+				// TODO: localize dates and strings
                 Chart(lineGraphData) {
                     LineMark(
 						x: .value("Hours", $0.time),

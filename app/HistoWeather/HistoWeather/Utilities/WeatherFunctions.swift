@@ -73,7 +73,6 @@ func areDatesOnSameDay(date1: Date, date2: Date) -> Bool {
 func getTimeString(from date: Date) -> String {
 	let formatter = DateFormatter()
 	formatter.dateFormat = "HH:mm"
-	print(formatter.string(from: date))
 	return formatter.string(from: date)
 }
 
