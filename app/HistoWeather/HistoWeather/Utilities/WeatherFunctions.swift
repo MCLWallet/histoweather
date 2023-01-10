@@ -39,6 +39,24 @@ func weatherCodeToIcon(weatherCode: Int16) -> String {
 	}
 }
 
+func convertDate(date: String, format: String) -> Date {
+	if format == "yyyy-MM-dd'T'HH:mm" {
+		let dateFormatter = ISO8601DateFormatter()
+		dateFormatter.formatOptions = [
+			.withFullDate,
+			.withDashSeparatorInDate,
+			.withColonSeparatorInTime
+		]
+		return dateFormatter.date(from: date)!
+	} else {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = format
+		dateFormatter.locale = .current
+		dateFormatter.timeZone = .current
+		return dateFormatter.date(from: date)!
+	}
+}
+
 func getSameDayWithDifferentYear(newYear: Double) -> Date {
 	let calendar = Calendar.current
 	let currentDate = Date()

@@ -15,9 +15,9 @@ class DayWeatherRepository {
     
     private let dayWeatherPersistence: DayWeatherPersistence
     private let historicalWeatherPersistence: HistoricalWeatherPersistence
-    private let historicalPersistenceGraph: HistoricalPersistenceGraph
+    private let historicalPersistenceGraph: HistoricalGraphPersistence
     
-    init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence(), historicalWeatherPersistence: HistoricalWeatherPersistence = HistoricalWeatherPersistence(), historicalPersistenceGraph: HistoricalPersistenceGraph = HistoricalPersistenceGraph()) {
+    init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence(), historicalWeatherPersistence: HistoricalWeatherPersistence = HistoricalWeatherPersistence(), historicalPersistenceGraph: HistoricalGraphPersistence = HistoricalGraphPersistence()) {
         
         self.dayWeatherPersistence = dayWeatherPersistence
         self.historicalWeatherPersistence = historicalWeatherPersistence
@@ -151,8 +151,8 @@ class DayWeatherRepository {
         components.queryItems = [
             URLQueryItem(name: "latitude", value: "\(location.coordinate.latitude)"),
             URLQueryItem(name: "longitude", value: "\(location.coordinate.longitude)"),
-            URLQueryItem(name: "start_date", value: "2000-12-18"), // TODO: get start_date from UI YYYY-MM-DD
-            URLQueryItem(name: "end_date", value: "2022-12-18"), // TODO: get end_date from UI YYYY-MM-DD
+            URLQueryItem(name: "start_date", value: "2013-12-17"), // TODO: get start_date from UI YYYY-MM-DD
+            URLQueryItem(name: "end_date", value: "2014-12-18"), // TODO: get end_date from UI YYYY-MM-DD
             URLQueryItem(name: "hourly", value: "temperature_2m,rain,windspeed_10m"),
             URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
             URLQueryItem(name: "temperature_unit", value: tempUnit)

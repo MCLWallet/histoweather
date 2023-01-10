@@ -73,16 +73,15 @@ extension HistoricalWeather {
         self.city = city
         self.country = country
         for i in 0...historicalWeather.daily.temperature_2m_max.count - 1 {
-            
             addToHistoricalDaily(
                 HistoricalDaily(
-                day: HistoricalDailyEntry(
-                time: convertDate(date: historicalWeather.daily.time[i]),
-                weathericoncode: weatherCodeToIcon(weatherCode: historicalWeather.daily.weathercode[i]),
-                temperature_2m_max: historicalWeather.daily.temperature_2m_max[i],
-                temperature_2m_min: historicalWeather.daily.temperature_2m_min[i]
-            )
-            , context: context))
+					day: HistoricalDailyEntry(
+						time: convertDate(date: historicalWeather.daily.time[i], format: "yyyy-MM-dd"),
+						weathericoncode: weatherCodeToIcon(weatherCode: historicalWeather.daily.weathercode[i]),
+						temperature_2m_max: historicalWeather.daily.temperature_2m_max[i],
+						temperature_2m_min: historicalWeather.daily.temperature_2m_min[i]
+					),
+			context: context))
         }
     }
 }

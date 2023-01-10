@@ -40,12 +40,6 @@ struct DayWeatherPersistence {
     }
 }
 
-func convertDate(date: String) -> Date {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-mm-dd"
-    return dateFormatter.date(from: date)!
-}
-
 extension DayWeather {
     convenience init(weather: Weather,
                      city: String,
@@ -63,7 +57,7 @@ extension DayWeather {
         self.windspeed = (weather.current_weather.windspeed) as NSNumber
         self.winddirection = (weather.current_weather.winddirection) as NSNumber
         for i in 0...(weather.daily.temperature_2m_max.count - 1) {
-            addToDay(Day(day: DayEntry(time: convertDate(date: weather.daily.time[i]),
+            addToDay(Day(day: DayEntry(time: convertDate(date: weather.daily.time[i], format: "yyyy-mm-dd"),
                               weathericoncode: weatherCodeToIcon(weatherCode: weather.daily.weathercode[i]),
                               temperature_2m_max: weather.daily.temperature_2m_max[i],
                               temperature_2m_min: weather.daily.temperature_2m_min[i],

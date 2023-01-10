@@ -9,35 +9,8 @@ import SwiftUI
 import Charts
 import CoreLocation
 
-struct LineGraphDate: Identifiable {
-	var id: UUID
-	
-	var day: String									// represents line
-	var time: Date									// x-axis
-	var temperature: Double							// y-axis
-	var windSpeed: Double							// y-axis
-	var rain: Double								// y-axis
-	
-	init(day: String, time: String, temperature: Double, windSpeed: Double, rain: Double) {
-		let timeFormat = DateFormatter()
-		timeFormat.dateFormat = "HH:mm"
-		
-		self.day = day
-		self.time = timeFormat.date(from: time)!
-		self.temperature = temperature
-		self.windSpeed = windSpeed
-		self.rain = rain
-		self.id = UUID()
-	}
-}
-
-enum LineGraphParameter: String, CaseIterable, Identifiable {
-	case temperature, windSpeed, rain
-	var id: Self { self }
-}
-
 struct GraphView: View {
-    @FetchRequest(fetchRequest: HistoricalPersistenceGraph.fetchHistoricalGraph(),
+    @FetchRequest(fetchRequest: HistoricalGraphPersistence.fetchHistoricalGraph(),
                   animation: .default)
     private var historicalGraph: FetchedResults<HistoricalGraph>
 	
@@ -100,7 +73,7 @@ struct GraphView: View {
 		LineGraphDate(day: "2022-10-28", time: "22:00", temperature: 6, windSpeed: 9, rain: 0),
 		LineGraphDate(day: "2022-10-28", time: "23:00", temperature: 6, windSpeed: 9, rain: 0)
 	]
-    
+    // TODO: prepare data for charts
     var body: some View {
         NavigationStack {
             ScrollView {

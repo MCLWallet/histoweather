@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-struct HistoricalPersistenceGraph {
+struct HistoricalGraphPersistence {
     private let context = PersistenceController.shared.backgroundContext
 
     static func fetchHistoricalGraph() -> NSFetchRequest<HistoricalGraph> {
@@ -42,7 +42,7 @@ struct HistoricalPersistenceGraph {
     func removeAllEntries() async throws {
         try await context.perform {
             try
-            context.fetch(HistoricalPersistenceGraph.fetchAllHistoricalGraph())
+            context.fetch(HistoricalGraphPersistence.fetchAllHistoricalGraph())
                 .forEach {
                 context.delete($0)
             }
@@ -56,16 +56,17 @@ extension HistoricalGraph {
         self.init(context: context)
         self.city = city
         self.country = country
+		
         for i in 0...historicalGraph.hourly.time.count - 1 {
             addToHistoricalHourly(
                 HistoricalHourly(
-                day: HistoricalHourlyEntry(
-                time: historicalGraph.hourly.time[i],
-                temperature_2m: historicalGraph.hourly.temperature_2m[i],
-                rain: historicalGraph.hourly.rain[i],
-                windspeed_10m: historicalGraph.hourly.windspeed_10m[i]
-            )
-            , context: context))
+					day: HistoricalHourlyEntry(
+						time: convertDate(date: historicalGraph.hourly.time[i], format: "yyyy-MM-dd'T'HH:mm"),
+						temperature_2m: historicalGraph.hourly.temperature_2m[i],
+						rain: historicalGraph.hourly.rain[i],
+						windspeed_10m: historicalGraph.hourly.windspeed_10m[i]
+					),
+				context: context))
         }
     }
 }
