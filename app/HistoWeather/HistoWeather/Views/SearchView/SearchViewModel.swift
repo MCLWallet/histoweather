@@ -24,7 +24,6 @@ class SearchViewModel: ObservableObject {
 	}
     
 	func setLocation(location: CLLocation) {
-		print("SearchViewModel setLocation: \(location.coordinate.latitude), \(location.coordinate.longitude)")
 		dayWeatherRepository.updateLocation(location: location)
     }
 	

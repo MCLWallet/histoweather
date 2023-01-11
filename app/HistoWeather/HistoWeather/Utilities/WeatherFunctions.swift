@@ -84,9 +84,6 @@ func getDayString(from date: Date) -> String {
 
 func getSameDayWithDifferentYear(day: Int, month: Int, newYear: Double) -> Date {
 	let calendar = Calendar.current
-	let currentDate = Date()
-
-	// Get the month and day of the current date
 
 	// Create a new DateComponents object with the same month and day but a different year
 	let newDateComponents = DateComponents(calendar: calendar, year: Int(newYear), month: month, day: day)

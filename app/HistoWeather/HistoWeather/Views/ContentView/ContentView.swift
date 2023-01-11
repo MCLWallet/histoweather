@@ -52,6 +52,7 @@ struct ContentView: View {
                     }
                 } else {
                     VStack(alignment: .center) {
+                        
                         Image(systemName: "wifi.slash")
                             .resizable()
                             .scaledToFit()

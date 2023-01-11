@@ -12,14 +12,7 @@ struct SliderView: View {
     @State private var model = SliderViewModel()
     @State private var startYear: Int = 1959
     @State private var endYear: Int = Calendar.current.component(.year, from: Date())
-	
 	let date = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
-	
-	let dateRange: ClosedRange<Date> = {
-		let calendar = Calendar.current
-		let startComponents = DateComponents(year: 1959, month: 1, day: 1)
-		return calendar.date(from: startComponents)! ... Date()
-	}()
 	
 	@Binding var currentLocation: CLLocation
 	@Binding var navigationTitle: String
@@ -153,7 +146,7 @@ struct dynamicHistoricalData: View {
 				unit: TemperatureUnit(rawValue: unitsManager.getCurrentUnit()) ?? .celsius)
                 .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             VStack {
-                Image(systemName: self.day.last?.weathericoncode ?? "wrench.fill")            // TODO: weathercode from History Weather API
+                Image(systemName: self.day.last?.weathericoncode ?? "wrench.fill")          
                     .resizable()
                     .scaledToFit()
                     .padding(.all)
@@ -172,10 +165,10 @@ struct dynamicHistoricalData: View {
     }
 }
 
-//struct SliderView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//			SliderView(currentLocation: .constant(CLLocation(latitude: 48.20849, longitude: 16.37208)), navigationTitle: .constant("Wien"))
-//        }
-//    }
-//}
+struct SliderView_Previews: PreviewProvider {
+static var previews: some View {
+    Group {
+        SliderView(currentLocation: .constant(CLLocation(latitude: 48.20849, longitude: 16.37208)), navigationTitle: .constant("Wien"))
+    }
+}
+}

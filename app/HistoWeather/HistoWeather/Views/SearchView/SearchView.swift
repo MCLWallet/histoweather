@@ -71,19 +71,13 @@ struct SearchView: View {
 					}
 					.disabled((locationManager.authStatus != "authorizedAlways") &&
 							  (locationManager.authStatus != "authorizedWhenInUse"))
-					// TODO: Don't show when you're at beginning of app (no location yet)
 				}
-//				ToolbarItem(placement: .confirmationAction) {
-//					Button("Done") {
-//						dismiss()
-//					}
-//					// TODO: Disable when there is no location yet
-//				}
+
 			}
 		}
     }
+    
     func runSearch(searchString: String) {
-		print("searchString: \(searchString)")
         Task.init(operation: {
             if !searchString.isEmpty {
                 do {

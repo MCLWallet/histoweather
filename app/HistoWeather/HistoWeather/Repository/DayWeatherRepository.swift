@@ -34,10 +34,6 @@ class DayWeatherRepository {
 		self.locationTitle = locationTitle
 	}
 
-	//    TODO: what if no connection and no permission
-	//		TODO: what if connection but permission
-	//		TODO: what if no connection but permission
-	// Two calls: get lat, long and then pass it to getCityName and then persist it
 	func loadCurrentWeatherData(tempUnit: String) async throws {
         try await dayWeatherPersistence.removeAllDayWeather()
 
@@ -47,10 +43,6 @@ class DayWeatherRepository {
 		try await city = CLGeocoder().reverseGeocodeLocation(self.location).first?.locality ?? "N/A"
 		try await country = CLGeocoder().reverseGeocodeLocation(self.location).first?.country ?? "N/A"
 		self.locationTitle = "\(city)"
-		
-		print("loadCurrentWeatherData lat: \(self.location.coordinate.latitude)")
-		print("loadCurrentWeatherData long: \(self.location.coordinate.longitude)")
-		print("loadCurrentWeatherData city: \(city)")
 		
         var components = URLComponents()
         components.scheme = "https"
@@ -69,8 +61,6 @@ class DayWeatherRepository {
             throw NetworkError.badURL
         }
         
-        print("\(url)")
-        
         let (data, response) = try await URLSession.shared.data(from: url)
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
             throw NetworkError.badID
@@ -85,9 +75,6 @@ class DayWeatherRepository {
         if let weatherResponse = optionalWeatherResponse {
             await dayWeatherPersistence.addDayWeather(from: weatherResponse, city: city, country: country)
         }
-		print("DayWeatherRepository lat: \(self.location.coordinate.latitude)")
-		print("DayWeatherRepository long: \(self.location.coordinate.longitude)")
-		print("DayWeatherRepository city: \(city)")
     }
 	
 	func loadHistoricalData(tempUnit: String, startYear: Int, endYear: Int) async throws {
@@ -112,8 +99,8 @@ class DayWeatherRepository {
         components.queryItems = [
             URLQueryItem(name: "latitude", value: "\(location.coordinate.latitude)"),
             URLQueryItem(name: "longitude", value: "\(location.coordinate.longitude)"),
-            URLQueryItem(name: "start_date", value: "\(startYear)" + monthDay), // TODO: get start_date from UI YYYY-MM-DD
-            URLQueryItem(name: "end_date", value: "\(endYear)" + monthDay), // TODO: get end_date from UI YYYY-MM-DD
+            URLQueryItem(name: "start_date", value: "\(startYear)" + monthDay),
+            URLQueryItem(name: "end_date", value: "\(endYear)" + monthDay), 
             URLQueryItem(name: "daily", value: "weathercode,temperature_2m_max,temperature_2m_min"),
             URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
             URLQueryItem(name: "temperature_unit", value: tempUnit)
@@ -122,8 +109,6 @@ class DayWeatherRepository {
 		guard let url = components.url else {
 			throw NetworkError.badURL
 		}
-		
-		print("\(url)")
 		
 		let (data, response) = try await URLSession.shared.data(from: url)
 		guard (response as? HTTPURLResponse)?.statusCode == 200 else {
@@ -172,10 +157,8 @@ class DayWeatherRepository {
         guard let urlDay1 = componentsDay1.url else {
             throw NetworkError.badURL
         }
-        
-        print("first: \(urlDay1)")
-        
         let (dataDay1, responseDay1) = try await URLSession.shared.data(from: urlDay1)
+        
         guard (responseDay1 as? HTTPURLResponse)?.statusCode == 200 else {
             throw NetworkError.badID
         }
@@ -198,8 +181,6 @@ class DayWeatherRepository {
             throw NetworkError.badURL
         }
     
-        print("second: \(urlDay2)")
-        
         let (dataDay2, responseDay2) = try await URLSession.shared.data(from: urlDay2)
         guard (responseDay2 as? HTTPURLResponse)?.statusCode == 200 else {
             throw NetworkError.badID

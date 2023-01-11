@@ -19,25 +19,6 @@ struct ForecastView: View {
 	
 	@State private var model = ForecastViewModel()
 	
-	// Cached values when pull-to-reload or onAppear
-//	@State private var cachedDays: [Day] = []
-//	@State private var cachedMinTemperatures: [Double] = Array(repeating: 0.0, count: 7)
-//	@State private var cachedMaxTemperatures: [Double] = Array(repeating: 0.0, count: 7)
-//	@State private var cachedWeekDays: [Date] = Array(repeating: Date(), count: 7)
-//	@State private var cachedWeatherIconCodes: [String] = Array(repeating: "wrench.fill", count: 7)
-//
-//	@State private var currentBackgroundColors: [Date: LinearGradient] = [:]
-    
-    // extension PersistenceController {
-    //
-    //    /// Only used for SwiftUI previews, **do not use this otherwise**
-    //    /// Adds a list of `Item` to the an in memory `CoreData` context.
-    //    static var preview: PersistenceController = {
-    //        let result = PersistenceController(inMemory: true)
-    //        let viewContext = result.container.viewContext
-    //        for _ in 0..<4 {
-//	@State private var bgIndex: Int = 0
-
 	@Binding var currentLocation: CLLocation
 	@Binding var navigationTitle: String
 	
@@ -150,17 +131,6 @@ struct ForecastView: View {
 			}
 		}
 	}
-	
-//	func setCache() {
-//		var index: Int = 0
-//		for item in day {
-//			self.cachedMinTemperatures[index] = item.temperature_2m_min
-//			self.cachedMaxTemperatures[index] = item.temperature_2m_max
-//			self.cachedWeekDays[index] = item.time ?? Date()
-//			self.cachedWeatherIconCodes[index] = item.weathericoncode ?? "wrench.fill"
-//			index += 1
-//		}
-//	}
 }
 
 struct ForecastView_Previews: PreviewProvider {

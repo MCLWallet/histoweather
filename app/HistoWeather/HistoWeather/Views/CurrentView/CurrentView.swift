@@ -45,7 +45,7 @@ struct CurrentView: View {
 	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
     
-    @State var showError = true
+    @State var showError = false
     
 	var body: some View {
 		NavigationStack {
@@ -155,7 +155,6 @@ struct CurrentView: View {
 		self.cachedWindSpeed = Double(truncating: dayWeather.last?.windspeed ?? 0.0)
 		self.cachedSunrise = day.first?.sunrise ?? Date()
 		self.cachedSunset = day.first?.sunset ?? Date()
-		
 	}
 	
 	func setBackgroundColors() {

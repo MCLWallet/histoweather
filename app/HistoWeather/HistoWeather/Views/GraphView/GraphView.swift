@@ -30,7 +30,6 @@ struct GraphView: View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    // TODO: App crashes when doing bigger API calls
                     DatePicker(
                         selection: $dayOne,
                         in: startDate...(Calendar.current.date(byAdding: .day, value: -1, to: dayTwo) ?? Date()),
@@ -63,8 +62,6 @@ struct GraphView: View {
                 }
 
                 .pickerStyle(.segmented)
-                // TODO: change parameters
-                // TODO: localize dates and strings
                 if selectedParameter == .temperature {
                     Chart(lineGraphData) {
                         LineMark(
@@ -142,7 +139,6 @@ struct GraphView: View {
             } else {
                 model.setLocation(location: currentLocation)
             }
-            print("\(dayOne)")
             try await model.fetchApi(
                 tempUnit: self.unitsManager.getCurrentUnit(),
                 startDate: (Calendar.current.date(byAdding: .day, value: +1, to: dayOne) ?? Date()),
