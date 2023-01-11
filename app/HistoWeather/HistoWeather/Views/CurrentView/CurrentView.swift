@@ -45,7 +45,7 @@ struct CurrentView: View {
 	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
     
-    @State var showError = true
+    @State var showError = false
     
 	var body: some View {
 		NavigationStack {
