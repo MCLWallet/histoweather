@@ -14,9 +14,9 @@ struct GraphView: View {
                   animation: .default)
     private var historicalGraph: FetchedResults<HistoricalGraph>
     
-    private let startDate = DateComponents(calendar: Calendar.current, year: 1959, month: 1, day: 1).date  ?? Date()
+    private let startDate = DateComponents(calendar: Calendar.current, year: 1959, month: 1, day: 2).date  ?? Date()
     @State private var model = GraphViewModel()
-    @State private var dayOne: Date = DateComponents(calendar: Calendar.current, year: 2000, month: 1, day: 1).date  ?? Date() // getDateByDaysAdded(from: Date(), daysAdded: -9)
+    @State private var dayOne: Date = DateComponents(calendar: Calendar.current, year: 1959, month: 1, day: 2).date  ?? Date()
     @State private var dayTwo: Date = getDateByDaysAdded(from: Date(), daysAdded: -7)
     @State private var selectedParameter: LineGraphParameter = .temperature
     @State private var lineGraphData: [LineGraphDate] = []
@@ -141,7 +141,7 @@ struct GraphView: View {
             print("\(dayOne)")
             try await model.fetchApi(
                 tempUnit: self.unitsManager.getCurrentUnit(),
-                startDate: dayOne,
+                startDate: (Calendar.current.date(byAdding: .day, value: +1, to: dayOne) ?? Date()),
                 endDate: dayTwo
             )
             updateGraphData()
