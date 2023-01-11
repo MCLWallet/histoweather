@@ -55,7 +55,36 @@ Geolocation API returns geocode for a specific location specified by name. It al
 
 This project is currently under development and very much in its beginning steps.
 
+## App usage
 
+Our application is designed to be navigated using the navigation bar located at the bottom of the screen. The navigation bar provides access to five distinct screens. Upon initial installation, users will be prompted to grant permission for the application to access their location data. If a user chooses not to grant this permission, they will be presented with the search view where they may manually enter a location. Once a location has been selected, the search view will be closed and the user will be presented with the current view.
+
+### CurrentView
+![CurrentView](/screenshots/CurrentView.png){width=30% height=30%}
+
+The CurrentView has been implemented to furnish users with the most recent weather data for their selected location or their device's present location.
+
+###  ForecastView
+![ForecastView](/screenshots/ForecastView.png){width=30% height=30%}
+
+The ForecastView is designed to present users with a forecast of temperature data for the next 7 days, allowing them to plan and make informed decisions accordingly.
+
+###  GraphView
+![GraphView](/screenshots/GraphView.png){width=30% height=30%}
+
+In GraphView, users have the ability to compare the hourly data of two distinct days, dating as far back as 1959, utilizing a graphical representation for easy comparison.
+
+###  SliderView
+![SliderView](/screenshots/SliderView.png){width=30% height=30%}
+
+The SliderView feature allows users to view the evolution of temperature at a specified location, dating as far back as 1959. The user has the capability to adjust the date range, while the background color of the display will adjust to correspond with the temperature being presented.
+
+###  SearchView
+![SearchView](/screenshots/SearchView.png){width=30% height=30}
+
+At any point in the use of the application, the user has the ability to navigate to the Search View to modify the location for which weather data is being presented. Additionally, the user has the option to switch back to viewing weather data for their current location.
+
+In every view where weather data is displayed, the user has the capability to change the unit of temperature, with the selected unit being synced across all views and retained even upon relaunching the application.
 
 <!-- ## Getting started
 
