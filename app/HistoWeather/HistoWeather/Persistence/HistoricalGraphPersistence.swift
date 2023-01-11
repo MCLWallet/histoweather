@@ -63,7 +63,7 @@ extension HistoricalGraph {
             addToHistoricalHourly(
                 HistoricalHourly(
                     day: HistoricalHourlyEntry(
-                        time: convertStringToDate(date: weatherResponseDay1.time[i], format: "yyyy-MM-dd'T'HH:mm"),
+                        time: convertStringToDateTwoFrmats(date: weatherResponseDay1.time[i]),
                         temperature_2m: weatherResponseDay1.temperature_2m[i],
                         rain: weatherResponseDay1.rain[i],
                         windspeed_10m: weatherResponseDay1.windspeed_10m[i]
@@ -75,7 +75,7 @@ extension HistoricalGraph {
             addToHistoricalHourly(
                 HistoricalHourly(
                     day: HistoricalHourlyEntry(
-                        time: convertStringToDate(date: weatherResponseDay2.time[i], format: "yyyy-MM-dd'T'HH:mm"),
+                        time: convertStringToDateTwoFrmats(date: weatherResponseDay2.time[i]),
                         temperature_2m: weatherResponseDay2.temperature_2m[i],
                         rain: weatherResponseDay2.rain[i],
                         windspeed_10m: weatherResponseDay2.windspeed_10m[i]

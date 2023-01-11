@@ -54,6 +54,15 @@ func convertStringToDate(date: String, format: String) -> Date {
 	}
 }
 
+func convertStringToDateTwoFrmats(date: String) -> Date {
+    let dateFormatter1 = DateFormatter()
+    let dateFormatter2 = DateFormatter()
+    dateFormatter1.dateFormat = "yyyy-MM-dd'T'HH:mm"
+    dateFormatter2.dateFormat = "yyyy-MM-dd'T-'HH:mm"
+    return dateFormatter1.date(from: date) ?? dateFormatter2.date(from: date) ?? Date()
+
+}
+
 func convertDateToString(from date: Date) -> String {
 	let dateFormatter = ISO8601DateFormatter()
 	dateFormatter.formatOptions = [.withDashSeparatorInDate, .withFullDate]
