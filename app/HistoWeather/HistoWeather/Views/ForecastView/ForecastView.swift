@@ -50,7 +50,7 @@ struct ForecastView: View {
 							Image(systemName: index.weathericoncode ?? "wrench.fill")
 								.font(.title)
 								.foregroundColor(.hWBlack)
-						Text(String(format: "%.0f / %.0f", index.temperature_2m_min, index.temperature_2m_max))
+                        Text("\(String(format: "%.0f / %.0f", index.temperature_2m_min, index.temperature_2m_max)) \(unitsManager.currentTemperatureUnit.rawValue)")
 							.font(.title2)
 							.foregroundColor(.hWBlack)
 							.padding(.leading)
