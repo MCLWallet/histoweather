@@ -79,3 +79,32 @@ We removed all the force unwrappings that mostly were related to defining `Date`
 ## weatherCodeToIcon function doesn't belong in the Persistence
 
 We moved the `weatherCodeToIcon` function from the `Persistence` into `WeatherFunctions` that can be found in the before mentioned `Utilities` folder.
+
+
+## Remove relicts from iOS Architecture Example (Friends App)
+
+Because we reversed engineered some parts of the course's iOS Architecture Example app, some code relicts of it were still in the code. We removed them or adapted them accordingly. 
+
+## Remaining bugs
+
+### Issue #11 - BUG: Changing units causes random color flashes & showing default weather data
+
+When doing a pull-to-reload in `ForecastView` the View flashes and disappears for a few milliseconds.
+This we want to solve with proper caching in the future.
+
+### Issue #16 - BUG: SliderView - Background color is not accurate when changing to Fahrenheit
+
+When changing to Fahrenheit in the `SliderView` the background color is not accurate. The reason is because the real current state of the temperature unit is not getting passed right into the `getTemperatureGradient` function.
+
+
+### Issue #17 - BUG: SliderView - First Load of the screen shows default data
+
+When going into the `SliderView` because of the longer API call, the UI still shows some default data. This should be replaced with a Loading screen or any kind of indicator for the user that there is some Task that needs to be waited on.
+
+### Issue #19 - BUG: Localize Time displays
+
+Some time displays in the UI are still not localized and should be linked to the system settings of the user.
+
+### Issue #19 BUG: Graph is not in line with brand colors
+
+The graph is showing the SwiftUI's Chart default colors and should be replaced with our brand colors.
