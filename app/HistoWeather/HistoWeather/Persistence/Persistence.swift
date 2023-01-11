@@ -92,19 +92,3 @@ extension NSManagedObjectContext {
         }
     }
 }
-
-// extension PersistenceController {
-//
-//    /// Only used for SwiftUI previews, **do not use this otherwise**
-//    /// Adds a list of `Item` to the an in memory `CoreData` context.
-//    static var preview: PersistenceController = {
-//        let result = PersistenceController(inMemory: true)
-//        let viewContext = result.container.viewContext
-//        for _ in 0..<4 {
-//            let newItem = Friend(context: viewContext)
-//            newItem.name = generateRandomName()
-//            newItem.bestFriendScore = Int16(generateRandomBestFriendScore())
-//        }
-//        return result
-//    }()
-// }
