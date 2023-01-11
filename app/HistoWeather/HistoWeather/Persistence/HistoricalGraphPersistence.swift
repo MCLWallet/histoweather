@@ -52,7 +52,6 @@ struct HistoricalGraphPersistence {
 }
 
 
-
 extension HistoricalGraph {
     convenience init(weatherResponseDay1: HistoricalHourlyDecodable, weatherResponseDay2: HistoricalHourlyDecodable, city: String, country: String, context: NSManagedObjectContext) {
         self.init(context: context)

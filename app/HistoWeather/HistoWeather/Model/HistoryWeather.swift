@@ -12,9 +12,9 @@ import Foundation
 
  struct HistoricalDailyDecodable: Decodable {
     let time: [Date]
-    let weathercode: [Int16]
-    let temperature_2m_max: [Double]
-    let temperature_2m_min: [Double]
+    let weathercode: [Int16?]
+    let temperature_2m_max: [Double?]
+    let temperature_2m_min: [Double?]
 }
 
 struct HistoricalDailyEntry {

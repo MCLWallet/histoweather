@@ -145,18 +145,11 @@ struct dynamicHistoricalData: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: {
-                if  self.day.first?.temperature_2m_max ?? -19 > 0.5 {
-                    return [Color("BordeauxRed"), Color("VeryLightYellow")]
-                } else {
-                    return [Color("DarkBlue"), Color("VeryLightBlue")]
-                }
-            }()), startPoint: .topLeading,
-               endPoint: .bottomTrailing)
+			getTemperatureGradient(
+				temperature: self.day.last?.temperature_2m_max ?? 0,
+				unit: TemperatureUnit(rawValue: unitsManager.getCurrentUnit()) ?? .celsius)
                 .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            
             VStack {
-
                 Image(systemName: self.day.last?.weathericoncode ?? "wrench.fill")            // TODO: weathercode from History Weather API
                     .resizable()
                     .scaledToFit()
