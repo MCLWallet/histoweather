@@ -12,18 +12,27 @@ struct SliderView: View {
     @State private var model = SliderViewModel()
     @State private var startYear: Int = 1959
     @State private var endYear: Int = Calendar.current.component(.year, from: Date())
-    let date: Date
-    init() {
-        let calendar = Calendar.current
-        date = calendar.date(byAdding: .day, value: -6, to: Date())!
-    }
+	
+	let date = Calendar.current.date(byAdding: .day, value: -6, to: Date())!
+	
 	let dateRange: ClosedRange<Date> = {
 		let calendar = Calendar.current
 		let startComponents = DateComponents(year: 1959, month: 1, day: 1)
 		return calendar.date(from: startComponents)! ... Date()
 	}()
 	
+	@Binding var currentLocation: CLLocation
+	@Binding var navigationTitle: String
+	
+	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
+	
+//	init(currentLocation: CLLocation, navigationTitle: String) {
+//		let calendar = Calendar.current
+//		date = calendar.date(byAdding: .day, value: -6, to: Date())!
+//		self.currentLocation = currentLocation
+//		self.navigationTitle = navigationTitle
+//	}
 	
     var body: some View {
         NavigationStack {
@@ -78,20 +87,36 @@ struct SliderView: View {
                 
             }
             
-            .navigationTitle(String((historicalWeather.last?.city ?? "nA") + ", " + (historicalWeather.last?.country ?? "nA")))
+            .navigationTitle(navigationTitle)
             .foregroundColor(.hWBlack)
         }
-
 		.onAppear {
 			Task {
-				do {
-                    try await model.fetchApi(unit: self.unitsManager.getCurrentTemperatureFullString(), startYear: startYear, endYear: endYear)
-				} catch let error {
-					print("Error while refreshing weather: \(error)")
-				}
+				await reloadValues()
 			}
 		}
     }
+	
+	private func reloadValues() async {
+		Task {
+			do {
+				if !locationManager.locationBySearch {
+					locationManager.startUpdatingLocation()
+					model.setLocation(location: locationManager.userLocation)
+				} else {
+					model.setLocation(location: currentLocation)
+				}
+				try await model.fetchApi(
+					unit: unitsManager.getCurrentUnit(),
+					startYear: startYear,
+					endYear: endYear)
+				navigationTitle = model.getLocationTitle()
+				locationManager.stopUpdatingLocation()
+			} catch let error {
+				print("Error while refreshing weather: \(error)")
+			}
+		}
+	}
 }
 
 struct dynamicHistoricalData: View {
@@ -137,11 +162,10 @@ struct dynamicHistoricalData: View {
     }
 }
 
-struct SliderView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-			SliderView(currentLocation: .constant(CLLocation(latitude: 48.20849, longitude: 16.37208)), navigationTitle: .constant("Wien"))
-
-        }
-    }
-}
+//struct SliderView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//			SliderView(currentLocation: .constant(CLLocation(latitude: 48.20849, longitude: 16.37208)), navigationTitle: .constant("Wien"))
+//        }
+//    }
+//}
