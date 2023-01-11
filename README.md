@@ -80,7 +80,7 @@ In GraphView, users have the ability to compare the hourly data of two distinct 
 The SliderView feature allows users to view the evolution of temperature at a specified location, dating as far back as 1959. The user has the capability to adjust the date range, while the background color of the display will adjust to correspond with the temperature being presented.
 
 ###  SearchView
-![SearchView](/screenshots/SearchView.png){width=30% height=30}
+![SearchView](/screenshots/SearchView.png){width=30% height=30%}
 
 At any point in the use of the application, the user has the ability to navigate to the Search View to modify the location for which weather data is being presented. Additionally, the user has the option to switch back to viewing weather data for their current location.
 
