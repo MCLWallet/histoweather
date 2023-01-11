@@ -87,7 +87,7 @@ class DayWeatherRepository {
 		self.locationTitle = "\(city)"
         
         let calendar = Calendar.current
-        let date = calendar.date(byAdding: .day, value: -6, to: Date())!
+        let date = calendar.date(byAdding: .day, value: -6, to: Date()) ?? Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "-MM-DD"
         let monthDay = formatter.string(from: date)

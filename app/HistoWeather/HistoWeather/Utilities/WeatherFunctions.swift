@@ -62,7 +62,7 @@ func convertDateToString(from date: Date) -> String {
 }
 
 func getDateByDaysAdded(from date: Date, daysAdded: Int) -> Date {
-	return Calendar.current.date(byAdding: .day, value: daysAdded, to: date)!
+	return Calendar.current.date(byAdding: .day, value: daysAdded, to: date) ?? Date()
 }
 
 func areDatesOnSameDay(date1: Date, date2: Date) -> Bool {

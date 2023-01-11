@@ -60,7 +60,7 @@ struct LineGraphDate: Identifiable {
 		timeFormat.dateFormat = "HH:mm"
 		
 		self.day = day
-		self.time = timeFormat.date(from: time)!
+		self.time = timeFormat.date(from: time) ?? Date()
 		self.temperature = temperature
 		self.windSpeed = windSpeed
 		self.rain = rain
