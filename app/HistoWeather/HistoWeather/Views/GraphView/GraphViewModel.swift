@@ -1,20 +1,25 @@
 //
-//  ForecastViewModel.swift
+//  GraphViewModel.swift
 //  HistoWeather
 //
-//  Created by Milos Stojiljkovic on 02.12.22.
+//  Created by Milos Stojiljkovic on 05.01.23.
 //
+
+import Foundation
+import SwiftUI
+import Charts
 import CoreLocation
 
-struct ForecastViewModel {
+struct GraphViewModel {
+
     private let dayWeatherRepository: DayWeatherRepository
 
     init(dayWeatherRepository: DayWeatherRepository = DayWeatherRepository()) {
         self.dayWeatherRepository = dayWeatherRepository
     }
 
-	func fetchApi(unit: String) async throws {
-        try await dayWeatherRepository.loadCurrentWeatherData(tempUnit: unit)
+	func fetchApi(tempUnit: String, startDate: Date, endDate: Date) async throws {
+        try await dayWeatherRepository.loadHistoricalDataHourly(tempUnit: tempUnit, startDate: startDate, endDate: endDate)
     }
 	
 	func setLocation(location: CLLocation) {

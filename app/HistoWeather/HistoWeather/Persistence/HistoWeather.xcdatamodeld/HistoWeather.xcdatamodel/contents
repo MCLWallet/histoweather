@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22C65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Day" representedClassName="Day" syncable="YES" codeGenerationType="class">
+        <attribute name="precipitation_sum" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="sunrise" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="sunset" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="temperature_2m_max" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="temperature_2m_min" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="time" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="weathericoncode" attributeType="String"/>
+        <attribute name="windspeed_10m_max" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="dayweather" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DayWeather" inverseName="day" inverseEntity="DayWeather"/>
+    </entity>
+    <entity name="DayWeather" representedClassName="DayWeather" syncable="YES" codeGenerationType="class">
+        <attribute name="city" attributeType="String"/>
+        <attribute name="country" attributeType="String"/>
+        <attribute name="elevation" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="temperature" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="weathericoncode" optional="YES" attributeType="String"/>
+        <attribute name="winddirection" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="windspeed" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <relationship name="day" optional="YES" toMany="YES" minCount="7" maxCount="7" deletionRule="Cascade" destinationEntity="Day" inverseName="dayweather" inverseEntity="Day"/>
+    </entity>
+    <entity name="HistoricalDaily" representedClassName="HistoricalDaily" syncable="YES" codeGenerationType="class">
+        <attribute name="temperature_2m_max" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="temperature_2m_min" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="time" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="weathericoncode" attributeType="String"/>
+        <relationship name="historicalWeather" maxCount="1" deletionRule="Cascade" destinationEntity="HistoricalWeather" inverseName="historicalDaily" inverseEntity="HistoricalWeather"/>
+    </entity>
+    <entity name="HistoricalGraph" representedClassName="HistoricalGraph" syncable="YES" codeGenerationType="class">
+        <attribute name="city" attributeType="String"/>
+        <attribute name="country" attributeType="String"/>
+        <relationship name="historicalHourly" toMany="YES" deletionRule="Cascade" destinationEntity="HistoricalHourly" inverseName="historicalGraph" inverseEntity="HistoricalHourly"/>
+    </entity>
+    <entity name="HistoricalHourly" representedClassName="HistoricalHourly" syncable="YES" codeGenerationType="class">
+        <attribute name="rain" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="temperature_2m" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="time" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="windspeed_10m" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="historicalGraph" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HistoricalGraph" inverseName="historicalHourly" inverseEntity="HistoricalGraph"/>
+    </entity>
+    <entity name="HistoricalWeather" representedClassName="HistoricalWeather" syncable="YES" codeGenerationType="class">
+        <attribute name="city" attributeType="String"/>
+        <attribute name="country" attributeType="String"/>
+        <relationship name="historicalDaily" toMany="YES" deletionRule="Cascade" destinationEntity="HistoricalDaily" inverseName="historicalWeather" inverseEntity="HistoricalDaily"/>
+    </entity>
+</model>

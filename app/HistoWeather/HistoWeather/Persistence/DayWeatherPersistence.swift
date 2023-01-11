@@ -1,5 +1,5 @@
 //
-//  DayWeatherPresistance.swift
+//  DayWeatherPersistence.swift
 //  HistoWeather
 //
 //  Created by Milos Stojiljkovic on 02.12.22.
@@ -11,12 +11,10 @@ struct DayWeatherPersistence {
     private let context = PersistenceController.shared.backgroundContext
     static func fetchDayWeather() -> NSFetchRequest<DayWeather> {
         let request = DayWeather.fetchRequest()
-// print("Lat:\(Coordinates.coordinate.latitude)   Long:\(Coordinates.coordinate.longitude)")
-// request.predicate = NSPredicate(format:"latitude == %d AND longitude == %d",
-//        Coordinates.latitude, Coordinates.longitude)
         request.sortDescriptors = []
         return request
     }
+    
     static func fetchAllDayWeather() -> NSFetchRequest<DayWeather> {
         let request = DayWeather.fetchRequest()
         request.sortDescriptors = []
@@ -24,17 +22,15 @@ struct DayWeatherPersistence {
     }
     static func fetchDay() -> NSFetchRequest<Day> {
         let request = Day.fetchRequest()
-//       request.predicate = NSPredicate(format: "dayweather.latitude == %d AND dayweather.longitude == %d",
-//        Coordinates.coordinate.latitude, Coordinates.coordinate.longitude)
         request.sortDescriptors = [NSSortDescriptor(key: "time", ascending: true)]
         return request
     }
-    func addDayWeather(from weather: Weather) async {
+    func addDayWeather(from weather: Weather, city: String, country: String) async {
         await context.perform {
-            _ = DayWeather(weather: weather, context: context) }
+            _ = DayWeather(weather: weather, city: city, country: country, context: context) }
         context.saveContext()
     }
-    func removeAllFriends() async throws {
+    func removeAllDayWeather() async throws {
         try await context.perform {
             try context.fetch(DayWeatherPersistence.fetchAllDayWeather()).forEach {
                 context.delete($0)
@@ -44,48 +40,14 @@ struct DayWeatherPersistence {
     }
 }
 
-func weatherCodeToIcon(weatherCode: Int16) -> String {
-    if weatherCode == 0 {
-        return "sun.max"
-    } else if weatherCode == 1 || weatherCode == 2 || weatherCode == 3 {
-        return "cloud.sun"
-    } else if weatherCode == 45 || weatherCode == 48 {
-        return "cloud.fog"
-    } else if weatherCode == 51 || weatherCode == 53 || weatherCode == 55 {
-        return "cloud.drizzle"
-    } else if weatherCode == 56 || weatherCode == 57 {
-        return "cloud.drizzle"
-    } else if weatherCode == 61 || weatherCode == 63 || weatherCode == 65 {
-        return "cloud.rain"
-    } else if weatherCode == 66 || weatherCode == 67 {
-        return "cloud.sleet"
-    } else if weatherCode == 71 || weatherCode == 73 || weatherCode == 75 {
-        return "snowflake"
-    } else if weatherCode == 77 {
-        return "cloud.snow"
-    } else if weatherCode == 80 || weatherCode == 81 || weatherCode == 82 {
-        return "cloud.heavyrain"
-    } else if weatherCode == 85 || weatherCode == 86 {
-        return "cloud.snow"
-    } else if weatherCode == 95 {
-        return "cloud.bolt"
-    } else if weatherCode == 96 || weatherCode == 99 {
-        return "cloud.bolt.rain"
-    } else {
-        return "wrench.fill"
-    }
-}
-
-func converteDate(date: String) -> Date {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-mm-dd"
-    return dateFormatter.date(from: date)!
-}
-
 extension DayWeather {
     convenience init(weather: Weather,
+                     city: String,
+                     country: String,
                      context: NSManagedObjectContext) {
         self.init(context: context)
+        self.city = city
+        self.country = country
         self.longitude = weather.longitude
         self.latitude = weather.latitude
         self.time = weather.current_weather.time
@@ -95,7 +57,7 @@ extension DayWeather {
         self.windspeed = (weather.current_weather.windspeed) as NSNumber
         self.winddirection = (weather.current_weather.winddirection) as NSNumber
         for i in 0...(weather.daily.temperature_2m_max.count - 1) {
-            addToDay(Day(day: DayEntry(time: converteDate(date: weather.daily.time[i]),
+            addToDay(Day(day: DayEntry(time: convertStringToDate(date: weather.daily.time[i], format: "yyyy-mm-dd"),
                               weathericoncode: weatherCodeToIcon(weatherCode: weather.daily.weathercode[i]),
                               temperature_2m_max: weather.daily.temperature_2m_max[i],
                               temperature_2m_min: weather.daily.temperature_2m_min[i],
@@ -122,15 +84,4 @@ extension Day {
         self.precipitation_sum = day.precipitation_sum
         self.windspeed_10m_max = day.windspeed_10m_max
     }
-}
-
-struct DayEntry {
-    let time: Date
-    let weathericoncode: String
-    let temperature_2m_max: Double
-    let temperature_2m_min: Double
-    let sunrise: Date
-    let sunset: Date
-    let precipitation_sum: Double
-    let windspeed_10m_max: Double
 }

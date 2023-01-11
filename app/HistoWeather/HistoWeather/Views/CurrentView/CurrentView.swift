@@ -8,7 +8,7 @@
 import SwiftUI
 import MapKit
 
-struct WeatcherIcon: Identifiable {
+struct WeatherIcon: Identifiable {
 	let id = UUID()
 	let weatherCode: [Int16]
 	let description: String
@@ -16,118 +16,189 @@ struct WeatcherIcon: Identifiable {
 }
 
 struct CurrentView: View {
-    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDayWeather(),
-                  animation: .default)
-    private var dayWeather: FetchedResults<DayWeather>
+	@FetchRequest(fetchRequest: DayWeatherPersistence.fetchDayWeather(),
+				  animation: .default)
+	private var dayWeather: FetchedResults<DayWeather>
 
-    @FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(),
-                  animation: .default)
-    private var day: FetchedResults<Day>
-    @State private var model = ForecastViewModel()
+	@FetchRequest(fetchRequest: DayWeatherPersistence.fetchDay(),
+				  animation: .default)
+	private var day: FetchedResults<Day>
+	
+	@State private var model = CurrentViewModel()
+	
+	// Cached values when pull-to-reload or onAppear
+	@State private var cachedDate: Date = Date()
+	@State private var cachedWeatherCode: String = "wrench.fill"
+	@State private var cachedCurrentTemperature: Double = 0
+	@State private var cachedMinTemperature: Double = 0
+	@State private var cachedMaxTemperature: Double = 0
+	@State private var cachedPrecipitation: Double = 0
+	@State private var cachedWindSpeed: Double = 0
+	@State private var cachedSunrise: Date = Date()
+	@State private var cachedSunset: Date = Date()
+	
+	@State private var currentBackgroundColor: LinearGradient = TemperatureColorRange.cool.gradient
+	@State private var currentNavigationBarColor: Color = .darkBlue
+	
+	@Binding var currentLocation: CLLocation
+	@Binding var navigationTitle: String
+	
 	@ObservedObject var locationManager = LocationManager.shared
+	@ObservedObject var unitsManager = UnitsManager.shared
+
 	var body: some View {
-        NavigationStack {
-
-			// Top Container
-			HStack {
+		NavigationStack {
+			ScrollView {
 				// Date & Location View
-				VStack(alignment: .leading) {
-                    Text(Coordinates.locationName)
-						.font(.largeTitle)
-                    Text("\((dayWeather.last?.time ?? Date()).formatted(date: .abbreviated, time: .shortened))")
-						.font(.title3)
-				}.padding()
-				Spacer()
-            }
-			// Middle Container
-			VStack {
-				// Current Weather View
-                Image(systemName: dayWeather.last?.weathericoncode ?? "wrench.fill")
-					.resizable()
-					.scaledToFit()
-					.padding(.all)
-				Text("\(dayWeather.last?.temperature ?? 0.0)°C")
-					.font(.largeTitle)
-					.fontWeight(.light)
-					.multilineTextAlignment(.center)
-					.padding(.bottom)
-					.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
 				HStack {
-					Text("high")
-                    Text(String(format: "%.1f", day.first?.temperature_2m_max ?? 0))
-						.bold()
-					Text("low")
-                    Text(String(format: "%.1f", day.first?.temperature_2m_min ?? 0))
-						.bold()
+					VStack(alignment: .leading) {
+						Text("\((dayWeather.last?.time ?? cachedDate).formatted(date: .abbreviated, time: .shortened))")
+							.font(.title3)
+					}
+					.padding(.bottom)
+					.padding(.leading)
+					Spacer()
 				}
-				.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
-				// Debug Log Coordinates
-//                Text("\(dayWeather.last?.latitude ?? 0), \(dayWeather.last?.longitude ?? 0)")
-//                Text("\(Coordinates.latitude), \(Coordinates.longitude)")
+				// Temperature View
+				VStack {
+					Image(systemName: dayWeather.last?.weathericoncode ?? cachedWeatherCode)
+						.resizable()
+						.scaledToFit()
+						.padding(.all)
+						.frame(maxWidth: 250)
+					Text("\(String(format: "%.0f", Double(truncating: dayWeather.last?.temperature ?? cachedCurrentTemperature as NSNumber))) \(unitsManager.currentTemperatureUnit.rawValue)")
+						.font(.largeTitle)
+						.fontWeight(.light)
+						.multilineTextAlignment(.center)
+						.padding(.bottom)
+						.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
+					HStack {
+						Text("high")
+						Text("\(String(format: "%.0f", day.first?.temperature_2m_max ?? cachedMaxTemperature)) \(unitsManager.currentTemperatureUnit.rawValue)")
+							.bold()
+						Text("low")
+						Text("\(String(format: "%.0f", day.first?.temperature_2m_min ?? cachedMinTemperature)) \(unitsManager.currentTemperatureUnit.rawValue)")
+							.bold()
+					}
+					.dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
+				}
+				.padding(.all)
+				// Other Weather Parameters View
+				HStack {
+					VStack(alignment: .leading) {
+						Label("precipitation", systemImage: "cloud.rain.fill")
+						Text(String(format: "%.1f mm", day.first?.precipitation_sum ?? cachedPrecipitation))
+							.fontWeight(.bold)
+					}.padding(.all)
+					Spacer()
+					VStack(alignment: .trailing) {
+						Label("windSpeed", systemImage: "wind")
+						Text("\(dayWeather.last?.windspeed ?? cachedWindSpeed as NSNumber) km/h")
+							.fontWeight(.bold)
+					}.padding(.all)
+					
+				}
+				HStack {
+					VStack(alignment: .leading) {
+						Label("sunrise", systemImage: "sunrise.fill")
+						Text("\((day.first?.sunrise ?? cachedSunrise).formatted(date: .omitted, time: .shortened))")
+							.fontWeight(.bold)
+					}.padding(.all)
+					Spacer()
+					VStack(alignment: .trailing) {
+						Label("sunset", systemImage: "sunset.fill")
+						Text("\((day.first?.sunset ?? cachedSunset).formatted(date: .omitted, time: .shortened))")
+							.fontWeight(.bold)
+					}.padding(.all)
+				}
 			}
-			// Humidity & Windspeed
-			HStack {
-				VStack(alignment: .leading) {
-					Label("elevation", systemImage: "plusminus")
-					Text("\(dayWeather.last?.elevation ?? 0.0)")
-						.fontWeight(.bold)
-				}.padding(.all)
-				Spacer()
-                VStack(alignment: .trailing) {
-					Label("precipitation", systemImage: "cloud.rain.fill")
-                    Text(String(format: "%.1f", day.first?.precipitation_sum ?? 0))
-                        .fontWeight(.bold)
-                }.padding(.all)
+			.navigationTitle(navigationTitle)
+			.navigationBarTitleDisplayMode(.automatic)
+			.toolbar {
+				ToolbarItem(placement: .navigationBarTrailing) {
+					Button(action: {
+						reloadValuesWithDifferentUnit()
+					}, label: {
+						Text("\(unitsManager.currentTemperatureUnit.rawValue)")
+							.font(.title)
+					})
+					.foregroundColor(.hWFontColor)
+				}
 			}
-            HStack {
-                VStack(alignment: .leading) {
-					Label("winddirection", systemImage: "location.fill")
-                    Text("\(dayWeather.last?.winddirection ?? 0.0)")
-                        .fontWeight(.bold)
-                }.padding(.all)
-                Spacer()
-                VStack(alignment: .trailing) {
-					Label("windSpeed", systemImage: "wind")
-                    Text("\(dayWeather.last?.windspeed ?? 0.0)")
-                        .fontWeight(.bold)
-                }.padding(.all)
-            }
-            HStack {
-                VStack(alignment: .leading) {
-					Label("sunrise", systemImage: "sunrise.fill")
-					Text("\((day.first?.sunrise ?? Date()).formatted(date: .omitted, time: .shortened))")
-                        .fontWeight(.bold)
-                }.padding(.all)
-                Spacer()
-                VStack(alignment: .trailing) {
-					Label("sunset", systemImage: "sunset.fill")
-					Text("\((day.first?.sunset ?? Date()).formatted(date: .omitted, time: .shortened))")
-                        .fontWeight(.bold)
-                }.padding(.all)
-            }
+			.background(currentBackgroundColor)
+			.toolbarBackground(currentNavigationBarColor, for: .navigationBar)
+			.foregroundColor(.hWBlack)
 		}
-        .refreshable {
-            do {
-                try await model.fetchapi()
-            } catch let error {
-                print("Error while refreshing friends: \(error)")
-            }
-        }
-        .onAppear {
-            Task {
-                do {
-                    try await model.fetchapi()
-                } catch let error {
-                    print("Error while refreshing friends: \(error)")
-                }
-            }
+		.refreshable {
+			reloadValues()
 		}
-
+		.onAppear {
+			reloadValues()
+		}
+	}
+	
+	func setCache() {
+		self.cachedDate = dayWeather.last?.time ?? Date()
+		self.cachedWeatherCode = dayWeather.last?.weathericoncode ?? "wrench.fill"
+		self.cachedCurrentTemperature = Double(truncating: dayWeather.last?.temperature ?? 0)
+		self.cachedMaxTemperature = Double(truncating: (day.first?.temperature_2m_max ?? 0) as NSNumber)
+		self.cachedMinTemperature = Double(truncating: (day.first?.temperature_2m_min ?? 0) as NSNumber)
+		self.cachedPrecipitation = day.first?.precipitation_sum ?? 0
+		self.cachedWindSpeed = Double(truncating: dayWeather.last?.windspeed ?? 0.0)
+		self.cachedSunrise = day.first?.sunrise ?? Date()
+		self.cachedSunset = day.first?.sunset ?? Date()
+		
+	}
+	
+	func setBackgroundColors() {
+		self.currentBackgroundColor = getTemperatureGradient(
+			temperature: Double(truncating: (dayWeather.last?.temperature ?? 0)),
+				  unit: unitsManager.currentTemperatureUnit)
+		self.currentNavigationBarColor = getNavigationBarColorByTemperature(
+			temperature: Double(truncating: (dayWeather.last?.temperature ?? 0)),
+				  unit: unitsManager.currentTemperatureUnit
+			  )
+	}
+	
+	func reloadValues() {
+		setCache()
+		Task {
+			do {
+				if !locationManager.locationBySearch {
+					locationManager.startUpdatingLocation()
+					model.setLocation(location: locationManager.userLocation)
+				} else {
+					model.setLocation(location: currentLocation)
+				}
+				try await model.fetchApi(
+					unit: self.unitsManager.getCurrentUnit()
+				)
+				navigationTitle = model.getLocationTitle()
+				setBackgroundColors()
+				locationManager.stopUpdatingLocation()
+			} catch let error {
+				print("Error while refreshing weather: \(error)")
+			}
+		}
+	}
+	
+	func reloadValuesWithDifferentUnit() {
+		setCache()
+		Task {
+			do {
+				try await model.fetchApi(
+					unit: self.unitsManager.getCurrentOppositeUnit()
+				)
+				unitsManager.changeCurrentTemperatureUnit()
+			} catch let error {
+				print("Error while refreshing weather: \(error)")
+			}
+		}
 	}
 }
 
 struct CurrentView_Previews: PreviewProvider {
-    static var previews: some View {
-        CurrentView()
-    }
+	static var previews: some View {
+		CurrentView(currentLocation: .constant(CLLocation(latitude: 48.20849, longitude: 16.37208)), navigationTitle: .constant("Wien"))
+	}
 }

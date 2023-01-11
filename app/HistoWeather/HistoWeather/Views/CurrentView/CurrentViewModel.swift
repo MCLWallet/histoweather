@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct CurrentViewModel {
 
@@ -15,7 +16,15 @@ struct CurrentViewModel {
         self.dayWeatherRepository = dayWeatherRepository
     }
 
-    func fetchapi() async throws {
-        try await dayWeatherRepository.loadData()
+	func fetchApi(unit: String) async throws {
+        try await dayWeatherRepository.loadCurrentWeatherData(tempUnit: unit)
     }
+	
+	func setLocation(location: CLLocation) {
+		dayWeatherRepository.updateLocation(location: location)
+	}
+	
+	func getLocationTitle() -> String {
+		return dayWeatherRepository.locationTitle
+	}
 }

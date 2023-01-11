@@ -11,48 +11,63 @@ import MapKit
 
 struct ContentView: View {
     @ObservedObject var locationManager: LocationManager = LocationManager.shared
-    @State var coordinates: Coordinates = Coordinates()
-    @State var tab: Int
+    @State var selectedTab: Int
+	@State private var oldSelectedTab = 1
+	@State var sheetIsPresenting = false
+	@State var currentLocation: CLLocation = LocationManager.shared.userLocation
+	@State var currentLocationName: String = "N/A"
+	
     var body: some View {
         Group {
-            TabView(selection: $tab) {
-                CurrentView()
+            TabView(selection: $selectedTab) {
+				CurrentView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
                     .tabItem {
-                        Label("Weather", systemImage: "cloud.sun.fill")
+                        Label("today", systemImage: "cloud.sun.fill")
                     }
                     .tag(1)
-                ForecastView()
+				ForecastView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
                     .tabItem {
-                        Label("Forecast", systemImage: "calendar")
+                        Label("forecast", systemImage: "calendar")
                     }
                     .tag(2)
-                SliderView()
+				GraphView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
+					.tabItem {
+						Label("Graph", systemImage: "chart.xyaxis.line")
+					}
+					.tag(3)
+                SliderView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
                     .tabItem {
-                        Label("History", systemImage: "clock.arrow.circlepath")
-                    }
-                    .tag(3)
-                SearchView(tab: $tab)
-                    .tabItem {
-                        Label("Search", systemImage: "location.magnifyingglass")
+                        Label("Slider", systemImage: "slider.horizontal.2.gobackward")
                     }
                     .tag(4)
+				Text("")
+					.tabItem {
+						Label("Search", systemImage: "location.magnifyingglass")
+					}
+					.tag(5)
+					.onAppear {
+						self.sheetIsPresenting = true
+					}
             }
-            .accentColor(Color("DarkBlue"))
-            .background(.white)
+			.onChange(of: selectedTab) {
+				if selectedTab == 5 {
+					self.sheetIsPresenting = true
+				} else {
+					self.oldSelectedTab = $0
+				}
+			}
+			.sheet(isPresented: $sheetIsPresenting, onDismiss: {
+				self.selectedTab = self.oldSelectedTab
+			}, content: {
+				SearchView(currentLocation: $currentLocation, currentLocationName: $currentLocationName, lastSelectedTab: self.oldSelectedTab)
+			})
+			.accentColor(.hWFontColor)	
         }
     }
 }
 
-struct Coordinates {
-    static var coordinate: CLLocationCoordinate2D = LocationManager.shared.userlocation != nil
-    ? LocationManager.shared.userlocation!.coordinate : CLLocationCoordinate2D(latitude: 48.20849, longitude: 16.37208)
-    static var locationName: String = (LocationManager.shared.userlocation == nil) ? "Vienna" :  "gpsLocation"
-    static var longitude: Double = coordinate.longitude
-    static var latitude: Double = coordinate.latitude
-}
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(tab: 4)
+        ContentView(selectedTab: 1)
     }
 }
