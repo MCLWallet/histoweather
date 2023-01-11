@@ -25,7 +25,6 @@ struct CurrentView: View {
 	private var day: FetchedResults<Day>
 	
 	@State private var model = CurrentViewModel()
-	
 	// Cached values when pull-to-reload or onAppear
 	@State private var cachedDate: Date = Date()
 	@State private var cachedWeatherCode: String = "wrench.fill"
