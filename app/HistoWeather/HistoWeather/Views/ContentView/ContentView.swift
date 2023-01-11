@@ -13,28 +13,29 @@ struct ContentView: View {
     @ObservedObject var locationManager: LocationManager = LocationManager.shared
     @State var selectedTab: Int
 	@State private var oldSelectedTab = 1
-	
 	@State var sheetIsPresenting = false
+	@State var currentLocation: CLLocation = LocationManager.shared.userLocation
+	@State var currentLocationName: String = "N/A"
 	
     var body: some View {
         Group {
             TabView(selection: $selectedTab) {
-                CurrentView()
+				CurrentView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
                     .tabItem {
                         Label("today", systemImage: "cloud.sun.fill")
                     }
                     .tag(1)
-                ForecastView()
+				ForecastView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
                     .tabItem {
                         Label("forecast", systemImage: "calendar")
                     }
                     .tag(2)
-				GraphView()
+				GraphView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
 					.tabItem {
 						Label("Graph", systemImage: "chart.xyaxis.line")
 					}
 					.tag(3)
-                SliderView()
+                SliderView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
                     .tabItem {
                         Label("Slider", systemImage: "slider.horizontal.2.gobackward")
                     }
@@ -58,7 +59,7 @@ struct ContentView: View {
 			.sheet(isPresented: $sheetIsPresenting, onDismiss: {
 				self.selectedTab = self.oldSelectedTab
 			}, content: {
-				SearchView(lastSelectedTab: self.oldSelectedTab)
+				SearchView(currentLocation: $currentLocation, currentLocationName: $currentLocationName, lastSelectedTab: self.oldSelectedTab)
 			})
 			.accentColor(.hWFontColor)	
         }

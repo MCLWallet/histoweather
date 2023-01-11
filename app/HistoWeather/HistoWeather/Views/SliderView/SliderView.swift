@@ -2,6 +2,7 @@
 //  SliderView.swift
 //  HistoWeather
 import SwiftUI
+import CoreLocation
 
 struct SliderView: View {
     @FetchRequest(fetchRequest: HistoricalWeatherPersistence.fetchAllHistoricalWeather(),
@@ -139,7 +140,7 @@ struct dynamicHistoricalData: View {
 struct SliderView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-			SliderView()
+			SliderView(currentLocation: .constant(CLLocation(latitude: 48.20849, longitude: 16.37208)), navigationTitle: .constant("Wien"))
 
         }
     }

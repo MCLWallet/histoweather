@@ -27,10 +27,18 @@ class SearchViewModel: ObservableObject {
 		}
 	}
     
-    func setLocation(latitude: Double, longitude: Double){
-        dayWeatherRepository.location = CLLocation(latitude: latitude, longitude: longitude)
-        
+	func setLocation(location: CLLocation) {
+		print("SearchViewModel setLocation: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+		dayWeatherRepository.updateLocation(location: location)
     }
+	
+	func setLocationTitle(locationName: String) {
+		dayWeatherRepository.updateLocationTitle(locationTitle: "\(locationName)")
+	}
+	
+	func getLocationTitle() -> String {
+		return dayWeatherRepository.locationTitle
+	}
 }
 
 struct LocationViewModel {
