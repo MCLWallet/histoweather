@@ -77,9 +77,9 @@ extension HistoricalWeather {
                 HistoricalDaily(
 					day: HistoricalDailyEntry(
 						time: historicalWeather.daily.time[i],
-						weathericoncode: weatherCodeToIcon(weatherCode: historicalWeather.daily.weathercode[i]),
-						temperature_2m_max: historicalWeather.daily.temperature_2m_max[i],
-						temperature_2m_min: historicalWeather.daily.temperature_2m_min[i]
+						weathericoncode: weatherCodeToIcon(weatherCode: historicalWeather.daily.weathercode[i] ?? 0),
+						temperature_2m_max: historicalWeather.daily.temperature_2m_max[i] ?? 0,
+						temperature_2m_min: historicalWeather.daily.temperature_2m_min[i] ?? 0
 					),
 			context: context))
         }
