@@ -30,10 +30,10 @@ struct HistoricalGraphPersistence {
         return request
     }
     
-    func addHistoricalGraph(historicalGraphDecodable: HistoricalGraphDecodable, city: String, country: String) async {
+    func addHistoricalGraph(weatherResponseDay1: HistoricalHourlyDecodable, weatherResponseDay2: HistoricalHourlyDecodable, city: String, country: String) async {
         
         await context.perform {
-            _ = HistoricalGraph(historicalGraph: historicalGraphDecodable, city: city, country: country, context: context)
+            _ = HistoricalGraph(weatherResponseDay1: weatherResponseDay1, weatherResponseDay2: weatherResponseDay2, city: city, country: country, context: context)
 
             context.saveContext() // saveContext moved inside the perform scope
         }
@@ -51,22 +51,36 @@ struct HistoricalGraphPersistence {
     }
 }
 
+
+
 extension HistoricalGraph {
-    convenience init(historicalGraph: HistoricalGraphDecodable, city: String, country: String, context: NSManagedObjectContext) {
+    convenience init(weatherResponseDay1: HistoricalHourlyDecodable, weatherResponseDay2: HistoricalHourlyDecodable, city: String, country: String, context: NSManagedObjectContext) {
         self.init(context: context)
         self.city = city
         self.country = country
-		
-		for i in 0...historicalGraph.hourly.time.count - 1 {
+        
+        for i in 0...weatherResponseDay1.time.count - 1 {
             addToHistoricalHourly(
                 HistoricalHourly(
-					day: HistoricalHourlyEntry(
-						time: convertStringToDate(date: historicalGraph.hourly.time[i], format: "yyyy-MM-dd'T'HH:mm"),
-						temperature_2m: historicalGraph.hourly.temperature_2m[i],
-						rain: historicalGraph.hourly.rain[i],
-						windspeed_10m: historicalGraph.hourly.windspeed_10m[i]
-					),
-				context: context))
+                    day: HistoricalHourlyEntry(
+                        time: convertStringToDate(date: weatherResponseDay1.time[i], format: "yyyy-MM-dd'T'HH:mm"),
+                        temperature_2m: weatherResponseDay1.temperature_2m[i],
+                        rain: weatherResponseDay1.rain[i],
+                        windspeed_10m: weatherResponseDay1.windspeed_10m[i]
+                    ),
+                    context: context))
+        }
+        
+        for i in 0...weatherResponseDay2.time.count - 1 {
+            addToHistoricalHourly(
+                HistoricalHourly(
+                    day: HistoricalHourlyEntry(
+                        time: convertStringToDate(date: weatherResponseDay2.time[i], format: "yyyy-MM-dd'T'HH:mm"),
+                        temperature_2m: weatherResponseDay2.temperature_2m[i],
+                        rain: weatherResponseDay2.rain[i],
+                        windspeed_10m: weatherResponseDay2.windspeed_10m[i]
+                    ),
+                    context: context))
         }
     }
 }

@@ -141,48 +141,74 @@ class DayWeatherRepository {
 		}
 	}
     
-	func loadHistoricalDataHourly(tempUnit: String, startDate: Date, endDate: Date) async throws {
+    func loadHistoricalDataHourly(tempUnit: String, startDate: Date, endDate: Date) async throws {
         try await historicalGraphPersistence.removeAllEntries()
         
         var city: String = "N/A"
         var country: String = "N/A"
-		try await city = CLGeocoder().reverseGeocodeLocation(self.location).first?.locality ?? "N/A"
-		try await country = CLGeocoder().reverseGeocodeLocation(self.location).first?.country ?? "N/A"
-		self.locationTitle = "\(city)"
+        try await city = CLGeocoder().reverseGeocodeLocation(self.location).first?.locality ?? "N/A"
+        try await country = CLGeocoder().reverseGeocodeLocation(self.location).first?.country ?? "N/A"
+        self.locationTitle = "\(city)"
         
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "archive-api.open-meteo.com"
-        components.path = "/v1/archive"
-        components.queryItems = [
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm"
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(dateFormatter)
+        
+        var componentsDay1 = URLComponents()
+        componentsDay1.scheme = "https"
+        componentsDay1.host = "archive-api.open-meteo.com"
+        componentsDay1.path = "/v1/archive"
+        componentsDay1.queryItems = [
             URLQueryItem(name: "latitude", value: "\(location.coordinate.latitude)"),
             URLQueryItem(name: "longitude", value: "\(location.coordinate.longitude)"),
             URLQueryItem(name: "start_date", value: convertDateToString(from: startDate)),
+            URLQueryItem(name: "end_date", value: convertDateToString(from: startDate)),
+            URLQueryItem(name: "hourly", value: "temperature_2m,rain,windspeed_10m"),
+            URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
+            URLQueryItem(name: "temperature_unit", value: tempUnit)
+        ]
+        
+        guard let urlDay1 = componentsDay1.url else {
+            throw NetworkError.badURL
+        }
+        
+        print("first: \(urlDay1)")
+        
+        let (dataDay1, responseDay1) = try await URLSession.shared.data(from: urlDay1)
+        guard (responseDay1 as? HTTPURLResponse)?.statusCode == 200 else {
+            throw NetworkError.badID
+        }
+        
+        var componentsDay2 = URLComponents()
+        componentsDay2.scheme = "https"
+        componentsDay2.host = "archive-api.open-meteo.com"
+        componentsDay2.path = "/v1/archive"
+        componentsDay2.queryItems = [
+            URLQueryItem(name: "latitude", value: "\(location.coordinate.latitude)"),
+            URLQueryItem(name: "longitude", value: "\(location.coordinate.longitude)"),
+            URLQueryItem(name: "start_date", value: convertDateToString(from: endDate)),
             URLQueryItem(name: "end_date", value: convertDateToString(from: endDate)),
             URLQueryItem(name: "hourly", value: "temperature_2m,rain,windspeed_10m"),
             URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
             URLQueryItem(name: "temperature_unit", value: tempUnit)
         ]
         
-        guard let url = components.url else {
+        guard let urlDay2 = componentsDay2.url else {
             throw NetworkError.badURL
         }
+    
+        print("second: \(urlDay2)")
         
-        print("\(url)")
-        
-        let (data, response) = try await URLSession.shared.data(from: url)
-        guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+        let (dataDay2, responseDay2) = try await URLSession.shared.data(from: urlDay2)
+        guard (responseDay2 as? HTTPURLResponse)?.statusCode == 200 else {
             throw NetworkError.badID
         }
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm"
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(dateFormatter)
-
-        let optionalWeatherResponse = try? decoder.decode(HistoricalGraphDecodable.self, from: data)
-        if let weatherResponse = optionalWeatherResponse {
-            await historicalGraphPersistence.addHistoricalGraph(historicalGraphDecodable: weatherResponse, city: city, country: country)
+        
+        let optionalWeatherResponseDay1 = try? decoder.decode(HistoricalGraphDecodable.self, from: dataDay1)
+        let optionalWeatherResponseDay2 = try? decoder.decode(HistoricalGraphDecodable.self, from: dataDay2)
+        
+        if let weatherResponseDay1 = optionalWeatherResponseDay1, let weatherResponseDay2 = optionalWeatherResponseDay2 {
+            await historicalGraphPersistence.addHistoricalGraph(weatherResponseDay1: weatherResponseDay1.hourly, weatherResponseDay2: weatherResponseDay2.hourly, city: city, country: country)
         }
-    }
-}
+    }}
