@@ -17,20 +17,9 @@ struct GraphViewModel {
     init(dayWeatherRepository: DayWeatherRepository = DayWeatherRepository()) {
         self.dayWeatherRepository = dayWeatherRepository
     }
-    
-//    func initArray(entries: FetchedResults<HistoricalGraph>) {
-//        
-//        entries.forEach() { entriy in
-//            let lineGraphDataArray = entriy.historicalHourly?.forEach() {
-//                object in
-//                
-//                LineGraphDate(day: <#T##String#>, time: <#T##String#>, temperature: object., windSpeed: <#T##Double#>, rain: <#T##Double#>)
-//            }
-//        }
-//    }
 
-    func fetchApi(tempUnit: String, hourlyParameter: String) async throws {
-        try await dayWeatherRepository.loadHistoricalDataHourly(tempUnit: tempUnit, hourlyParameter: hourlyParameter)
+	func fetchApi(tempUnit: String, startDate: Date, endDate: Date) async throws {
+        try await dayWeatherRepository.loadHistoricalDataHourly(tempUnit: tempUnit, startDate: startDate, endDate: endDate)
     }
 	
 	func setLocation(location: CLLocation) {

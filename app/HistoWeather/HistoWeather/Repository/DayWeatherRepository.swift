@@ -15,13 +15,13 @@ class DayWeatherRepository {
     
     private let dayWeatherPersistence: DayWeatherPersistence
     private let historicalWeatherPersistence: HistoricalWeatherPersistence
-    private let historicalPersistenceGraph: HistoricalPersistenceGraph
+    private let historicalGraphPersistence: HistoricalGraphPersistence
     
-    init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence(), historicalWeatherPersistence: HistoricalWeatherPersistence = HistoricalWeatherPersistence(), historicalPersistenceGraph: HistoricalPersistenceGraph = HistoricalPersistenceGraph()) {
+    init(dayWeatherPersistence: DayWeatherPersistence = DayWeatherPersistence(), historicalWeatherPersistence: HistoricalWeatherPersistence = HistoricalWeatherPersistence(), historicalGraphPersistence: HistoricalGraphPersistence = HistoricalGraphPersistence()) {
         
         self.dayWeatherPersistence = dayWeatherPersistence
         self.historicalWeatherPersistence = historicalWeatherPersistence
-        self.historicalPersistenceGraph = historicalPersistenceGraph
+        self.historicalGraphPersistence = historicalGraphPersistence
         self.location = CLLocation(latitude: LocationManager.shared.userLocation.coordinate.latitude, longitude: LocationManager.shared.userLocation.coordinate.longitude)
 		self.locationTitle = "Vienna"
     }
@@ -141,8 +141,8 @@ class DayWeatherRepository {
 		}
 	}
     
-    func loadHistoricalDataHourly(tempUnit: String, hourlyParameter: String) async throws {
-        try await historicalWeatherPersistence.removeAllEntries()
+	func loadHistoricalDataHourly(tempUnit: String, startDate: Date, endDate: Date) async throws {
+        try await historicalGraphPersistence.removeAllEntries()
         
         var city: String = "N/A"
         var country: String = "N/A"
@@ -157,8 +157,8 @@ class DayWeatherRepository {
         components.queryItems = [
             URLQueryItem(name: "latitude", value: "\(location.coordinate.latitude)"),
             URLQueryItem(name: "longitude", value: "\(location.coordinate.longitude)"),
-            URLQueryItem(name: "start_date", value: "2000-12-18"), // TODO: get start_date from UI YYYY-MM-DD
-            URLQueryItem(name: "end_date", value: "2022-12-18"), // TODO: get end_date from UI YYYY-MM-DD
+            URLQueryItem(name: "start_date", value: convertDateToString(from: startDate)),
+            URLQueryItem(name: "end_date", value: convertDateToString(from: endDate)),
             URLQueryItem(name: "hourly", value: "temperature_2m,rain,windspeed_10m"),
             URLQueryItem(name: "timezone", value: TimeZone.current.identifier),
             URLQueryItem(name: "temperature_unit", value: tempUnit)
@@ -182,7 +182,7 @@ class DayWeatherRepository {
 
         let optionalWeatherResponse = try? decoder.decode(HistoricalGraphDecodable.self, from: data)
         if let weatherResponse = optionalWeatherResponse {
-            await historicalPersistenceGraph.addHistoricalGraph(historicalGraphDecodable: weatherResponse, city: city, country: country)
+            await historicalGraphPersistence.addHistoricalGraph(historicalGraphDecodable: weatherResponse, city: city, country: country)
         }
     }
 }

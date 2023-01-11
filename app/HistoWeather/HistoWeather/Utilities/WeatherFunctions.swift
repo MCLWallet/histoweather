@@ -39,7 +39,50 @@ func weatherCodeToIcon(weatherCode: Int16) -> String {
 	}
 }
 
-func getSameDayWithDifferentYear(day: Int, month: Int, newYear: Double) -> Date {
+func convertStringToDate(date: String, format: String) -> Date {
+	if format == "yyyy-MM-dd'T'HH:mm" {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = format
+		dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+		return dateFormatter.date(from: date) ?? Date()
+	} else {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = format
+		dateFormatter.locale = .current
+		dateFormatter.timeZone = .current
+		return dateFormatter.date(from: date)!
+	}
+}
+
+func convertDateToString(from date: Date) -> String {
+	let dateFormatter = ISO8601DateFormatter()
+	dateFormatter.formatOptions = [.withDashSeparatorInDate, .withFullDate]
+	
+	return dateFormatter.string(from: date)
+}
+
+func getDateByDaysAdded(from date: Date, daysAdded: Int) -> Date {
+	return Calendar.current.date(byAdding: .day, value: daysAdded, to: date)!
+}
+
+func areDatesOnSameDay(date1: Date, date2: Date) -> Bool {
+	let calendar = Calendar.current
+	return calendar.isDate(date1, inSameDayAs: date2)
+}
+
+func getTimeString(from date: Date) -> String {
+	let formatter = DateFormatter()
+	formatter.dateFormat = "HH:mm"
+	return formatter.string(from: date)
+}
+
+func getDayString(from date: Date) -> String {
+	let formatter = DateFormatter()
+	formatter.dateFormat = "yyyy-MM-dd"
+	return formatter.string(from: date)
+}
+
+func getSameDayWithDifferentYear(newYear: Double) -> Date {
 	let calendar = Calendar.current
 	let currentDate = Date()
 
@@ -52,4 +95,13 @@ func getSameDayWithDifferentYear(day: Int, month: Int, newYear: Double) -> Date 
 	let newDate = calendar.date(from: newDateComponents)
 
 	return newDate ?? Date()
+}
+
+func sortLineGraphDates(_ lineGraphDates: [LineGraphDate]) -> [LineGraphDate] {
+	return lineGraphDates.sorted { (d1, d2) -> Bool in
+		if d1.time.compare(d2.time) == .orderedSame {
+			return d1.day < d2.day
+		}
+		return d1.time < d2.time
+	}
 }

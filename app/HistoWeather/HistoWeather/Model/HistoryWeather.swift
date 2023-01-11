@@ -29,7 +29,7 @@ public struct HistoricalGraphDecodable: Decodable {
     let hourly: HistoricalHourlyDecodable
 }
 struct HistoricalHourlyDecodable: Decodable {
-    let time: [Date]
+    let time: [String]
     let temperature_2m: [Double]
     let rain: [Double]
     let windspeed_10m: [Double]
@@ -40,4 +40,31 @@ struct HistoricalHourlyEntry {
     let temperature_2m: Double
     let rain: Double
     let windspeed_10m: Double
+}
+
+enum LineGraphParameter: String, CaseIterable, Identifiable {
+	case temperature, windSpeed, rain
+	var id: Self { self }
+}
+
+struct LineGraphDate: Identifiable {
+	var id: UUID
+	
+	var day: String									// represents line
+	var time: Date									// x-axis
+	var temperature: Double				// y-axis
+	var windSpeed: Double					// y-axis
+	var rain: Double								// y-axis
+	
+	init(day: String, time: String, temperature: Double, windSpeed: Double, rain: Double) {
+		let timeFormat = DateFormatter()
+		timeFormat.dateFormat = "HH:mm"
+		
+		self.day = day
+		self.time = timeFormat.date(from: time)!
+		self.temperature = temperature
+		self.windSpeed = windSpeed
+		self.rain = rain
+		self.id = UUID()
+	}
 }
