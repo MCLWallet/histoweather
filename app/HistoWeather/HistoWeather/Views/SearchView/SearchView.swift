@@ -58,7 +58,7 @@ struct SearchView: View {
 					Button("Cancel") {
 						dismiss()
 					}
-					.disabled((locationManager.authStatus != "authorizedAlways") ||
+					.disabled((locationManager.authStatus != "authorizedAlways") &&
 							  (locationManager.authStatus != "authorizedWhenInUse"))
 					// TODO: Don't show when you're at beginning of app (no location yet)
 				}
