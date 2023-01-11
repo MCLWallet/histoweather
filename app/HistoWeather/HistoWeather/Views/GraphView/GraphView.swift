@@ -25,16 +25,16 @@ struct GraphView: View {
     @ObservedObject var locationManager = LocationManager.shared
     @ObservedObject var unitsManager = UnitsManager.shared
     
+    @State var showError = false
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    // TODO: App crashes when doing bigger API calls
                     DatePicker(
                         selection: $dayOne,
                         in: startDate...(Calendar.current.date(byAdding: .day, value: -1, to: dayTwo) ?? Date()),
                         displayedComponents: [.date],
-                        label: { Text("Day 1") }
+                        label: { Text("dayOne") }
                     )
                     .onChange(of: dayOne, perform: { _ in
                         Task {
@@ -45,7 +45,7 @@ struct GraphView: View {
                         selection: $dayTwo,
                         in: (Calendar.current.date(byAdding: .day, value: +1, to: dayOne) ?? Date())...(Calendar.current.date(byAdding: .day, value: -6, to: Date()) ?? Date()),
                         displayedComponents: [.date],
-                        label: { Text("Day 2") }
+                        label: { Text("dayTwo") }
                         
                     )
                     .onChange(of: dayTwo, perform: { _ in
@@ -55,24 +55,21 @@ struct GraphView: View {
                     })
                 }
                 .padding(.bottom, 30)
-                Picker("Parameter", selection: $selectedParameter) {
-                    Text("Temperature").tag(LineGraphParameter.temperature)
-                    Text("Wind Speed").tag(LineGraphParameter.windSpeed)
-                    Text("Rain").tag(LineGraphParameter.rain)
+                Picker("parameter", selection: $selectedParameter) {
+                    Text("temperature").tag(LineGraphParameter.temperature)
+                    Text("windSpeed").tag(LineGraphParameter.windSpeed)
+                    Text("rain").tag(LineGraphParameter.rain)
                 }
 
                 .pickerStyle(.segmented)
-                // TODO: change parameters
-                // TODO: localize dates and strings
                 if selectedParameter == .temperature {
                     Chart(lineGraphData) {
                         LineMark(
-                            x: .value("Hours", $0.time),
-                            y: .value("Temperature", $0.temperature)
+                            x: .value("hours", $0.time),
+                            y: .value("temperature", $0.temperature)
                         )
                         .foregroundStyle(by: .value("Day", $0.day))
                     }
-                    .chartXAxisLabel("Time")
                     .chartYAxisLabel(unitsManager.currentTemperatureUnit.rawValue)
                     .frame(minHeight: 420)
                     .padding(.all)
@@ -80,39 +77,40 @@ struct GraphView: View {
                     
                     Chart(lineGraphData) {
                         LineMark(
-                            x: .value("Hours", $0.time),
-                            y: .value("WindSpeed", $0.windSpeed)
+                            x: .value("hours", $0.time),
+                            y: .value("windSpeed", $0.windSpeed)
                         )
-                        .foregroundStyle(by: .value("Day", $0.day))
+                        .foregroundStyle(by: .value("day", $0.day))
                     }
-                    .chartXAxisLabel("Time")
                     .chartYAxisLabel("km/h")
                     .frame(minHeight: 420)
                     .padding(.all)
                 } else if selectedParameter == .rain {
                     Chart(lineGraphData) {
                         LineMark(
-                            x: .value("Hours", $0.time),
-                            y: .value("Rain", $0.rain)
+                            x: .value("hours", $0.time),
+                            y: .value("rain", $0.rain)
                         )
-                        .foregroundStyle(by: .value("Day", $0.day))
+                        .foregroundStyle(by: .value("day", $0.day))
                     }
-                    .chartXAxisLabel("Time")
                     .chartYAxisLabel("mm")
                     .frame(minHeight: 420)
                     .padding(.all)
                 }
             }
+            .alert("alert-title-error", isPresented: $showError, actions: { // Show an alert if an error appears
+                Button("ok", role: .cancel) {
+                    // Do nothing
+                }
+            }, message: {
+                Text("alert-message-error")
+            })
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         unitsManager.changeCurrentTemperatureUnit()
                         Task {
-                            do {
-                                await reloadValues()
-                            } catch let error {
-                                print("Error while refreshing weather: \(error)")
-                            }
+                            await reloadValues()
                         }
                     }, label: {
                         Text("\(unitsManager.currentTemperatureUnit.rawValue)")
@@ -123,7 +121,6 @@ struct GraphView: View {
             }
             .navigationTitle(navigationTitle)
             .padding(.all)
-            .navigationTitle("Title")
         }
         .onAppear {
             Task {
@@ -138,7 +135,6 @@ struct GraphView: View {
             } else {
                 model.setLocation(location: currentLocation)
             }
-            print("\(dayOne)")
             try await model.fetchApi(
                 tempUnit: self.unitsManager.getCurrentUnit(),
                 startDate: (Calendar.current.date(byAdding: .day, value: +1, to: dayOne) ?? Date()),

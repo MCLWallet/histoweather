@@ -39,19 +39,10 @@ func weatherCodeToIcon(weatherCode: Int16) -> String {
 	}
 }
 
-func convertStringToDate(date: String, format: String) -> Date {
-	if format == "yyyy-MM-dd'T'HH:mm" {
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = format
-		dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-		return dateFormatter.date(from: date) ?? Date()
-	} else {
-		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = format
-		dateFormatter.locale = .current
-		dateFormatter.timeZone = .current
-		return dateFormatter.date(from: date) ?? Date()
-	}
+func convertStringToDate(date: String) -> Date {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-mm-dd"
+    return dateFormatter.date(from: date) ?? Date()
 }
 
 func convertStringToDateTwoFrmats(date: String) -> Date {
@@ -71,7 +62,7 @@ func convertDateToString(from date: Date) -> String {
 }
 
 func getDateByDaysAdded(from date: Date, daysAdded: Int) -> Date {
-	return Calendar.current.date(byAdding: .day, value: daysAdded, to: date)!
+	return Calendar.current.date(byAdding: .day, value: daysAdded, to: date) ?? Date()
 }
 
 func areDatesOnSameDay(date1: Date, date2: Date) -> Bool {
@@ -93,9 +84,6 @@ func getDayString(from date: Date) -> String {
 
 func getSameDayWithDifferentYear(day: Int, month: Int, newYear: Double) -> Date {
 	let calendar = Calendar.current
-	let currentDate = Date()
-
-	// Get the month and day of the current date
 
 	// Create a new DateComponents object with the same month and day but a different year
 	let newDateComponents = DateComponents(calendar: calendar, year: Int(newYear), month: month, day: day)

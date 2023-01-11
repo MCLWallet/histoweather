@@ -16,38 +16,53 @@ struct ContentView: View {
 	@State var sheetIsPresenting = false
 	@State var currentLocation: CLLocation = LocationManager.shared.userLocation
 	@State var currentLocationName: String = "N/A"
-	
+    @ObservedObject var networkChecker = NetworkChecker.shared
+    
     var body: some View {
         Group {
             TabView(selection: $selectedTab) {
-				CurrentView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
+                if networkChecker.connected {
+                    CurrentView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
                     .tabItem {
-                        Label("today", systemImage: "cloud.sun.fill")
-                    }
+                    Label("today", systemImage: "cloud.sun.fill")
+                }
                     .tag(1)
-				ForecastView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
+                ForecastView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
                     .tabItem {
                         Label("forecast", systemImage: "calendar")
                     }
                     .tag(2)
-				GraphView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
-					.tabItem {
-						Label("Graph", systemImage: "chart.xyaxis.line")
-					}
-					.tag(3)
+                GraphView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
+                    .tabItem {
+                        Label("graph", systemImage: "chart.xyaxis.line")
+                    }
+                    .tag(3)
                 SliderView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
                     .tabItem {
-                        Label("Slider", systemImage: "slider.horizontal.2.gobackward")
+                        Label("slider", systemImage: "slider.horizontal.2.gobackward")
                     }
                     .tag(4)
-				Text("")
-					.tabItem {
-						Label("Search", systemImage: "location.magnifyingglass")
-					}
-					.tag(5)
-					.onAppear {
-						self.sheetIsPresenting = true
-					}
+                Text("")
+                    .tabItem {
+                        Label("search", systemImage: "location.magnifyingglass")
+                    }
+                    .tag(5)
+                    .onAppear {
+                        self.sheetIsPresenting = true
+                    }
+                } else {
+                    VStack(alignment: .center) {
+                        
+                        Image(systemName: "wifi.slash")
+                            .resizable()
+                            .scaledToFit()
+                            .padding(.all)
+                            .frame(maxWidth: 250)
+                        Text("checkInternet")
+                            .bold()
+                            .font(.title)
+                    }
+                }
             }
 			.onChange(of: selectedTab) {
 				if selectedTab == 5 {

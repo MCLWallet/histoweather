@@ -12,14 +12,7 @@ struct SliderView: View {
     @State private var model = SliderViewModel()
     @State private var startYear: Int = 1959
     @State private var endYear: Int = Calendar.current.component(.year, from: Date())
-	
-	let date = Calendar.current.date(byAdding: .day, value: -6, to: Date())!
-	
-	let dateRange: ClosedRange<Date> = {
-		let calendar = Calendar.current
-		let startComponents = DateComponents(year: 1959, month: 1, day: 1)
-		return calendar.date(from: startComponents)! ... Date()
-	}()
+	let date = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
 	
 	@Binding var currentLocation: CLLocation
 	@Binding var navigationTitle: String
@@ -27,12 +20,7 @@ struct SliderView: View {
 	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
 	
-//	init(currentLocation: CLLocation, navigationTitle: String) {
-//		let calendar = Calendar.current
-//		date = calendar.date(byAdding: .day, value: -6, to: Date())!
-//		self.currentLocation = currentLocation
-//		self.navigationTitle = navigationTitle
-//	}
+    @State var showError = false
 	
     var body: some View {
         NavigationStack {
@@ -40,7 +28,7 @@ struct SliderView: View {
                 dynamicHistoricalData(date: Calendar.current.date(from: DateComponents(year: Int(sliderValue), month: Calendar.current.component(.month, from: date), day: Calendar.current.component(.day, from: date))) ?? Date())
                 VStack(alignment: .leading) {
                     HStack {
-                        Text("\(getSameDayWithDifferentYear(day: Calendar.current.component(.day, from: date), month:Calendar.current.component(.month, from: date) ,newYear: sliderValue).formatted(date: .abbreviated, time: .omitted))")
+                        Text("\(getSameDayWithDifferentYear(day: Calendar.current.component(.day, from: date), month: Calendar.current.component(.month, from: date), newYear: sliderValue).formatted(date: .abbreviated, time: .omitted))")
                             .font(.title3)
                     }
                     .padding(.leading)
@@ -86,6 +74,13 @@ struct SliderView: View {
                 }
                 
             }
+            .alert("alert-title-error", isPresented: $showError, actions: { // Show an alert if an error appears
+                Button("ok", role: .cancel) {
+                    // Do nothing
+                }
+            }, message: {
+                Text("alert-message-error")
+            })
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -128,6 +123,7 @@ struct SliderView: View {
 				locationManager.stopUpdatingLocation()
 			} catch let error {
 				print("Error while refreshing weather: \(error)")
+                showError = true
 			}
 		}
 	}
@@ -145,19 +141,13 @@ struct dynamicHistoricalData: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: {
-                if  self.day.first?.temperature_2m_max ?? -19 > 0.5 {
-                    return [Color("BordeauxRed"), Color("VeryLightYellow")]
-                } else {
-                    return [Color("DarkBlue"), Color("VeryLightBlue")]
-                }
-            }()), startPoint: .topLeading,
-               endPoint: .bottomTrailing)
-                .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            
+            getTemperatureGradient(
+                temperature: self.day.last?.temperature_2m_max ?? 0,
+                unit: TemperatureUnit(rawValue: unitsManager.getCurrentUnit()) ?? .celsius)
+            .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+        if self.day.last != nil {
             VStack {
-
-                Image(systemName: self.day.last?.weathericoncode ?? "wrench.fill")            // TODO: weathercode from History Weather API
+                Image(systemName: self.day.last?.weathericoncode ?? "wrench.fill")
                     .resizable()
                     .scaledToFit()
                     .padding(.all)
@@ -172,14 +162,20 @@ struct dynamicHistoricalData: View {
                 }
                 .dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
             }
+        } else {
+            VStack(alignment: .center) {
+                ProgressView()
+                    .dynamicTypeSize(.xxxLarge)
+            }
+        }
         }
     }
 }
 
-//struct SliderView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Group {
-//			SliderView(currentLocation: .constant(CLLocation(latitude: 48.20849, longitude: 16.37208)), navigationTitle: .constant("Wien"))
-//        }
-//    }
-//}
+struct SliderView_Previews: PreviewProvider {
+static var previews: some View {
+    Group {
+        SliderView(currentLocation: .constant(CLLocation(latitude: 48.20849, longitude: 16.37208)), navigationTitle: .constant("Wien"))
+    }
+}
+}

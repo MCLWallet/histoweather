@@ -26,4 +26,5 @@ struct SliderViewModel {
 	func getLocationTitle() -> String {
 		return dayWeatherRepository.locationTitle
 	}
+    
 }

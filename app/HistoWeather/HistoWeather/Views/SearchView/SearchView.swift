@@ -19,7 +19,9 @@ struct SearchView: View {
 	@Binding var currentLocationName: String
 	
 	@State var lastSelectedTab = 1
-	
+    
+    @State var showError: Bool = false
+    
     var body: some View {
 		NavigationView {
 			List {
@@ -33,7 +35,7 @@ struct SearchView: View {
                             dismiss()
                         }
 					}, label: {
-						Label("Your current location", systemImage: "location.fill")
+						Label("yourCurrentLocation", systemImage: "location.fill")
 					})
 					.foregroundColor(.hWFontColor)
 				
@@ -54,30 +56,36 @@ struct SearchView: View {
 			.onSubmit(of: .search) {
 				runSearch(searchString: searchText)
 			}
+            .alert("alert-title-error", isPresented: $showError, actions: { // Show an alert if an error appears
+                Button("ok", role: .cancel) {
+                    // Do nothing
+                }
+            }, message: {
+                Text("alert-message-error")
+            })
 			.navigationTitle("search")
 			.toolbar {
 				ToolbarItem(placement: .cancellationAction) {
-					Button("Cancel") {
+					Button("cancel") {
 						dismiss()
 					}
 					.disabled((locationManager.authStatus != "authorizedAlways") &&
 							  (locationManager.authStatus != "authorizedWhenInUse"))
-					// TODO: Don't show when you're at beginning of app (no location yet)
 				}
-//				ToolbarItem(placement: .confirmationAction) {
-//					Button("Done") {
-//						dismiss()
-//					}
-//					// TODO: Disable when there is no location yet
-//				}
+
 			}
 		}
     }
+    
     func runSearch(searchString: String) {
-		print("searchString: \(searchString)")
         Task.init(operation: {
             if !searchString.isEmpty {
-                await model.search(name: searchString)
+                do {
+                   try await model.search(name: searchString)
+                } catch let error {
+                    print("\(error)")
+                    showError = true
+                }
             } else {
                 model.locations.removeAll()
             }

@@ -18,17 +18,12 @@ class SearchViewModel: ObservableObject {
         self.dayWeatherRepository = dayWeatherRepository
     }
 	
-	func search(name: String) async {
-		do {
+	func search(name: String) async throws {
 			let locations = try await LocationSearchWebservice().getLocations(searchTerm: name)
 			self.locations = locations.map(LocationViewModel.init)
-		} catch {
-			print(error)
-		}
 	}
     
 	func setLocation(location: CLLocation) {
-		print("SearchViewModel setLocation: \(location.coordinate.latitude), \(location.coordinate.longitude)")
 		dayWeatherRepository.updateLocation(location: location)
     }
 	

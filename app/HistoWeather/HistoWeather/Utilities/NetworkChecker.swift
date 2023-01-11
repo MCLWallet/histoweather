@@ -8,11 +8,13 @@
 import Foundation
 import Network
 
-class NetworkChecker: ObservableObject {
+class NetworkChecker: NSObject, ObservableObject {
+    public static let shared = NetworkChecker()
 	let monitor = NWPathMonitor()
 	let queue = DispatchQueue(label: "Monitor")
 	@Published var connected: Bool = false
-	init() {
+	override init() {
+        super.init()
 		monitor.pathUpdateHandler = { path in
 			DispatchQueue.main.async {
 				self.connected = path.status == .satisfied

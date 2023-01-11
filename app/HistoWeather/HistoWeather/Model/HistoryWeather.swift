@@ -7,14 +7,14 @@
 
 import Foundation
  struct HistoricalWeatherDecodable: Decodable {
-    let daily: HistoricalDailyDecodable
-}
+     let daily: HistoricalDailyDecodable
+ }
 
-struct HistoricalDailyDecodable: Decodable {
-    let time: [String]
-    let weathercode: [Int16]
-    let temperature_2m_max: [Double]
-    let temperature_2m_min: [Double]
+ struct HistoricalDailyDecodable: Decodable {
+    let time: [Date]
+    let weathercode: [Int16?]
+    let temperature_2m_max: [Double?]
+    let temperature_2m_min: [Double?]
 }
 
 struct HistoricalDailyEntry {
@@ -60,7 +60,7 @@ struct LineGraphDate: Identifiable {
 		timeFormat.dateFormat = "HH:mm"
 		
 		self.day = day
-		self.time = timeFormat.date(from: time)!
+		self.time = timeFormat.date(from: time) ?? Date()
 		self.temperature = temperature
 		self.windSpeed = windSpeed
 		self.rain = rain

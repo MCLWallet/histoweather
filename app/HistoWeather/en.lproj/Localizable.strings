@@ -13,7 +13,9 @@
 // Content View
 "today" = "Today";
 "forecast" = "Forecast";
+"graph" = "Graph";
 "history" = "History";
+"slider" = "Slider";
 "search" = "Search";
 
 // Current View
@@ -30,6 +32,15 @@
 "windSpeed" = "Wind Speed";
 "sunrise" = "Sunrise";
 "sunset" = "Sunset";
+
+// Graph View
+"dayOne" = "Tag 1";
+"dayTwo" = "Tag 2";
+"day" = "Tag";
+"temperature" = "Temperature";
+"parameter" = "Parameter";
+"hours" = "Hours";
+"time" = "Time";
 
 // Fake Data
 "vienna" = "Vienna";
@@ -49,3 +60,10 @@
 // Search View
 "typeInLocation" = "Type in a location";
 "checkInternet" = "Please check your internet connection";
+"yourCurrentLocation" = "Your current location";
+"cancel" = "Cancel";
+
+
+// Error
+"alert-title-error" = "API Request Failed";
+"alert-message-error" = "Sorry, there was an error processing your request. Please try again later or contact support if the problem persists.";

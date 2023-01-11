@@ -25,7 +25,6 @@ struct CurrentView: View {
 	private var day: FetchedResults<Day>
 	
 	@State private var model = CurrentViewModel()
-	
 	// Cached values when pull-to-reload or onAppear
 	@State private var cachedDate: Date = Date()
 	@State private var cachedWeatherCode: String = "wrench.fill"
@@ -45,7 +44,9 @@ struct CurrentView: View {
 	
 	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
-
+    
+    @State var showError = false
+    
 	var body: some View {
 		NavigationStack {
 			ScrollView {
@@ -112,6 +113,13 @@ struct CurrentView: View {
 					}.padding(.all)
 				}
 			}
+            .alert("alert-title-error", isPresented: $showError, actions: { // Show an alert if an error appears
+                Button("ok", role: .cancel) {
+                    // Do nothing
+                }
+            }, message: {
+                Text("alert-message-error")
+            })
 			.navigationTitle(navigationTitle)
 			.navigationBarTitleDisplayMode(.automatic)
 			.toolbar {
@@ -147,7 +155,6 @@ struct CurrentView: View {
 		self.cachedWindSpeed = Double(truncating: dayWeather.last?.windspeed ?? 0.0)
 		self.cachedSunrise = day.first?.sunrise ?? Date()
 		self.cachedSunset = day.first?.sunset ?? Date()
-		
 	}
 	
 	func setBackgroundColors() {
@@ -178,6 +185,7 @@ struct CurrentView: View {
 				locationManager.stopUpdatingLocation()
 			} catch let error {
 				print("Error while refreshing weather: \(error)")
+                showError = true
 			}
 		}
 	}
@@ -192,6 +200,7 @@ struct CurrentView: View {
 				unitsManager.changeCurrentTemperatureUnit()
 			} catch let error {
 				print("Error while refreshing weather: \(error)")
+                showError = true
 			}
 		}
 	}

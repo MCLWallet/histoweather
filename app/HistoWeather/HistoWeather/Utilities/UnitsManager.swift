@@ -8,24 +8,25 @@
 import Foundation
 
 enum TemperatureUnit: String {
-	case celsius = "°C"
+    case celsius = "°C"
 	case fahrenheit = "°F"
 }
 
 class UnitsManager: NSObject, ObservableObject {
-	@Published var currentTemperatureUnit: TemperatureUnit = .celsius
+    @Published var currentTemperatureUnit: TemperatureUnit = TemperatureUnit(rawValue: UserDefaults.standard.string(forKey: "unit") ?? "°C") ?? .celsius
 	static let shared = UnitsManager()
 	
 	override init() {
 		super.init()
-		currentTemperatureUnit = .celsius
 	}
 	
 	func changeCurrentTemperatureUnit() {
 		if currentTemperatureUnit == .celsius {
-			currentTemperatureUnit = .fahrenheit
+                currentTemperatureUnit = .fahrenheit
+                UserDefaults.standard.set(currentTemperatureUnit.rawValue, forKey: "unit")
 		} else if currentTemperatureUnit == .fahrenheit {
 			currentTemperatureUnit = .celsius
+            UserDefaults.standard.set(currentTemperatureUnit.rawValue, forKey: "unit")
 		}
 	}
 	
