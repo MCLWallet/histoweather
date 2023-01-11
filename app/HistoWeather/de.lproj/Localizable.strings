@@ -13,7 +13,9 @@
 // Content View
 "today" = "Heute";
 "forecast" = "Vorhersage";
+"graph" = "Diagramm";
 "history" = "History";
+"slider" = "Slider";
 "search" = "Suche";
 
 // Current View
@@ -30,6 +32,15 @@
 "windSpeed" = "Wind Geschwindigkeit";
 "sunrise" = "Sonnenaufgang";
 "sunset" = "Sonnenuntergang";
+
+// Graph View
+"dayOne" = "Tag 1";
+"dayTwo" = "Tag 2";
+"day" = "day";
+"temperature" = "Temperatur";
+"parameter" = "Parameter";
+"hours" = "Stunden";
+"time" = "Zeit";
 
 // Fake Data
 "vienna" = "Wien";
@@ -49,3 +60,5 @@
 // Search View
 "typeInLocation" = "Gib einen Ort ein";
 "checkInternet" = "Bitte überprüfe deine Internetverbindung";
+"yourCurrentLocation" = "Dein aktueller Standort";
+"cancel" = "Abbrechen";

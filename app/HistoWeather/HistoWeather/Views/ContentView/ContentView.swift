@@ -34,17 +34,17 @@ struct ContentView: View {
                     .tag(2)
                 GraphView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
                     .tabItem {
-                        Label("Graph", systemImage: "chart.xyaxis.line")
+                        Label("graph", systemImage: "chart.xyaxis.line")
                     }
                     .tag(3)
                 SliderView(currentLocation: $currentLocation, navigationTitle: $currentLocationName)
                     .tabItem {
-                        Label("Slider", systemImage: "slider.horizontal.2.gobackward")
+                        Label("slider", systemImage: "slider.horizontal.2.gobackward")
                     }
                     .tag(4)
                 Text("")
                     .tabItem {
-                        Label("Search", systemImage: "location.magnifyingglass")
+                        Label("search", systemImage: "location.magnifyingglass")
                     }
                     .tag(5)
                     .onAppear {

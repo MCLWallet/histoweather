@@ -35,7 +35,7 @@ struct SearchView: View {
                             dismiss()
                         }
 					}, label: {
-						Label("Your current location", systemImage: "location.fill")
+						Label("yourCurrentLocation", systemImage: "location.fill")
 					})
 					.foregroundColor(.hWFontColor)
 				
@@ -66,7 +66,7 @@ struct SearchView: View {
 			.navigationTitle("search")
 			.toolbar {
 				ToolbarItem(placement: .cancellationAction) {
-					Button("Cancel") {
+					Button("cancel") {
 						dismiss()
 					}
 					.disabled((locationManager.authStatus != "authorizedAlways") &&
