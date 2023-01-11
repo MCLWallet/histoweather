@@ -141,12 +141,13 @@ struct dynamicHistoricalData: View {
     
     var body: some View {
         ZStack {
-			getTemperatureGradient(
-				temperature: self.day.last?.temperature_2m_max ?? 0,
-				unit: TemperatureUnit(rawValue: unitsManager.getCurrentUnit()) ?? .celsius)
-                .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            getTemperatureGradient(
+                temperature: self.day.last?.temperature_2m_max ?? 0,
+                unit: TemperatureUnit(rawValue: unitsManager.getCurrentUnit()) ?? .celsius)
+            .edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+        if self.day.last != nil {
             VStack {
-                Image(systemName: self.day.last?.weathericoncode ?? "wrench.fill")          
+                Image(systemName: self.day.last?.weathericoncode ?? "wrench.fill")
                     .resizable()
                     .scaledToFit()
                     .padding(.all)
@@ -161,6 +162,12 @@ struct dynamicHistoricalData: View {
                 }
                 .dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)
             }
+        } else {
+            VStack(alignment: .center) {
+                ProgressView()
+                    .dynamicTypeSize(.xxxLarge)
+            }
+        }
         }
     }
 }
