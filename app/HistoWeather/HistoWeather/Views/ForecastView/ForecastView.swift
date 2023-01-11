@@ -27,8 +27,17 @@ struct ForecastView: View {
 //	@State private var cachedWeatherIconCodes: [String] = Array(repeating: "wrench.fill", count: 7)
 //
 //	@State private var currentBackgroundColors: [Date: LinearGradient] = [:]
+    
+    // extension PersistenceController {
+    //
+    //    /// Only used for SwiftUI previews, **do not use this otherwise**
+    //    /// Adds a list of `Item` to the an in memory `CoreData` context.
+    //    static var preview: PersistenceController = {
+    //        let result = PersistenceController(inMemory: true)
+    //        let viewContext = result.container.viewContext
+    //        for _ in 0..<4 {
 //	@State private var bgIndex: Int = 0
-//
+
 	@Binding var currentLocation: CLLocation
 	@Binding var navigationTitle: String
 	

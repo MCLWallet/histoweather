@@ -13,7 +13,7 @@ struct SliderView: View {
     @State private var startYear: Int = 1959
     @State private var endYear: Int = Calendar.current.component(.year, from: Date())
 	
-	let date = Calendar.current.date(byAdding: .day, value: -6, to: Date())!
+	let date = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
 	
 	let dateRange: ClosedRange<Date> = {
 		let calendar = Calendar.current
