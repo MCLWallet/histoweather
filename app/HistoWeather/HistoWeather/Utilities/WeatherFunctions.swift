@@ -82,7 +82,7 @@ func getDayString(from date: Date) -> String {
 	return formatter.string(from: date)
 }
 
-func getSameDayWithDifferentYear(newYear: Double) -> Date {
+func getSameDayWithDifferentYear(day: Int, month: Int, newYear: Double) -> Date {
 	let calendar = Calendar.current
 	let currentDate = Date()
 
