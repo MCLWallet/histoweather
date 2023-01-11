@@ -81,24 +81,24 @@ struct GraphView: View {
                     Chart(lineGraphData) {
                         LineMark(
                             x: .value("Hours", $0.time),
-                            y: .value("Temperature", $0.windSpeed)
+                            y: .value("WindSpeed", $0.windSpeed)
                         )
                         .foregroundStyle(by: .value("Day", $0.day))
                     }
                     .chartXAxisLabel("Time")
-                    .chartYAxisLabel(unitsManager.currentTemperatureUnit.rawValue)
+                    .chartYAxisLabel("km/h")
                     .frame(minHeight: 420)
                     .padding(.all)
                 } else if selectedParameter == .rain {
                     Chart(lineGraphData) {
                         LineMark(
                             x: .value("Hours", $0.time),
-                            y: .value("Temperature", $0.rain)
+                            y: .value("Rain", $0.rain)
                         )
                         .foregroundStyle(by: .value("Day", $0.day))
                     }
                     .chartXAxisLabel("Time")
-                    .chartYAxisLabel(unitsManager.currentTemperatureUnit.rawValue)
+                    .chartYAxisLabel("mm")
                     .frame(minHeight: 420)
                     .padding(.all)
                 }
