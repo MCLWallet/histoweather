@@ -11,9 +11,10 @@ struct SliderView: View {
     @State private var model = SliderViewModel()
     @State private var startYear: Int = 1959
     @State private var endYear: Int = Calendar.current.component(.year, from: Date())
+    let date: Date
     init() {
         let calendar = Calendar.current
-        let date = calendar.date(byAdding: .day, value: -8, to: Date())!
+        date = calendar.date(byAdding: .day, value: -6, to: Date())!
     }
 	let dateRange: ClosedRange<Date> = {
 		let calendar = Calendar.current
@@ -29,7 +30,7 @@ struct SliderView: View {
                 dynamicHistoricalData(date: Calendar.current.date(from: DateComponents(year: Int(sliderValue), month: Calendar.current.component(.month, from: date), day: Calendar.current.component(.day, from: date))) ?? Date())
                 VStack(alignment: .leading) {
                     HStack {
-                        Text("\(getSameDayWithDifferentYear(newYear: sliderValue).formatted(date: .abbreviated, time: .omitted))")
+                        Text("\(getSameDayWithDifferentYear(day: Calendar.current.component(.day, from: date), month:Calendar.current.component(.month, from: date) ,newYear: sliderValue).formatted(date: .abbreviated, time: .omitted))")
                             .font(.title3)
                     }
                     .padding(.leading)
@@ -42,20 +43,31 @@ struct SliderView: View {
                         in: Double(startYear) ... Double(endYear),
                         step: 1
                     )
+
                     .padding(.horizontal)
                     HStack {
                         Picker("", selection: $startYear) {
-                            ForEach(1959...endYear, id: \.self) {
+                            ForEach(1959...endYear - 1, id: \.self) {
                                 Text(String($0))
                             }
                         }
+                        .onChange(of: startYear, perform: { _ in
+                            if sliderValue < Double(startYear) {
+                                sliderValue = Double(startYear)
+                            }
+                        })
                         .pickerStyle(.menu)
                         Spacer()
                         Picker("", selection: $endYear) {
-                            ForEach(startYear...2023, id: \.self) {
+                            ForEach(startYear + 1...2023, id: \.self) {
                                 Text(String($0))
                             }
                         }
+                        .onChange(of: endYear, perform: { _ in
+                            if sliderValue > Double(endYear) {
+                                sliderValue = Double(endYear)
+                            }
+                        })
                         .pickerStyle(.menu)
                         
                     }
@@ -79,8 +91,6 @@ struct SliderView: View {
 			}
 		}
     }
-
-
 }
 
 struct dynamicHistoricalData: View {
@@ -112,12 +122,6 @@ struct dynamicHistoricalData: View {
                     .scaledToFit()
                     .padding(.all)
                     .frame(maxWidth: 250)
-                Text("0 °C")                                                    // TODO: temperature from History Weather API
-                    .font(.largeTitle)
-                    .fontWeight(.light)
-                    .multilineTextAlignment(.center)
-                    .padding(.bottom)
-                    .dynamicTypeSize(/*@START_MENU_TOKEN@*/.xxxLarge/*@END_MENU_TOKEN@*/)
                 HStack {
                     Text("high")
                     Text("\(self.day.last?.temperature_2m_max ?? 0)")                                                // TODO: max_temperature from History Weather API
