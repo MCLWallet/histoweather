@@ -45,7 +45,9 @@ struct CurrentView: View {
 	
 	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
-
+    
+    @State var showError = true
+    
 	var body: some View {
 		NavigationStack {
 			ScrollView {
@@ -112,6 +114,13 @@ struct CurrentView: View {
 					}.padding(.all)
 				}
 			}
+            .alert("alert-title-error", isPresented: $showError, actions: { // Show an alert if an error appears
+                Button("ok", role: .cancel) {
+                    // Do nothing
+                }
+            }, message: {
+                Text("alert-message-error")
+            })
 			.navigationTitle(navigationTitle)
 			.navigationBarTitleDisplayMode(.automatic)
 			.toolbar {
@@ -178,6 +187,7 @@ struct CurrentView: View {
 				locationManager.stopUpdatingLocation()
 			} catch let error {
 				print("Error while refreshing weather: \(error)")
+                showError = true
 			}
 		}
 	}
@@ -192,6 +202,7 @@ struct CurrentView: View {
 				unitsManager.changeCurrentTemperatureUnit()
 			} catch let error {
 				print("Error while refreshing weather: \(error)")
+                showError = true
 			}
 		}
 	}

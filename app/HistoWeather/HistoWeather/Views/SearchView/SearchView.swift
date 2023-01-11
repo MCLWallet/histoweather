@@ -19,7 +19,9 @@ struct SearchView: View {
 	@Binding var currentLocationName: String
 	
 	@State var lastSelectedTab = 1
-	
+    
+    @State var showError: Bool = false
+    
     var body: some View {
 		NavigationView {
 			List {
@@ -54,6 +56,13 @@ struct SearchView: View {
 			.onSubmit(of: .search) {
 				runSearch(searchString: searchText)
 			}
+            .alert("alert-title-error", isPresented: $showError, actions: { // Show an alert if an error appears
+                Button("ok", role: .cancel) {
+                    // Do nothing
+                }
+            }, message: {
+                Text("alert-message-error")
+            })
 			.navigationTitle("search")
 			.toolbar {
 				ToolbarItem(placement: .cancellationAction) {
@@ -77,7 +86,12 @@ struct SearchView: View {
 		print("searchString: \(searchString)")
         Task.init(operation: {
             if !searchString.isEmpty {
-                await model.search(name: searchString)
+                do {
+                   try await model.search(name: searchString)
+                } catch let error {
+                    print("\(error)")
+                    showError = true
+                }
             } else {
                 model.locations.removeAll()
             }

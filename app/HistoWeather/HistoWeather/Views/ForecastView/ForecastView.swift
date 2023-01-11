@@ -44,6 +44,8 @@ struct ForecastView: View {
 	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
     
+    @State var showError = false
+    
     var body: some View {
         NavigationView {
 			ScrollView {
@@ -90,12 +92,20 @@ struct ForecastView: View {
 						locationManager.stopUpdatingLocation()
 					} catch let error {
 						print("Error while refreshing weather: \(error)")
+                        showError = true
 					}
 				}
 			}
 			.refreshable {
 				await reloadValues()
 			}
+            .alert("alert-title-error", isPresented: $showError, actions: { // Show an alert if an error appears
+                Button("ok", role: .cancel) {
+                    // Do nothing
+                }
+            }, message: {
+                Text("alert-message-error")
+            })
 			.navigationTitle(navigationTitle)
 			.navigationBarTitleDisplayMode(.automatic)
 			.toolbar {

@@ -27,12 +27,7 @@ struct SliderView: View {
 	@ObservedObject var locationManager = LocationManager.shared
 	@ObservedObject var unitsManager = UnitsManager.shared
 	
-//	init(currentLocation: CLLocation, navigationTitle: String) {
-//		let calendar = Calendar.current
-//		date = calendar.date(byAdding: .day, value: -6, to: Date())!
-//		self.currentLocation = currentLocation
-//		self.navigationTitle = navigationTitle
-//	}
+    @State var showError = false
 	
     var body: some View {
         NavigationStack {
@@ -40,7 +35,7 @@ struct SliderView: View {
                 dynamicHistoricalData(date: Calendar.current.date(from: DateComponents(year: Int(sliderValue), month: Calendar.current.component(.month, from: date), day: Calendar.current.component(.day, from: date))) ?? Date())
                 VStack(alignment: .leading) {
                     HStack {
-                        Text("\(getSameDayWithDifferentYear(day: Calendar.current.component(.day, from: date), month:Calendar.current.component(.month, from: date) ,newYear: sliderValue).formatted(date: .abbreviated, time: .omitted))")
+                        Text("\(getSameDayWithDifferentYear(day: Calendar.current.component(.day, from: date), month: Calendar.current.component(.month, from: date), newYear: sliderValue).formatted(date: .abbreviated, time: .omitted))")
                             .font(.title3)
                     }
                     .padding(.leading)
@@ -86,6 +81,13 @@ struct SliderView: View {
                 }
                 
             }
+            .alert("alert-title-error", isPresented: $showError, actions: { // Show an alert if an error appears
+                Button("ok", role: .cancel) {
+                    // Do nothing
+                }
+            }, message: {
+                Text("alert-message-error")
+            })
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -128,6 +130,7 @@ struct SliderView: View {
 				locationManager.stopUpdatingLocation()
 			} catch let error {
 				print("Error while refreshing weather: \(error)")
+                showError = true
 			}
 		}
 	}

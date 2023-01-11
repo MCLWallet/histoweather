@@ -66,6 +66,7 @@ struct HistoryView: View {
 				}
 				.padding(.all)
 			}
+            
 //			.navigationTitle(Coordinates.locationName)
 		}
     }
