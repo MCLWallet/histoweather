@@ -131,7 +131,7 @@ class DayWeatherRepository {
 		}
 
 		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm"
+		dateFormatter.dateFormat = "yyyy-mm-dd"
 		let decoder = JSONDecoder()
 		decoder.dateDecodingStrategy = .formatted(dateFormatter)
 

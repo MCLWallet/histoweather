@@ -7,11 +7,11 @@
 
 import Foundation
  struct HistoricalWeatherDecodable: Decodable {
-    let daily: HistoricalDailyDecodable
-}
+     let daily: HistoricalDailyDecodable
+ }
 
-struct HistoricalDailyDecodable: Decodable {
-    let time: [String]
+ struct HistoricalDailyDecodable: Decodable {
+    let time: [Date]
     let weathercode: [Int16]
     let temperature_2m_max: [Double]
     let temperature_2m_min: [Double]
