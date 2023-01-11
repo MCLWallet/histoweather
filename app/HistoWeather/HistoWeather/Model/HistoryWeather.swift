@@ -8,7 +8,6 @@
 import Foundation
  struct HistoricalWeatherDecodable: Decodable {
     let daily: HistoricalDailyDecodable
-//    let hourly: HistoricalHourlyDecodable
 }
 
 struct HistoricalDailyDecodable: Decodable {

@@ -23,17 +23,19 @@ struct SearchView: View {
     var body: some View {
 		NavigationView {
 			List {
-				if (locationManager.authStatus == "authorizedAlways") ||
-					(locationManager.authStatus == "authorizedWhenInUse") {
 					Button(action: {
-						currentLocation = locationManager.userLocation
-						locationManager.locationBySearch = false
-						dismiss()
+                        if (locationManager.authStatus != "authorizedAlways") &&
+                                (locationManager.authStatus != "authorizedWhenInUse") {
+                            locationManager.requestLocation()
+                        } else {
+                            currentLocation = locationManager.userLocation
+                            locationManager.locationBySearch = false
+                            dismiss()
+                        }
 					}, label: {
 						Label("Your current location", systemImage: "location.fill")
 					})
 					.foregroundColor(.hWFontColor)
-				}
 				
 				ForEach(model.locations, id: \.id) { location in
 					Button("\(location.name), \(location.country)") {
