@@ -62,3 +62,7 @@
 "checkInternet" = "Bitte überprüfe deine Internetverbindung";
 "yourCurrentLocation" = "Dein aktueller Standort";
 "cancel" = "Abbrechen";
+
+// Error
+"alert-title-error" = "API-Anforderung fehlgeschlagen";
+"alert-message-error" = "Entschuldigung, bei der Verarbeitung Ihrer Anforderung ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut oder wenden Sie sich an den Support, wenn das Problem weiterhin besteht.";
