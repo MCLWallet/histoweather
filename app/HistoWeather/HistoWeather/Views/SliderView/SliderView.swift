@@ -86,7 +86,21 @@ struct SliderView: View {
                 }
                 
             }
-            
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        unitsManager.changeCurrentTemperatureUnit()
+                        Task {
+                                await reloadValues()
+                        }
+                    }, label: {
+                        Text("\(unitsManager.currentTemperatureUnit.rawValue)")
+                            .font(.title)
+                    })
+                    .foregroundColor(.hWFontColor)
+                }
+            }
+
             .navigationTitle(navigationTitle)
             .foregroundColor(.hWBlack)
         }
@@ -121,7 +135,7 @@ struct SliderView: View {
 
 struct dynamicHistoricalData: View {
     @FetchRequest var day: FetchedResults<HistoricalDaily>
-    
+    @ObservedObject var unitsManager = UnitsManager.shared
     init(date: Date) {
         let date1: Date = date
         let date2: Date = Calendar.current.date(byAdding: .day, value: 1, to: date1) ?? Date()
@@ -150,10 +164,10 @@ struct dynamicHistoricalData: View {
                     .frame(maxWidth: 250)
                 HStack {
                     Text("high")
-                    Text("\(self.day.last?.temperature_2m_max ?? 0)")                                                // TODO: max_temperature from History Weather API
+                    Text("\(String(format: "%.0f", self.day.last?.temperature_2m_max ?? 0)) \(unitsManager.currentTemperatureUnit.rawValue)")
                         .bold()
                     Text("low")
-                    Text("\(self.day.last?.temperature_2m_min ?? 0)")                                                // TODO: min_temperature from History Weather API
+                    Text("\(String(format: "%.0f", self.day.last?.temperature_2m_min ?? 0)) \(unitsManager.currentTemperatureUnit.rawValue)")
                         .bold()
                 }
                 .dynamicTypeSize(/*@START_MENU_TOKEN@*/.xLarge/*@END_MENU_TOKEN@*/)

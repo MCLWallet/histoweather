@@ -50,7 +50,7 @@ func convertStringToDate(date: String, format: String) -> Date {
 		dateFormatter.dateFormat = format
 		dateFormatter.locale = .current
 		dateFormatter.timeZone = .current
-		return dateFormatter.date(from: date)!
+		return dateFormatter.date(from: date) ?? Date()
 	}
 }
 

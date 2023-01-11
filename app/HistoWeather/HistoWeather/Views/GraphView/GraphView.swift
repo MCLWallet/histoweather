@@ -64,7 +64,7 @@ struct GraphView: View {
                 .pickerStyle(.segmented)
                 // TODO: change parameters
                 // TODO: localize dates and strings
-                if(selectedParameter == .temperature) {
+                if selectedParameter == .temperature {
                     Chart(lineGraphData) {
                         LineMark(
                             x: .value("Hours", $0.time),
@@ -73,7 +73,7 @@ struct GraphView: View {
                         .foregroundStyle(by: .value("Day", $0.day))
                     }
                     .chartXAxisLabel("Time")
-                    .chartYAxisLabel("°C")
+                    .chartYAxisLabel(unitsManager.currentTemperatureUnit.rawValue)
                     .frame(minHeight: 420)
                     .padding(.all)
                 } else if selectedParameter == .windSpeed {
@@ -86,7 +86,7 @@ struct GraphView: View {
                         .foregroundStyle(by: .value("Day", $0.day))
                     }
                     .chartXAxisLabel("Time")
-                    .chartYAxisLabel("°C")
+                    .chartYAxisLabel(unitsManager.currentTemperatureUnit.rawValue)
                     .frame(minHeight: 420)
                     .padding(.all)
                 } else if selectedParameter == .rain {
@@ -98,9 +98,27 @@ struct GraphView: View {
                         .foregroundStyle(by: .value("Day", $0.day))
                     }
                     .chartXAxisLabel("Time")
-                    .chartYAxisLabel("°C")
+                    .chartYAxisLabel(unitsManager.currentTemperatureUnit.rawValue)
                     .frame(minHeight: 420)
                     .padding(.all)
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        unitsManager.changeCurrentTemperatureUnit()
+                        Task {
+                            do {
+                                await reloadValues()
+                            } catch let error {
+                                print("Error while refreshing weather: \(error)")
+                            }
+                        }
+                    }, label: {
+                        Text("\(unitsManager.currentTemperatureUnit.rawValue)")
+                            .font(.title)
+                    })
+                    .foregroundColor(.hWFontColor)
                 }
             }
             .navigationTitle(navigationTitle)
